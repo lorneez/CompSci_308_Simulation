@@ -1,0 +1,30 @@
+Model
+Simulation
+.runRound()
+.pause
+.switch
+SpecificSimulation
+- knows all the calculations for a specific simulation
+
+Grid
+.updateGrid
+.getState
+.calculateNextState
+.switchNextState
+
+Cell
+.checkNeighbors
+
+// Grid will be created in the simulation
+// Grid will create all the cells based on the simulation type
+// Grid will call .updateGrid
+// Cell will know its location and Simulation will update cell based on checking its neighbor
+
+View
+GameView
+.show
+
+Control
+Game Engine
+.start(simulation)
+.end(simulation)
