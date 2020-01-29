@@ -27,13 +27,16 @@ public class Grid {
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
                 if(j>1){
-                    cells[i][j].setLeftNeighbor(cells[i][j-1])
+                    cells[i][j].setLeftNeighbor(cells[i][j-1]);
                 }
                 if(j<rowSize-1){
-                    cells[i][j].setRightNeighbor(cells[i][j+1])
+                    cells[i][j].setRightNeighbor(cells[i][j+1]);
                 }
                 if(i>1){
-                    cells[i][]
+                    cells[i][j].setUpperNeighbor(cells[i-1][j]);
+                }
+                if(j<colSize-1){
+                    cells[i][j].setLowerNeighbor(cells[i+1][j]);
                 }
             }
         }
@@ -41,16 +44,8 @@ public class Grid {
     public void updateGrid(){
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-
-            }
-        }
-    }
-
-    public void updateGrid(){
-        for(int i=0; i<colSize; i++){
-            for(int j=0; j<rowSize; j++){
-                cells[i][j] = initial_positions.get(index);
-                index ++;
+                cells[i][j].update();
+                cells[i][j].calculateNextState();
             }
         }
     }

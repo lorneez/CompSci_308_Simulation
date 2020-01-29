@@ -2,7 +2,7 @@ package cellsociety.Model;
 
 public abstract class Cell {
     private int currentState;
-    private int nextState = -1;
+    private int nextState;
     private Cell rightNeighbor;
     private Cell leftNeighbor;
     private Cell lowerNeighbor;
@@ -14,6 +14,7 @@ public abstract class Cell {
      */
     public Cell(int state){
         this.currentState = state;
+        this.nextState = state;
     }
 
     /**
@@ -77,7 +78,6 @@ public abstract class Cell {
      */
     public void update(){
         this.currentState = this.nextState;
-        this.nextState = -1;
     }
 
     /**
