@@ -70,6 +70,7 @@ public class GameEngine {
     }
 
     public void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize){
+
         if(sim_type == "fire"){
             myGrid = new FireGrid(rowSize, colSize, cellStates);
             FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
