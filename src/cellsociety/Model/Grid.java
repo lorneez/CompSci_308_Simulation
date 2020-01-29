@@ -18,8 +18,6 @@ public abstract class Grid {
     public void updateGrid(){
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                // in order to keep both updating and calculating next state in the same iteration, the cell is updated
-                // and then the next state is calculated. Note that therefore nothing will happen on the first step
                 cells[i][j].update();
                 cells[i][j].calculateNextState();
             }
