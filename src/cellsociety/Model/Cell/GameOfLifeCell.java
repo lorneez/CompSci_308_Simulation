@@ -1,6 +1,5 @@
-package cellsociety.Model;
-import cellsociety.Model.Cell;
-import java.util.Random;
+package cellsociety.Model.Cell;
+import cellsociety.Model.Cell.Cell;
 
 public class GameOfLifeCell extends Cell{
     private int currentState;

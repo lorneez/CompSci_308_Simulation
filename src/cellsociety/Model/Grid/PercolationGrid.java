@@ -1,8 +1,11 @@
-package cellsociety.Model;
+package cellsociety.Model.Grid;
+
+import cellsociety.Model.Cell.Cell;
+import cellsociety.Model.Cell.PercolationCell;
 
 import java.util.ArrayList;
 
-public class FireGrid extends Grid {
+public class PercolationGrid extends Grid {
 
     /**
      *
@@ -10,7 +13,7 @@ public class FireGrid extends Grid {
      * @param colSize
      * @param initial_positions
      */
-    public FireGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
+    public PercolationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         super(rowSize, colSize, initial_positions);
     }
 
@@ -21,6 +24,6 @@ public class FireGrid extends Grid {
      */
     @Override
     public Cell makeCell(int state) {
-        return new FireCell(state);
+        return new PercolationCell(state);
     }
 }

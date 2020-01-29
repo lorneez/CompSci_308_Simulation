@@ -1,8 +1,7 @@
-package cellsociety.Model;
-import cellsociety.Model.Cell;
-import java.util.Random;
+package cellsociety.Model.Cell;
+import cellsociety.Model.Cell.Cell;
 
-public class PercolationCell extends Cell{
+public class PredatorPreyCell extends Cell{
     private int currentState;
     private int nextState;
     private Cell rightNeighbor;
@@ -14,7 +13,7 @@ public class PercolationCell extends Cell{
      * Cell Constructor
      * @param state
      */
-    public PercolationCell(int state){
+    public PredatorPreyCell(int state){
         super(state);
     }
 

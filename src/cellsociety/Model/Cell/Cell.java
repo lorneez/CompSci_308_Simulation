@@ -1,4 +1,4 @@
-package cellsociety.Model;
+package cellsociety.Model.Cell;
 
 public abstract class Cell {
     private int currentState;

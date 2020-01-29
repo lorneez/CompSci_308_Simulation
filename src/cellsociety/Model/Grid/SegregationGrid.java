@@ -1,4 +1,7 @@
-package cellsociety.Model;
+package cellsociety.Model.Grid;
+
+import cellsociety.Model.Cell.Cell;
+import cellsociety.Model.Cell.SegregationCell;
 
 import java.util.ArrayList;
 

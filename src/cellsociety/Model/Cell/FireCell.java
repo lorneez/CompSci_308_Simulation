@@ -1,5 +1,4 @@
-package cellsociety.Model;
-import cellsociety.Model.Cell;
+package cellsociety.Model.Cell;
 import java.util.Random;
 
 public class FireCell extends Cell{

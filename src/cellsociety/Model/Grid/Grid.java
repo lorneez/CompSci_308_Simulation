@@ -1,4 +1,6 @@
-package cellsociety.Model;
+package cellsociety.Model.Grid;
+
+import cellsociety.Model.Cell.Cell;
 
 import java.util.ArrayList;
 
