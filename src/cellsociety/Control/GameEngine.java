@@ -6,6 +6,9 @@ import cellsociety.Model.Cell.FireCell;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Document;
 
@@ -48,7 +51,7 @@ public class GameEngine {
 
         NodeList states_list = doc.getElementsByTagName("state");
         for(int i=0; i<states_list.getLength(); i++){
-            cellStates.add(Double.valueOf(states_list.item(i).getTextContent()));
+            cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
         }
 
         initializeGrid();
@@ -57,7 +60,7 @@ public class GameEngine {
 
     }
 
-    public void initializeGrid(ArrayList<Integer> gridParameters){
+    public void initializeGrid(){
         if(sim_type == "fire"){
             myGrid = new FireGrid(rowSize, colSize, cellStates);
             FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
