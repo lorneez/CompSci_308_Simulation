@@ -2,7 +2,7 @@ package cellsociety.Model;
 
 import java.util.ArrayList;
 
-public class FireGrid extends Grid {
+public class SegregationGrid extends Grid {
 
     /**
      *
@@ -10,7 +10,7 @@ public class FireGrid extends Grid {
      * @param colSize
      * @param initial_positions
      */
-    public FireGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
+    public SegregationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         super(rowSize, colSize, initial_positions);
     }
 
@@ -21,6 +21,6 @@ public class FireGrid extends Grid {
      */
     @Override
     public Cell makeCell(int state) {
-        return new FireCell(state);
+        return new SegregationCell(state);
     }
 }

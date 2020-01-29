@@ -7,7 +7,12 @@ public abstract class Grid {
     private int rowSize;
     private int colSize;
 
-
+    /**
+     *
+     * @param rowSize
+     * @param colSize
+     * @param initial_positions
+     */
     public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         this.rowSize = rowSize;
         this.colSize = colSize;
@@ -15,17 +20,28 @@ public abstract class Grid {
         initializeGrid(initial_positions);
     }
 
-    public void updateGrid(){
+    /**
+     *
+     */
+    public ArrayList<Integer> updateGrid(){
+        ArrayList<Integer> viewState = new ArrayList<Integer>();
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                // in order to keep both updating and calculating next state in the same iteration, the cell is updated
-                // and then the next state is calculated. Note that therefore nothing will happen on the first step
                 cells[i][j].update();
-                cells[i][j].calculateNextState();
             }
         }
+        for(int i=0; i<colSize; i++){
+            for(int j=0; j<rowSize; j++){
+                viewState.add(cells[i][j].calculateNextState());
+            }
+        }
+        return viewState;
     }
 
+    /**
+     *
+     * @param initial_positions
+     */
     private void initializeGrid(ArrayList<Integer> initial_positions){
         int index = 0;
         for(int i=0; i<colSize; i++){
@@ -37,6 +53,9 @@ public abstract class Grid {
         setNeighbors();
     }
 
+    /**
+     *
+     */
     private void setNeighbors(){
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
@@ -56,6 +75,11 @@ public abstract class Grid {
         }
     }
 
+    /**
+     *
+     * @param state
+     * @return
+     */
     public abstract Cell makeCell(int state);
 
     // public void setDiagnonalNeighbors

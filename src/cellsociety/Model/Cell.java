@@ -83,7 +83,7 @@ public abstract class Cell {
     /**
      *
      */
-    public abstract void calculateNextState();
+    public abstract int calculateNextState();
 
 
 
