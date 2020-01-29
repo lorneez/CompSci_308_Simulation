@@ -1,4 +1,4 @@
-package cellsociety.Model;
+package cellsociety.Model.Cell;
 
 public abstract class Cell {
     private int currentState;
@@ -83,7 +83,7 @@ public abstract class Cell {
     /**
      *
      */
-    public abstract void calculateNextState();
+    public abstract int calculateNextState();
 
 
 
