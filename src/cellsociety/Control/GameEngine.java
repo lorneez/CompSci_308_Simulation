@@ -2,6 +2,7 @@ package cellsociety.Control;
 import cellsociety.Model.Grid.Grid;
 import cellsociety.Model.Grid.FireGrid;
 import cellsociety.Model.Cell.FireCell;
+import cellsociety.View.GridViewer;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +25,7 @@ public class GameEngine {
     private ArrayList<Integer> cellStates;
     private Grid myGrid;
     private ArrayList<Double> gridParameters;
+    private GridViewer myViewer;
 
     /**
      *
@@ -83,6 +85,7 @@ public class GameEngine {
         // create the viewer
         // splash screen
         // viewer will determine configuration file
+        myViewer = new GridViewer();
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
         Timeline animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
