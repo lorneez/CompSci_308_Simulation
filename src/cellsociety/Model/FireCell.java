@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class FireCell extends Cell{
     private int currentState;
-    private int nextState = -1;
+    private int nextState;
     private Cell rightNeighbor;
     private Cell leftNeighbor;
     private Cell lowerNeighbor;
