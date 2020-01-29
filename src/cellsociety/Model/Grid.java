@@ -1,6 +1,5 @@
 package cellsociety.Model;
 
-
 public class Grid {
     public Cell[][] cells;
     private int rowSize;
