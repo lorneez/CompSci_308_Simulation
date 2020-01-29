@@ -1,13 +1,8 @@
 package cellsociety.Model;
 
-<<<<<<< HEAD
-public class Grid {
-=======
-
 import java.util.ArrayList;
 
 public abstract class Grid {
->>>>>>> 32efb1800c031d4e9259bebbc86dcc218d55e9a1
     public Cell[][] cells;
     private int rowSize;
     private int colSize;
