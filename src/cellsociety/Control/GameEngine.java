@@ -2,10 +2,21 @@ package cellsociety.Control;
 import cellsociety.Model.Grid.Grid;
 import cellsociety.Model.Grid.FireGrid;
 import cellsociety.Model.Cell.FireCell;
+import cellsociety.Model.Cell.SegregationCell;
+import cellsociety.Model.Grid.SegregationGrid;
+import cellsociety.Model.Cell.GameOfLifeCell;
+import cellsociety.Model.Grid.GameOfLifeGrid;
+import cellsociety.Model.Cell.PredatorPreyCell;
+import cellsociety.Model.Grid.PredatorPreyGrid;
+import cellsociety.Model.Cell.PercolationCell;
+import cellsociety.Model.Grid.PercolationGrid;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Document;
 
@@ -35,11 +46,12 @@ public class GameEngine {
 
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        DocumentBuilder dBuilder = dbFactory.new DocumentBuilder();
         Document doc = dBuilder.parse(fXmlFile);
 
         this.sim_type = doc.getElementsByTagName("sim_type").item(0).getTextContent();
 
+        NodeList size_list = doc.getElementsByTagName("size");
 
         NodeList param_list = doc.getElementsByTagName("param");
         for(int i=0; i<param_list.getLength(); i++){
@@ -48,16 +60,16 @@ public class GameEngine {
 
         NodeList states_list = doc.getElementsByTagName("state");
         for(int i=0; i<states_list.getLength(); i++){
-            cellStates.add(Double.valueOf(states_list.item(i).getTextContent()));
+            cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
         }
 
-        initializeGrid();
+        initializeGrid(gridParameters, Integer.valueOf(param_list.item(0).getTextContent()), Integer.valueOf(param_list.item(1).getTextContent()));
 
 
 
     }
 
-    public void initializeGrid(ArrayList<Integer> gridParameters){
+    public void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize){
         if(sim_type == "fire"){
             myGrid = new FireGrid(rowSize, colSize, cellStates);
             FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
