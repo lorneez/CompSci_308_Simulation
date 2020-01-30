@@ -105,11 +105,11 @@ public class GameEngine {
 
 
     private void step(){
-        if(myViewer.getSplashScreenFinished() == false){
+        if(!myViewer.getSplashScreenFinished()){
             myViewer.updateCellStates(myGrid.updateGrid());
 
         }else{
-            sim_xml_path = myViewer.getFileName(); // should return the path of the XML file
+            String sim_xml_path = myViewer.getFileName(); // should return the path of the XML file
             // see if the viewer has determined the file name yet
             // if so, parse the file name and we are done with the splash screen
             if(sim_xml_path != null){
