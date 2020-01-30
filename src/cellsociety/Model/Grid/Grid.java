@@ -5,9 +5,9 @@ import cellsociety.Model.Cell.Cell;
 import java.util.ArrayList;
 
 public abstract class Grid {
-    public Cell[][] cells;
-    private int rowSize;
-    private int colSize;
+    protected Cell[][] cells;
+    protected int rowSize;
+    protected int colSize;
 
     /**
      *
@@ -44,7 +44,7 @@ public abstract class Grid {
      *
      * @param initial_positions
      */
-    private void initializeGrid(ArrayList<Integer> initial_positions){
+    protected void initializeGrid(ArrayList<Integer> initial_positions){
         int index = 0;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
@@ -58,7 +58,7 @@ public abstract class Grid {
     /**
      *
      */
-    private void setNeighbors(){
+    protected void setNeighbors(){
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
                 if(j>1){

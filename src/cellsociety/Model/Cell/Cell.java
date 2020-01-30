@@ -1,12 +1,12 @@
 package cellsociety.Model.Cell;
 
 public abstract class Cell {
-    private int currentState;
-    private int nextState;
-    private Cell rightNeighbor;
-    private Cell leftNeighbor;
-    private Cell lowerNeighbor;
-    private Cell upperNeighbor;
+    protected int currentState;
+    protected int nextState;
+    protected Cell rightNeighbor;
+    protected Cell leftNeighbor;
+    protected Cell lowerNeighbor;
+    protected Cell upperNeighbor;
 
     /**
      * Cell Constructor
