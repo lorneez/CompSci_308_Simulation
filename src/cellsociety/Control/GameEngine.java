@@ -14,14 +14,17 @@ import cellsociety.Model.Grid.PercolationGrid;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameEngine {
@@ -44,11 +47,11 @@ public class GameEngine {
         cellStates = new ArrayList<>();
     }
 
-    private void parseFile(String sim_xml_path){
+    private void parseFile(String sim_xml_path) throws ParserConfigurationException, IOException, SAXException {
 
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.new DocumentBuilder();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(fXmlFile);
 
         this.sim_type = doc.getElementsByTagName("sim_type").item(0).getTextContent();
@@ -82,9 +85,13 @@ public class GameEngine {
         }else if (sim_type == "gameoflife"){
             myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates);
             GameOfLifeCell.setProb(gridParameters);
-        }else if (sim_type == "wator"){
-            myGrid = new WatorGrid(rowSize, colSize, cellStates);
-            WatorCell.setProb(gridParameters);
+        }else if (sim_type == "predatorprey"){
+            myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates);
+            PredatorPreyCell.setProb(gridParameters);
+        }
+        else if (sim_type == "percolation"){
+            myGrid = new PercolationGrid(rowSize, colSize, cellStates);
+            PercolationCell.setProb(gridParameters);
         }
     }
 
@@ -113,7 +120,15 @@ public class GameEngine {
             // see if the viewer has determined the file name yet
             // if so, parse the file name and we are done with the splash screen
             if(sim_xml_path != null){
-                parseFile(sim_xml_path);
+                try {
+                    parseFile(sim_xml_path);
+                } catch (ParserConfigurationException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SAXException e) {
+                    e.printStackTrace();
+                }
                 myViewer.setSplashScreenFinished(false);
             }
         }

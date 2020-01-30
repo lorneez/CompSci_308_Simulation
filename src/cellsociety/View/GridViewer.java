@@ -87,6 +87,8 @@ public class GridViewer {
         myRoot = new Group();
         // add text
         // add 5 buttons to choose simulation
+
+        //ADDED
         Button fireButton = makeButton("Fire", .., ..)
         Button predatorPreyButton = makeButton("PredatorPrey", .., ..)
         Button percolationButton = makeButton("Percolation", .., ..)
