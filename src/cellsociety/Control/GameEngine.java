@@ -106,7 +106,7 @@ public class GameEngine {
 
     private void step(){
         if(myViewer.getSplashScreenFinished() == false){
-            myViewer.update(myGrid.updateGrid());
+            myViewer.updateCellStates(myGrid.updateGrid());
 
         }else{
             sim_xml_path = myViewer.getFileName(); // should return the path of the XML file
