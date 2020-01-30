@@ -105,7 +105,7 @@ public class GameEngine {
 
 
     private void step(){
-        if(myViewer.splashScreen == false){
+        if(myViewer.getSplashScreenFinished() == false){
             myViewer.update(myGrid.updateGrid());
 
         }else{
@@ -114,7 +114,7 @@ public class GameEngine {
             // if so, parse the file name and we are done with the splash screen
             if(sim_xml_path != null){
                 parseFile(sim_xml_path);
-                myViewer.setSplashScreen(false);
+                myViewer.setSplashScreenFinished(false);
             }
         }
     }
