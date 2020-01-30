@@ -44,7 +44,7 @@ public class GameEngine {
         cellStates = new ArrayList<>();
     }
 
-    public void parseFile(String sim_xml_path){
+    private void parseFile(String sim_xml_path){
 
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -71,7 +71,7 @@ public class GameEngine {
 
     }
 
-    public void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize){
+    private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize){
 
         if(sim_type == "fire"){
             myGrid = new FireGrid(rowSize, colSize, cellStates);
@@ -109,7 +109,7 @@ public class GameEngine {
             myViewer.update(myGrid.updateGrid());
 
         }else{
-            sim_xml_path = myViewer.getInstruction(); // should return the path of the XML file
+            sim_xml_path = myViewer.getFileName(); // should return the path of the XML file
             // see if the viewer has determined the file name yet
             // if so, parse the file name and we are done with the splash screen
             if(sim_xml_path != null){
