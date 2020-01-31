@@ -3,9 +3,10 @@ package cellsociety.Model.Grid;
 import cellsociety.Model.Cell.Cell;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Grid {
-    protected Cell[][] cells;
+    protected HashMap<Cell, ArrayList<Cell>> cells;
     protected int rowSize;
     protected int colSize;
 
@@ -15,11 +16,10 @@ public abstract class Grid {
      * @param colSize
      * @param initial_positions
      */
-    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
+    public Grid(int rowSize, int colSize, HashMap<Cell, ArrayList<Cell>> initial_positions){
         this.rowSize = rowSize;
         this.colSize = colSize;
-        this.cells = new Cell[rowSize][colSize];
-        initializeGrid(initial_positions);
+        this.cells = initial_positions;
     }
 
     /**
@@ -42,21 +42,6 @@ public abstract class Grid {
 
     /**
      *
-     * @param initial_positions
-     */
-    protected void initializeGrid(ArrayList<Integer> initial_positions){
-        int index = 0;
-        for(int i=0; i<colSize; i++){
-            for(int j=0; j<rowSize; j++){
-                cells[i][j] = makeCell(initial_positions.get(index));
-                index ++;
-            }
-        }
-        setNeighbors();
-    }
-
-    /**
-     *
      */
     protected void setNeighbors(){
         for(int i=0; i<colSize; i++){
@@ -75,6 +60,21 @@ public abstract class Grid {
                 }
             }
         }
+    }
+
+    /**
+     *
+     * @param initial_positions
+     */
+    protected void initializeGrid(ArrayList<Integer> initial_positions){
+        int index = 0;
+        for(int i=0; i<colSize; i++){
+            for(int j=0; j<rowSize; j++){
+                cells[i][j] = makeCell(initial_positions.get(index));
+                index ++;
+            }
+        }
+        setNeighbors();
     }
 
     /**
