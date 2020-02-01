@@ -46,4 +46,18 @@ public class FireGrid extends Grid {
         Cell newCell = new FireCell(state);
         return newCell;
     }
+
+    @Override
+    protected boolean checkIfDone(){
+
+        for(int i=0; i<colSize; i++) {
+            for (int j = 0; j < rowSize; j++) {
+                if (cells[i][j].getCurrentState() == 6){
+                    return false;
+                }
+            }
+        }
+        return true;
+
+    }
 }
