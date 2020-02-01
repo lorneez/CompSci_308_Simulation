@@ -37,6 +37,8 @@ public class GameEngine {
     private Grid myGrid;
     private ArrayList<Double> gridParameters;
     private GridViewer myViewer;
+    private int row;
+    private int col;
 
     /**
      *
@@ -56,7 +58,9 @@ public class GameEngine {
 
         this.sim_type = doc.getElementsByTagName("sim_type").item(0).getTextContent();
 
-        NodeList size_list = doc.getElementsByTagName("size");
+        NodeList size_list = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
+        row = Integer.valueOf(size_list.item(0).getTextContent());
+        col = Integer.valueOf(size_list.item(1).getTextContent());
 
         NodeList param_list = doc.getElementsByTagName("param");
         for(int i=0; i<param_list.getLength(); i++){
@@ -68,7 +72,7 @@ public class GameEngine {
             cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
         }
 
-        initializeGrid(gridParameters, Integer.valueOf(param_list.item(0).getTextContent()), Integer.valueOf(param_list.item(1).getTextContent()));
+        this.initializeGrid(gridParameters, row, col);
 
 
 
@@ -79,7 +83,7 @@ public class GameEngine {
         if(sim_type == "fire"){
             myGrid = new FireGrid(rowSize, colSize, cellStates);
             FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
-        }else if (sim_type == "segregation"){
+        }/*else if (sim_type == "segregation"){
             myGrid = new SegregationGrid(rowSize, colSize, cellStates);
             SegregationCell.setProb(gridParameters);
         }else if (sim_type == "gameoflife"){
@@ -92,7 +96,7 @@ public class GameEngine {
         else if (sim_type == "percolation"){
             myGrid = new PercolationGrid(rowSize, colSize, cellStates);
             PercolationCell.setProb(gridParameters);
-        }
+        }*/
     }
 
     /**
@@ -122,6 +126,7 @@ public class GameEngine {
             if(sim_xml_path != null){
                 try {
                     parseFile(sim_xml_path);
+                    myViewer.setUpSimulation(row,col,cellStates);
                 } catch (ParserConfigurationException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -129,6 +134,7 @@ public class GameEngine {
                 } catch (SAXException e) {
                     e.printStackTrace();
                 }
+
                 myViewer.setSplashScreenFinished(false);
             }
         }

@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Grid {
-    protected HashMap<Cell, ArrayList<Cell>> cells;
+    //protected HashMap<Cell, ArrayList<Cell>> cells;
+    protected Cell[][] cells;
     protected int rowSize;
     protected int colSize;
 
@@ -16,10 +17,10 @@ public abstract class Grid {
      * @param colSize
      * @param initial_positions
      */
-    public Grid(int rowSize, int colSize, HashMap<Cell, ArrayList<Cell>> initial_positions){
+    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         this.rowSize = rowSize;
         this.colSize = colSize;
-        this.cells = initial_positions;
+        this.initializeGrid(initial_positions);
     }
 
     /**

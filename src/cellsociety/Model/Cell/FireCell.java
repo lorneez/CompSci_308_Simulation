@@ -28,24 +28,24 @@ public class FireCell extends Cell{
      *
      */
     public int calculateNextState(){
-        if(currentState == 1 & (rightNeighbor.getCurrentState() == 2 || leftNeighbor.getCurrentState() == 2 || upperNeighbor.getCurrentState() == 2 || lowerNeighbor.getCurrentState() == 2)){
+        if(currentState == 4 & (rightNeighbor.getCurrentState() == 6 || leftNeighbor.getCurrentState() == 6 || upperNeighbor.getCurrentState() == 6 || lowerNeighbor.getCurrentState() == 6)){
             Random rand = new Random();
             double rand_int1 = rand.nextInt(100) / 100;
             if(rand_int1 < probCatch){
-                nextState = 2;
+                this.setNextState(6);
             }
             else{
-                nextState = 1;
+                this.setNextState(4);
             }
         }
-        else if(currentState == 2){
+        else if(currentState == 6){
             Random rand = new Random();
             double rand_int1 = rand.nextInt(100) / 100;
-            if(rand_int1 < probCatch){
-                nextState = 0;
+            if(rand_int1 < probDie){
+                this.setNextState(3);
             }
             else{
-                nextState = 2;
+                this.setNextState(6);
             }
         }
         return currentState;

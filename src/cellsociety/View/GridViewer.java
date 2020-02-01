@@ -16,10 +16,10 @@ import java.util.Map;
 
 public class GridViewer {
 
-    private static final Paint[] COLORMAP = {Color.BLACK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE};
+    private static final Paint[] COLORMAP = {Color.BLACK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BROWN};
     private ArrayList<Rectangle> cells;
     private ArrayList<Integer> cellStates;
-    private final int SIZE = 1000;
+    private final int SIZE = 600;
     private final Paint BACKGROUND = Color.WHITE;
     private Stage myStage;
     private Scene myScene;
@@ -89,18 +89,18 @@ public class GridViewer {
         // add 5 buttons to choose simulation
 
         //ADDED
-        Button fireButton = makeButton("Fire", .., ..)
-        Button predatorPreyButton = makeButton("PredatorPrey", .., ..)
+        Button fireButton = makeButton("Fire", SIZE, SIZE);
+        /*Button predatorPreyButton = makeButton("PredatorPrey", .., ..)
         Button percolationButton = makeButton("Percolation", .., ..)
         Button segregationButton = makeButton("Segregation", .., ..)
-        Button gameOfLifeButton = makeButton("GameOfLife", .., ..)
+        Button gameOfLifeButton = makeButton("GameOfLife", .., ..)*/
 
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "Fire";
+                file_name = "fire_config.xml";
             }
-        });
+        });/*
         predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -124,7 +124,7 @@ public class GridViewer {
             public void handle(ActionEvent event) {
                 file_name = "GameOfLife";
             }
-        });
+        });*/
         return new Scene(myRoot, SIZE, SIZE, BACKGROUND);
     }
     public String getFileName(){
