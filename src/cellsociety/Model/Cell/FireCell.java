@@ -31,7 +31,8 @@ public class FireCell extends Cell{
         if(currentState == 4){
             if((rightNeighbor!=null && rightNeighbor.getCurrentState()==6) || (leftNeighbor!=null && leftNeighbor.getCurrentState()==6) || (upperNeighbor!=null && upperNeighbor.getCurrentState()==6) || (lowerNeighbor!=null && lowerNeighbor.getCurrentState()==6)){
                 Random rand = new Random();
-                double rand_int1 = rand.nextInt(100) / 100;
+                double rand_int1 = rand.nextDouble();
+                System.out.println("Random Int: " + rand_int1);
                 if(rand_int1 < probCatch){
                     this.setNextState(6);
                 }
@@ -43,8 +44,10 @@ public class FireCell extends Cell{
         }
         else if(currentState == 6){
             Random rand = new Random();
-            double rand_int1 = rand.nextInt(100) / 100;
-            if(rand_int1 < probDie){
+            double rand_int2 = rand.nextDouble();
+            System.out.println("Random Int: " + rand_int2);
+
+            if(rand_int2 < probDie){
                 this.setNextState(3);
             }
             else{

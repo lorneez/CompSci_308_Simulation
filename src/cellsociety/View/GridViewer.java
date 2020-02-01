@@ -21,6 +21,7 @@ public class GridViewer {
     private ArrayList<Integer> cellStates;
     private final int SIZE = 600;
     private final Paint BACKGROUND = Color.WHITE;
+    private final Paint BACKGROUND_FIRE = Color.ORANGE;
     private Stage myStage;
     private Scene myScene;
     private Group myRoot;
@@ -38,7 +39,7 @@ public class GridViewer {
     public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
         myRoot = new Group();
         setUpGrid(rowSize, colSize, initial_states);
-        myScene = new Scene(myRoot, SIZE, SIZE, BACKGROUND);
+        myScene = new Scene(myRoot, SIZE, SIZE, BACKGROUND_FIRE);
         //scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         //scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
     }

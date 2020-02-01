@@ -113,8 +113,10 @@ public class GameEngine {
 
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
-            System.out.println("FIRE MIDDLE" + myGrid.getCell(1,1));
-
+            System.out.println(myGrid.cells[0][0].getCurrentState()+", "+myGrid.cells[0][1].getCurrentState()+", "+myGrid.cells[0][2].getCurrentState());
+            System.out.println(myGrid.cells[1][0].getCurrentState()+", "+myGrid.cells[1][1].getCurrentState()+", "+myGrid.cells[1][2].getCurrentState());
+            System.out.println(myGrid.cells[2][0].getCurrentState()+", "+myGrid.cells[2][1].getCurrentState()+", "+myGrid.cells[2][2].getCurrentState());
+            System.out.println("----");
             ArrayList<Integer> currStates = myGrid.updateGrid();
             myViewer.updateCellStates(currStates);
 
@@ -124,9 +126,9 @@ public class GameEngine {
             // if so, parse the file name and we are done with the splash screen
             if(!sim_xml_path.equals("NONE")){
                 try {
-                    myViewer.setSplashScreenFinished(false);
                     parseFile(sim_xml_path);
                     myViewer.setUpSimulation(row,col,cellStates);
+                    myViewer.setSplashScreenFinished(false);
 
                 } catch (ParserConfigurationException e) {
                     e.printStackTrace();
