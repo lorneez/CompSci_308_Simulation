@@ -28,15 +28,18 @@ public class FireCell extends Cell{
      *
      */
     public int calculateNextState(){
-        if(currentState == 4 & (rightNeighbor.getCurrentState() == 6 || leftNeighbor.getCurrentState() == 6 || upperNeighbor.getCurrentState() == 6 || lowerNeighbor.getCurrentState() == 6)){
-            Random rand = new Random();
-            double rand_int1 = rand.nextInt(100) / 100;
-            if(rand_int1 < probCatch){
-                this.setNextState(6);
+        if(currentState == 4){
+            if((rightNeighbor!=null && rightNeighbor.getCurrentState()==6) || (leftNeighbor!=null && leftNeighbor.getCurrentState()==6) || (upperNeighbor!=null && upperNeighbor.getCurrentState()==6) || (lowerNeighbor!=null && lowerNeighbor.getCurrentState()==6)){
+                Random rand = new Random();
+                double rand_int1 = rand.nextInt(100) / 100;
+                if(rand_int1 < probCatch){
+                    this.setNextState(6);
+                }
+                else{
+                    this.setNextState(4);
+                }
             }
-            else{
-                this.setNextState(4);
-            }
+
         }
         else if(currentState == 6){
             Random rand = new Random();

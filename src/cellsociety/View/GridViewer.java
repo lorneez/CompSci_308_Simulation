@@ -28,6 +28,7 @@ public class GridViewer {
     private boolean splashScreenFinished;
 
     public GridViewer(){
+        splashScreenFinished = true;
         myStage = new Stage();
         myScene = setUpSplash();
         myStage.setScene(myScene);
@@ -98,7 +99,8 @@ public class GridViewer {
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "fire_config.xml";
+                System.out.println("1234567543");
+                file_name = "/Users/lorneez/Projects/CompSci308/simulation_team27/src/cellsociety/View/fire_config.xml";
             }
         });/*
         predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){

@@ -73,14 +73,10 @@ public class GameEngine {
         }
 
         this.initializeGrid(gridParameters, row, col);
-
-
-
     }
 
     private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize){
-
-        if(sim_type == "fire"){
+        if(sim_type.equals("fire")){
             myGrid = new FireGrid(rowSize, colSize, cellStates);
             FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
         }/*else if (sim_type == "segregation"){
@@ -117,16 +113,21 @@ public class GameEngine {
 
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
-            myViewer.updateCellStates(myGrid.updateGrid());
+            System.out.println("FIRE MIDDLE" + myGrid.getCell(1,1));
+
+            ArrayList<Integer> currStates = myGrid.updateGrid();
+            myViewer.updateCellStates(currStates);
 
         }else{
             String sim_xml_path = myViewer.getFileName(); // should return the path of the XML file
             // see if the viewer has determined the file name yet
             // if so, parse the file name and we are done with the splash screen
-            if(sim_xml_path != null){
+            if(!sim_xml_path.equals("NONE")){
                 try {
+                    myViewer.setSplashScreenFinished(false);
                     parseFile(sim_xml_path);
                     myViewer.setUpSimulation(row,col,cellStates);
+
                 } catch (ParserConfigurationException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -135,7 +136,7 @@ public class GameEngine {
                     e.printStackTrace();
                 }
 
-                myViewer.setSplashScreenFinished(false);
+
             }
         }
     }

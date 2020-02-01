@@ -16,7 +16,17 @@ public class SegregationGrid extends Grid {
     public SegregationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         super(rowSize, colSize, initial_positions);
     }
-
+    @Override
+    protected void initializeGrid(ArrayList<Integer> initial_positions){
+        int index = 0;
+        for(int i=0; i<colSize; i++){
+            for(int j=0; j<rowSize; j++){
+                cells[i][j] = makeCell(initial_positions.get(index));
+                index ++;
+            }
+        }
+        setNeighbors();
+    }
     /**
      *
      * @param state
