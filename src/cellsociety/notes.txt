@@ -28,3 +28,15 @@ Control
 Game Engine
 .start(simulation)
 .end(simulation)
+
+Task List
+Backend:
+- stop/pause
+- calculateNextState for other cells
+    - research how each sim works and construct xml file for each
+- checkIfDone method
+
+Frontend:
+- display objects
+- button to go to splash on pause
+
