@@ -100,4 +100,6 @@ public abstract class Grid {
 
     // public void setDiagnonalNeighbors
 
+    protected abstract boolean checkIfDone();
+
 }
