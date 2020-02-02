@@ -40,6 +40,7 @@ public class GridViewer {
         myRoot = new Group();
         setUpGrid(rowSize, colSize, initial_states);
         myScene = new Scene(myRoot, SIZE, SIZE, BACKGROUND_FIRE);
+        myStage.setScene(myScene);
         //scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         //scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
     }
@@ -54,13 +55,15 @@ public class GridViewer {
         cellStates = new ArrayList<Integer>();
         cells = new ArrayList<Rectangle>();
         int cellSize = (int) (SIZE*0.8 / colSize);
+        System.out.println(cellSize);
         int row = 0;
         int col = 0;
         for(Integer state : initial_states){
             cellStates.add(state);
-            Rectangle cell = new Rectangle(SIZE/10 + col*cellSize, SIZE/10 + row*cellSize, cellSize, cellSize);
+            Rectangle cell = new Rectangle(SIZE*0.1 + col*cellSize, SIZE*0.1 + row*cellSize, cellSize, cellSize);
             cells.add(cell);
             myRoot.getChildren().add(cell);
+            System.out.println("added to gridview");
             col++;
             if(col >= rowSize){
                 col = 0;

@@ -40,3 +40,7 @@ Frontend:
 - display objects
 - button to go to splash on pause
 
+
+Game of life rules:
+
+

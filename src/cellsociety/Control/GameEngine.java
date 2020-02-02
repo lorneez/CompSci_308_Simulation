@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameEngine {
-    public static final int FRAMES_PER_SECOND = 60;
+    public static final int FRAMES_PER_SECOND = 2;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -129,6 +129,7 @@ public class GameEngine {
                     parseFile(sim_xml_path);
                     myViewer.setUpSimulation(row,col,cellStates);
                     myViewer.setSplashScreenFinished(false);
+                    System.out.println("Finished Setup");
 
                 } catch (ParserConfigurationException e) {
                     e.printStackTrace();
