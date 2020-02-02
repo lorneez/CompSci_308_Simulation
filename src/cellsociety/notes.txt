@@ -42,5 +42,12 @@ Frontend:
 
 
 Game of life rules:
+8 neighbors
+
+generate a new cell
+if(state==dead){check for 3}
+
+cell survives: at least 2
+if(state==alive){check for 2}
 
 

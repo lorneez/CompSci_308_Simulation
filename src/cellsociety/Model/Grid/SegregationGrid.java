@@ -27,6 +27,11 @@ public class SegregationGrid extends Grid {
         }
         setNeighbors();
     }
+    @Override
+    protected boolean checkIfDone(){
+        return false;
+
+    }
     /**
      *
      * @param state
