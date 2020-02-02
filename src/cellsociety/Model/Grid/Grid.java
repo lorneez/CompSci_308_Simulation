@@ -77,8 +77,38 @@ public abstract class Grid {
 
         }
     }
+    protected void setDiagNeighbors(){
+        int[] x = {1,1,-1,-1};
+        int[] y = {1,-1,1,-1};
+        for(int j=0; j<colSize; j++){
+            for(int w=0; w<rowSize; w++){
+                for(int i=0; i<4;i++){
+                    System.out.println(cells[j][w].getCurrentState());
+                    System.out.println("row" + j);
+                    System.out.println("col" + w);
+                    int neighborx = j+x[i];
+                    int neighbory = w+y[i];
+                    if(checkInBounds(neighborx,neighbory)){
+                        if(i==0){
+                            cells[j][w].setUpperRightNeighbor(cells[neighborx][neighbory]);
+                        }
+                        if(i==1){
+                            cells[j][w].setLowerRightNeighbor(cells[neighborx][neighbory]);
+                        }
+                        if(i==2){
+                            cells[j][w].setUpperLeftNeighbor(cells[neighborx][neighbory]);
+                        }
+                        if(i==3){
+                            cells[j][w].setLowerLeftNeighbor(cells[neighborx][neighbory]);
+                        }
+                    }
+                }
+            }
 
-    private boolean checkInBounds(int x,int y){
+        }
+    }
+
+    public boolean checkInBounds(int x,int y){
         if(x < 0 || x >= colSize) return false;
         if(y < 0 || y >= rowSize) return false;
         return true;
@@ -103,3 +133,7 @@ public abstract class Grid {
     protected abstract boolean checkIfDone();
 
 }
+
+
+
+

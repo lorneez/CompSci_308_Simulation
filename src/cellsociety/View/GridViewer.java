@@ -21,7 +21,8 @@ public class GridViewer {
     private ArrayList<Integer> cellStates;
     private final int SIZE = 600;
     private final Paint BACKGROUND = Color.WHITE;
-    private final Paint BACKGROUND_FIRE = Color.ORANGE;
+    private static final Paint[] SIMBACKGROUND = {Color.ORANGE, Color.YELLOW};
+
     private Stage myStage;
     private Scene myScene;
     private Group myRoot;
@@ -39,7 +40,7 @@ public class GridViewer {
     public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
         myRoot = new Group();
         setUpGrid(rowSize, colSize, initial_states);
-        myScene = new Scene(myRoot, SIZE, SIZE, BACKGROUND_FIRE);
+        myScene = new Scene(myRoot, SIZE, SIZE, SIMBACKGROUND[1]);
         myStage.setScene(myScene);
         //scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         //scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
@@ -94,17 +95,23 @@ public class GridViewer {
         // add 5 buttons to choose simulation
 
         //ADDED
-        Button fireButton = makeButton("Fire", SIZE, SIZE);
+        Button fireButton = makeButton("Fire", SIZE/2, (SIZE/2)+50);
+        Button gameOfLifeButton = makeButton("GameOfLife", SIZE/2, SIZE/2);
         /*Button predatorPreyButton = makeButton("PredatorPrey", .., ..)
         Button percolationButton = makeButton("Percolation", .., ..)
         Button segregationButton = makeButton("Segregation", .., ..)
-        Button gameOfLifeButton = makeButton("GameOfLife", .., ..)*/
+        */
 
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("1234567543");
                 file_name = "/Users/lorneez/Projects/CompSci308/simulation_team27/src/cellsociety/View/fire_config.xml";
+            }
+        });
+        gameOfLifeButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                file_name = "/Users/lorneez/Projects/CompSci308/simulation_team27/src/cellsociety/View/gameoflife_config.xml";
             }
         });/*
         predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -125,12 +132,7 @@ public class GridViewer {
                 file_name = "Segregation";
             }
         });
-        gameOfLifeButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                file_name = "GameOfLife";
-            }
-        });*/
+        */
         return new Scene(myRoot, SIZE, SIZE, BACKGROUND);
     }
     public String getFileName(){
@@ -141,11 +143,11 @@ public class GridViewer {
     }
 
 
-    private Button makeButton(String text, int width, int height){
+    private Button makeButton(String text, int x, int y){
         Button myButton = new Button();
         myButton.setText(text);
-        myButton.setLayoutX(width/2 - 70);
-        myButton.setLayoutY(height/2);
+        myButton.setLayoutX(x);
+        myButton.setLayoutY(y);
         myRoot.getChildren().add(myButton);
         return myButton;
     }

@@ -7,6 +7,10 @@ public abstract class Cell {
     protected Cell leftNeighbor;
     protected Cell lowerNeighbor;
     protected Cell upperNeighbor;
+    protected Cell upperRightNeighbor;
+    protected Cell upperLeftNeighbor;
+    protected Cell lowerRightNeighbor;
+    protected Cell lowerLeftNeighbor;
 
     /**
      * Cell Constructor
@@ -18,7 +22,21 @@ public abstract class Cell {
 
 
     }
+    public void setUpperRightNeighbor(Cell upperRightNeighbor){
+        this.upperRightNeighbor = upperRightNeighbor;
+    }
 
+    public void setUpperLeftNeighbor(Cell upperLeftNeighbor){
+        this.upperLeftNeighbor = upperLeftNeighbor;
+    }
+
+    public void setLowerRightNeighbor(Cell lowerRightNeighbor){
+        this.lowerRightNeighbor = lowerRightNeighbor;
+    }
+
+    public void setLowerLeftNeighbor(Cell lowerLeftNeighbor){
+        this.lowerLeftNeighbor = lowerLeftNeighbor;
+    }
     /**
      *
      * @param rightNeighbor

@@ -57,7 +57,7 @@ public class GameEngine {
         Document doc = dBuilder.parse(fXmlFile);
 
         this.sim_type = doc.getElementsByTagName("sim_type").item(0).getTextContent();
-
+        System.out.println(sim_type);
         NodeList size_list = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
         row = Integer.valueOf(size_list.item(0).getTextContent());
         col = Integer.valueOf(size_list.item(1).getTextContent());
@@ -66,7 +66,7 @@ public class GameEngine {
         for(int i=0; i<param_list.getLength(); i++){
             gridParameters.add(Double.valueOf(param_list.item(i).getTextContent()));
         }
-
+        System.out.println("H");
         NodeList states_list = doc.getElementsByTagName("state");
         for(int i=0; i<states_list.getLength(); i++){
             cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
@@ -77,14 +77,17 @@ public class GameEngine {
 
     private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize){
         if(sim_type.equals("fire")){
+            System.out.println("MADE FIRE GRID");
             myGrid = new FireGrid(rowSize, colSize, cellStates);
             FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
+        }else if (sim_type.equals("gameoflife")){
+            System.out.println("MADE GAME OF LIFE GRID");
+            myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates);
+            System.out.println("MADE GAME OF LIFE GRID");
+
         }/*else if (sim_type == "segregation"){
             myGrid = new SegregationGrid(rowSize, colSize, cellStates);
             SegregationCell.setProb(gridParameters);
-        }else if (sim_type == "gameoflife"){
-            myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates);
-            GameOfLifeCell.setProb(gridParameters);
         }else if (sim_type == "predatorprey"){
             myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates);
             PredatorPreyCell.setProb(gridParameters);
@@ -113,10 +116,6 @@ public class GameEngine {
 
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
-            System.out.println(myGrid.cells[0][0].getCurrentState()+", "+myGrid.cells[0][1].getCurrentState()+", "+myGrid.cells[0][2].getCurrentState());
-            System.out.println(myGrid.cells[1][0].getCurrentState()+", "+myGrid.cells[1][1].getCurrentState()+", "+myGrid.cells[1][2].getCurrentState());
-            System.out.println(myGrid.cells[2][0].getCurrentState()+", "+myGrid.cells[2][1].getCurrentState()+", "+myGrid.cells[2][2].getCurrentState());
-            System.out.println("----");
             ArrayList<Integer> currStates = myGrid.updateGrid();
             myViewer.updateCellStates(currStates);
 
