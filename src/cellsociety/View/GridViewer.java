@@ -87,7 +87,7 @@ public class GridViewer {
                 pause = !pause;
             }
         });
-        speedBar = makeScrollBar(0.1, 10, 1.5, SIZE*(0.95),SIZE/2);
+        speedBar = makeScrollBar(0.1, 10, 1, SIZE*(0.95),SIZE/2);
         myRoot.getChildren().add(speedBar);
 
         setCellColors();
@@ -126,9 +126,9 @@ public class GridViewer {
         //ADDED
         Button fireButton = makeButton("Fire", SIZE/2, (SIZE/2)+50);
         Button gameOfLifeButton = makeButton("GameOfLife", SIZE/2, SIZE/2);
-        /*Button predatorPreyButton = makeButton("PredatorPrey", .., ..)
-        Button segregationButton = makeButton("Segregation", .., ..)
-        */
+        Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - 50);
+        Button predatorPreyButton = makeButton("PredatorPrey", SIZE/2, SIZE/2 - 100);
+
         Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + 100);
 
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -148,21 +148,19 @@ public class GridViewer {
             public void handle(ActionEvent event) {
                 file_name = "./src/cellsociety/View/percolation_config.xml";
             }
-        });/*
-        predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                file_name = "PredatorPrey";
-            }
         });
-
         segregationButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "Segregation";
+                file_name = "./src/cellsociety/View/segregation_config.xml";
             }
         });
-        */
+        predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                file_name = "./src/cellsociety/View/predatorprey_config.xml";
+            }
+        });
         return new Scene(myRoot, SIZE, SIZE, BACKGROUND);
     }
     public String getFileName(){
