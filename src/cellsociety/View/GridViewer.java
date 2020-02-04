@@ -73,7 +73,6 @@ public class GridViewer {
      * @param initial_states intial cell configurations
      */
     public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
-        myRoot = new Group();
         setUpGrid(rowSize, colSize, initial_states);
         myScene = new Scene(myRoot, SIZE, SIZE, SIMBACKGROUND[1]);
         myStage.setScene(myScene);
@@ -92,6 +91,7 @@ public class GridViewer {
 
     // assume grid is always square
     public void setUpGrid(int rowSize, int colSize, ArrayList<Integer> initial_states){
+        myRoot = new Group();
         cellStates = new ArrayList<Integer>();
         cells = new ArrayList<Rectangle>();
         int cellSize = (int) (SIZE*0.8 / colSize);
@@ -206,6 +206,18 @@ public class GridViewer {
         myButton.setLayoutY(y);
         myRoot.getChildren().add(myButton);
         return myButton;
+    }
+    public void addDoneButton(){
+        Button doneButton = makeButton("Run Another Simulation", SIZE/2 + 100, SIZE - 25);
+        setSplashScreenFinished(true);
+        doneButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                myScene = setUpSplash();
+                myStage.setScene(myScene);
+                myStage.show();
+            }
+        });
     }
 
 }

@@ -44,6 +44,7 @@ public class GameEngine {
     private GridViewer myViewer;
     private int row;
     private int col;
+    private boolean done;
 
     /**
      * Constructor method. initializes some things and cells start
@@ -51,7 +52,6 @@ public class GameEngine {
     public GameEngine(){
         start();
         gridParameters = new ArrayList<>();
-        cellStates = new ArrayList<>();
     }
 
     /**
@@ -67,7 +67,7 @@ public class GameEngine {
     }
 
     private void parseFile(String sim_xml_path) throws ParserConfigurationException, IOException, SAXException {
-
+        cellStates = new ArrayList<>();
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -115,21 +115,29 @@ public class GameEngine {
 
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
+            System.out.println("stepping");
             animation.setRate(myViewer.getScrollValue());
             if(!myViewer.getPause() && !myGrid.checkIfDone()){
                 ArrayList<Integer> currStates = myGrid.updateGrid();
                 myViewer.updateCellStates(currStates);
             }
+            if(myGrid.checkIfDone() && !done){
+                myViewer.addDoneButton();
+                done = true;
+            }
 
         }else{
+            System.out.println("done stepping");
             String sim_xml_path = myViewer.getFileName(); // should return the path of the XML file
             // see if the viewer has determined the file name yet
             // if so, parse the file name and we are done with the splash screen
             if(!sim_xml_path.equals("NONE")){
                 try {
+                    myViewer.setFileName("NONE");
                     parseFile(sim_xml_path);
                     myViewer.setUpSimulation(row,col,cellStates);
                     myViewer.setSplashScreenFinished(false);
+                    done = false;
 
                 } catch (ParserConfigurationException e) {
                     e.printStackTrace();

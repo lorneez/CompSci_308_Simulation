@@ -1,7 +1,7 @@
 <root>
     <sim_type>fire</sim_type>
     <globalparam>
-        <param>0.5</param>
+        <param>0.6</param>
         <param>0.4</param>
     </globalparam>
         <size>36</size>
