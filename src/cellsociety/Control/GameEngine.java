@@ -113,12 +113,9 @@ public class GameEngine {
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
             animation.setRate(myViewer.getScrollValue());
-            if(!myViewer.getPause()){
+            if(!myViewer.getPause() && !myGrid.checkIfDone()){
                 ArrayList<Integer> currStates = myGrid.updateGrid();
                 myViewer.updateCellStates(currStates);
-                if(myGrid.checkIfDone()){
-
-                }
             }
 
         }else{
