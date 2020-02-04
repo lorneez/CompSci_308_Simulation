@@ -6,6 +6,7 @@ public class PredatorPreyCell extends Cell{
     private static double chronons_passed;
     private final int REPRODUCTION_THRESHOLD = 6; // chronon threshold, not sure what this number should be
     private final int FISH_ENERGY = 10;
+    private boolean canReproduce = false;
 
     /**
      * Cell Constructor
@@ -13,6 +14,8 @@ public class PredatorPreyCell extends Cell{
      */
     public PredatorPreyCell(int state){
         super(state);
+
+        // if state is shark, set energy to 5
     }
 
     public static void setProb(){
@@ -20,62 +23,144 @@ public class PredatorPreyCell extends Cell{
 
     public int calculateNextState(){
         /*
-        water = state 0, fish = state 1, shark = state 2
+        water = state 5, fish = state 2, shark = state 0
         */
 
         /* pseudo-code for fish behavior
 
-        if state == 1 && neighborAvailable() != -1:
-            **move the fish**
-            this.chronons_passed++;
+        if state == 2:
 
-        if state == 1 && chronons_passed == REPRODUCTION_THRESHOLD:
+        // if at least one empty square exists, randomly find one and move the fish there
+        if neighborAvailable() != -1 && canReproduce:
+            the_neighbor = neighborAvailable()
+            the_neighbor.state = 2
+            the_neighbor.chronons_passed = 0;
+            the_neighbor.canReproduce = false;
+            this.state = 2
+            this.chronons_passed = 0;
+            this.canReproduce = false
+
+        else if neighborAvailable() != -1:
+            the_neighbor = neighborAvailable()
+            the_neighbor.state = 2
+            the_neighbor.chronons_passed = this.chronons_passed+=1
+            this.state = 5
             this.chronons_passed = 0
+
+
+        else if neighborAvailable() == -1:
+            this.chronons_passed +=1;
+
+
+        if chronons_passed == REPRODUCTION_THRESHOLD:
+            this.canReproduce = true;
 
         */
 
 
-        /* pseudo-code for shark behavior
 
-        if state == 2:
+        if (this.currentState == 0){
+
+            // if a shark reaches
+            if (this.energy == 0){
+                this.currentState = 5;
+                this.chronons_passed = 0;
+            }
+            else if (neighborFish()!= null){
+                PredatorPreyCell the_fish_neighbor = neighborFish();
+
+                the_fish_neighbor.currentState = 0;
+                the_fish_neighbor.chronons_passed = this.chronons_passed+=1;
+                the_fish_neighbor.energy = this.energy-=1 + FISH_ENERGY;
+                this.chronons_passed = 0;
+                this.currentState = 5;
+
+            }
+
+            else if (neighborFish() == null && neighborAvailable() != null && this.canReproduce){
+                PredatorPreyCell the_neighbor = neighborAvailable();
+
+                the_neighbor.currentState = 0;
+                the_neighbor.chronons_passed = 0;
+                the_neighbor.energy = this.energy-=1;
+
+                this.currentState = 0;
+                this.chronons_passed = 0;
+
+            }else if (neighborFish() == null && neighborAvailable() != null){
+                PredatorPreyCell the_neighbor = neighborAvailable();
+                the_neighbor.currentState = 0;
+                the_neighbor.chronons_passed = this.chronons_passed+=1;
+                the_neighbor.energy = this.energy-=1;
+
+                this.currentState = 5;
+                this.chronons_passed = 0;
+            }else if(neighborFish() == null && neighborAvailable() == null){
+                this.chronons_passed+=1;
+            }
+
+            if (this.chronons_passed == REPRODUCTION_THRESHOLD){
+                this.canReproduce = true;
+            }
+
+        }
             // if a shark reaches zero energy, it dies
             if this.energy == 0:
-                this.state == 0
+                this.state == 5
                 this.chronons_passed == 0
 
-            // 
-            else neighborFish() != -1:
+            // if there is an adjacent square occupied by a fish, the shark will move there randomly
+            else if neighborFish() != -1:
 
                 the_fish_neighbor = neighborFish();
-                the_fish_neighbor.state = 2
+                the_fish_neighbor.state = 0
                 the_fish_neighbor.chronons_passed = this.chronons_passed+=1;
                 the_fish_neighbor.energy = this.energy-=1 + FISH_ENERGY;
                 this.chronons_passed = 0
-                this.state = 0
+                this.state = 5
 
-
-            else neighborFish == -1 && neighborAvailable() != -1:
+            // if the shark can reproduce AND if no fish are neighbors, randomly move to an unoccupied square
+            else if neighborFish == -1 && neighborAvailable() != -1 && canReproduce:
                 the_neighbor = neighborAvailable()
+                the_neighbor.state = 0
+                the_neighbor.chronons_passed = 0;
+                the_neighbor.energy = this.energy-=1;
                 this.state = 0
                 this.chronons_passed = 0
-                the_neighbor.state = 2
-                the_neighbor.chronons_passed = 0
+
+            // if no fish are neighbors, randomly move to an unoccupied square
+            else if neighborFish == -1 && neighborAvailable() != -1:
+                the_neighbor = neighborAvailable()
+                the_neighbor.state = 0
+                the_neighbor.chronons_passed = this.chronons_passed+=1
+
+                the_neighbor.energy = this.energy-=1;
+                this.state = 5
+                this.chronons_passed = 0
+
+           else if neighborFish == -1 && neighborAvailable() == -1:
+                 this.chronons_passed+=1
 
 
             if chronons_passed == REPRODUCTION_THRESHOLD:
+                this.canReproduce = true;
 
-
-
-
-
-
-
-
-
-
-         */
 
         return 1;
+    }
+
+    // return an integer which indicates that if any of the 4 neighbors is empty (the state is 0)
+    // return if there are many, randomly select a neighbor
+    // return 1 for left, 2 for right, 3 for up, 4 for down
+    public PredatorPreyCell neighborAvailable(){
+        return null;
+    }
+
+    // return an integer which indicates that if any of the 4 neighbors is a fish (the state is 1)
+    // return if there are many, randomly select a neighbor
+    // return 1 for left, 2 for right, 3 for up, 4 for down
+    public PredatorPreyCell neighborFish(){
+        return null;
     }
 
 
