@@ -5,6 +5,13 @@ import cellsociety.Model.Cell.PercolationCell;
 
 import java.util.ArrayList;
 
+/**
+ * Class representing a grid object for the percolation simulation
+ * @author caryshindell, lornezhang, ameersyedibrahim
+ * Dependencies: Grid class, Cell class, PercolationCell class
+ * Example: a 8x8 grid with some cells empty, some blocked, and some percolated
+ * Assumptions: percolation can happen diagonally
+ */
 public class PercolationGrid extends Grid {
 
     /**
