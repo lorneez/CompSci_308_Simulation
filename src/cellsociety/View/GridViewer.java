@@ -148,7 +148,7 @@ public class GridViewer {
         percolationButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "./src/cellsociety/View/gameoflife_config.xml";
+                file_name = "./src/cellsociety/View/percolation_config.xml";
             }
         });/*
         predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
