@@ -53,9 +53,6 @@ public abstract class Grid {
         for(int j=0; j<colSize; j++){
             for(int w=0; w<rowSize; w++){
                 for(int i=0; i<4;i++){
-                    System.out.println(cells[j][w].getCurrentState());
-                    System.out.println("row" + j);
-                    System.out.println("col" + w);
                     int neighborx = j+x[i];
                     int neighbory = w+y[i];
                     if(checkInBounds(neighborx,neighbory)){
@@ -83,9 +80,6 @@ public abstract class Grid {
         for(int j=0; j<colSize; j++){
             for(int w=0; w<rowSize; w++){
                 for(int i=0; i<4;i++){
-                    System.out.println(cells[j][w].getCurrentState());
-                    System.out.println("row" + j);
-                    System.out.println("col" + w);
                     int neighborx = j+x[i];
                     int neighbory = w+y[i];
                     if(checkInBounds(neighborx,neighbory)){
