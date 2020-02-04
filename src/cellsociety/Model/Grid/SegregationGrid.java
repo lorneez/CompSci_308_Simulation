@@ -27,17 +27,20 @@ public class SegregationGrid extends Grid {
         }
         setNeighbors();
     }
-    @Override
-    protected boolean checkIfDone(){
-        return false;
 
+    /**
+     *
+     * @return
+     */
+    public boolean checkIfDone(){
+        return false;
     }
+
     /**
      *
      * @param state
      * @return
      */
-    @Override
     public Cell makeCell(int state) {
         return new SegregationCell(state);
     }

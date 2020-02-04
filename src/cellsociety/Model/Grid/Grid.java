@@ -10,6 +10,8 @@ public abstract class Grid {
     public Cell[][] cells;
     protected int rowSize;
     protected int colSize;
+    protected boolean done = false;
+    protected boolean firstStep = true;
 
     /**
      *
@@ -24,15 +26,22 @@ public abstract class Grid {
     }
 
     /**
-     *
+     * Update the grid and keep track of whether any cell states changed
+     * @return a list of the cell states to be given to the viewer
      */
     public ArrayList<Integer> updateGrid(){
         ArrayList<Integer> viewState = new ArrayList<Integer>();
+        boolean equilibrium = true;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
+                if(cells[i][j].getNextState() != cells[i][j].getCurrentState()){
+                    equilibrium = false;
+                }
                 cells[i][j].update();
             }
         }
+        if(!firstStep) done = equilibrium;
+        firstStep = false;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
                 viewState.add(cells[i][j].calculateNextState());
@@ -40,6 +49,7 @@ public abstract class Grid {
         }
         return viewState;
     }
+
     public int getCell(int row, int col){
         return cells[row][col].getCurrentState();
     }

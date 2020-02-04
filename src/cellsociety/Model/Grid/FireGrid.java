@@ -29,7 +29,6 @@ public class FireGrid extends Grid {
      * @param state initial cell state
      * @return cell object
      */
-    @Override
     public Cell makeCell(int state) {
         return new FireCell(state);
     }
@@ -38,7 +37,6 @@ public class FireGrid extends Grid {
      * Checks if the simulation has reached equilibrium (no cells on fire)
      * @return done
      */
-    @Override
     public boolean checkIfDone(){
         for(int i=0; i<colSize; i++) {
             for (int j = 0; j < rowSize; j++) {
