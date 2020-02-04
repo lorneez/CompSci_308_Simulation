@@ -6,6 +6,7 @@ import cellsociety.Model.Cell.PercolationCell;
 import java.util.ArrayList;
 
 public class PercolationGrid extends Grid {
+    private ArrayList<Cell> openCells;
 
     /**
      *
@@ -18,15 +19,49 @@ public class PercolationGrid extends Grid {
     }
     @Override
     protected void initializeGrid(ArrayList<Integer> initial_positions){
+        openCells = new ArrayList<Cell>();
         int index = 0;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                cells[i][j] = makeCell(initial_positions.get(index));
-                index ++;
+                int cellState = initial_positions.get(index);
+                cells[i][j] = makeCell(cellState);
+                if(cellState == PercolationCell.openState){
+                    openCells.add(cells[i][j]);
+                }
+                index++;
             }
         }
         setNeighbors();
     }
+
+    /**
+     *
+     */
+    @Override
+    public ArrayList<Integer> updateGrid(){
+        ArrayList<Integer> viewState = new ArrayList<Integer>();
+        for(int i=0; i<colSize; i++){
+            for(int j=0; j<rowSize; j++){
+                cells[i][j].update();
+            }
+        }
+        for(int i=0; i<colSize; i++){
+            for(int j=0; j<rowSize; j++){
+                if(openCells.contains(cells[i][j])){
+                    int nextState = cells[i][j].calculateNextState();
+                    viewState.add(nextState);
+                    if(nextState != PercolationCell.openState){
+                        openCells.remove(cells[i][j]);
+                    }
+                }
+                else {
+                    viewState.add(cells[i][j].getCurrentState());
+                }
+            }
+        }
+        return viewState;
+    }
+
     @Override
     protected boolean checkIfDone(){
 

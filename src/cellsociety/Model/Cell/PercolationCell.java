@@ -15,9 +15,6 @@ public class PercolationCell extends Cell{
         super(state);
     }
 
-    public static void setProb(){
-    }
-
     /**
      * Note this will only be called on cells in the open state
      * @return
