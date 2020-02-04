@@ -5,6 +5,7 @@ public class PredatorPreyCell extends Cell{
     private static double energy;
     private static double chronons_passed;
     private final int REPRODUCTION_THRESHOLD = 6; // chronon threshold, not sure what this number should be
+    private final int FISH_ENERGY = 10;
 
     /**
      * Cell Constructor
@@ -19,19 +20,60 @@ public class PredatorPreyCell extends Cell{
 
     public int calculateNextState(){
         /*
-        // water = state 0, fish = state 1, shark = state 2
+        water = state 0, fish = state 1, shark = state 2
+        */
 
-        // pseudo-code
-        
+        /* pseudo-code for fish behavior
+
         if state == 1 && neighborAvailable() != -1:
             **move the fish**
+            this.chronons_passed++;
+
+        if state == 1 && chronons_passed == REPRODUCTION_THRESHOLD:
+            this.chronons_passed = 0
+
+        */
+
+
+        /* pseudo-code for shark behavior
+
+        if state == 2:
+            // if a shark reaches zero energy, it dies
+            if this.energy == 0:
+                this.state == 0
+                this.chronons_passed == 0
+
+            // 
+            else neighborFish() != -1:
+
+                the_fish_neighbor = neighborFish();
+                the_fish_neighbor.state = 2
+                the_fish_neighbor.chronons_passed = this.chronons_passed+=1;
+                the_fish_neighbor.energy = this.energy-=1 + FISH_ENERGY;
+                this.chronons_passed = 0
+                this.state = 0
+
+
+            else neighborFish == -1 && neighborAvailable() != -1:
+                the_neighbor = neighborAvailable()
+                this.state = 0
+                this.chronons_passed = 0
+                the_neighbor.state = 2
+                the_neighbor.chronons_passed = 0
+
+
+            if chronons_passed == REPRODUCTION_THRESHOLD:
+
+
+
+
+
+
+
+
 
 
          */
-        // if state == 1 && chronons_passed == REPRODUCTION_THRESHOLD:
-        // this.chronons_passed = 0
-
-
 
         return 1;
     }
