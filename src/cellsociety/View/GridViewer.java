@@ -28,6 +28,7 @@ public class GridViewer {
     private Group myRoot;
     private String file_name = "NONE";
     private boolean splashScreenFinished;
+    private boolean pause = false;
 
     public GridViewer(){
         splashScreenFinished = true;
@@ -35,6 +36,10 @@ public class GridViewer {
         myScene = setUpSplash();
         myStage.setScene(myScene);
         myStage.show();
+    }
+
+    public boolean getPause(){
+        return pause;
     }
 
     public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
@@ -71,6 +76,13 @@ public class GridViewer {
                 row++;
             }
         }
+        Button pauseButton = makeButton("Pause", SIZE/2, (25));
+        pauseButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                pause = !pause;
+            }
+        });
         setCellColors();
     }
 
