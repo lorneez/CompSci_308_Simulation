@@ -127,8 +127,8 @@ public class GridViewer {
         Button fireButton = makeButton("Fire", SIZE/2, (SIZE/2)+50);
         Button gameOfLifeButton = makeButton("GameOfLife", SIZE/2, SIZE/2);
         Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - 50);
-        /*Button predatorPreyButton = makeButton("PredatorPrey", ..
-        */
+        Button predatorPreyButton = makeButton("PredatorPrey", SIZE/2, SIZE/2 - 100);
+
         Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + 100);
 
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -155,16 +155,12 @@ public class GridViewer {
                 file_name = "./src/cellsociety/View/segregation_config.xml";
             }
         });
-        /*
         predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "PredatorPrey";
+                file_name = "./src/cellsociety/View/predatorprey_config.xml";
             }
         });
-
-
-        */
         return new Scene(myRoot, SIZE, SIZE, BACKGROUND);
     }
     public String getFileName(){

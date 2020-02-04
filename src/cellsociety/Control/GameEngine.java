@@ -87,10 +87,10 @@ public class GameEngine {
             myGrid = new SegregationGrid(rowSize, colSize, cellStates);
             SegregationCell.setProb(gridParameters.get(0));
         }
-        /*else if (sim_type == "predatorprey"){
+        else if (sim_type == "predatorprey"){
             myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates);
             PredatorPreyCell.setProb(gridParameters);
-        }*/
+        }
         else if (sim_type.equals("percolation")){
             myGrid = new PercolationGrid(rowSize, colSize, cellStates);
         }
