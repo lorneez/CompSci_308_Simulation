@@ -15,6 +15,7 @@ public class PredatorPreyGrid extends Grid {
      */
     public PredatorPreyGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         super(rowSize, colSize, initial_positions);
+        initializeGrid(initial_positions);
     }
     @Override
     protected void initializeGrid(ArrayList<Integer> initial_positions){
