@@ -13,7 +13,7 @@ public class PredatorPreyCell extends Cell{
 
     private double energy;
     private double chronons_passed;
-    private final int REPRODUCTION_THRESHOLD = 5; // chronon threshold, not sure what this number should be
+    private final int REPRODUCTION_THRESHOLD = 10; // chronon threshold, not sure what this number should be
     private final int FISH_ENERGY = 4;
     private final int SHARK_ENERGY = 10;
     private boolean canReproduce = false;
@@ -39,15 +39,17 @@ public class PredatorPreyCell extends Cell{
         water = state 5, fish = state 2, shark = state 0
         */
         // if cell is a fish
-        System.out.println("Intial State: " + currentState);
         if (this.currentState == 2){
+            if(chronons_passed == REPRODUCTION_THRESHOLD){
+                this.canReproduce = true;
+
+            }
             // if the fish can reproduce AND at least one empty square exists, randomly find one and move the fish there
             if (neighborWater() != null){
                 PredatorPreyCell the_neighbor = neighborWater();
                 the_neighbor.nextState = 2;
 
                 if (canReproduce){
-                    System.out.println("REPR");
                     the_neighbor.chronons_passed = 0;
                     the_neighbor.canReproduce = false;
 
@@ -65,14 +67,15 @@ public class PredatorPreyCell extends Cell{
                 this.chronons_passed+=1;
             }
 
-            if(chronons_passed == REPRODUCTION_THRESHOLD){
-                this.canReproduce = true;
-            }
-
         }
 
         // if the cell is a shark
         else if (this.currentState == 0){
+
+            // enable reproduction if the number of chronons is reached
+            if (this.chronons_passed == REPRODUCTION_THRESHOLD){
+                this.canReproduce = true;
+            }
             // if a shark reaches zero energy, it dies
             if (this.energy == 0){
                 this.nextState = 5;
@@ -115,10 +118,7 @@ public class PredatorPreyCell extends Cell{
             else if(neighborFish() == null && neighborWater() == null){
                 this.chronons_passed++;
             }
-            // enable reproduction if the number of chronons is reached
-            if (this.chronons_passed == REPRODUCTION_THRESHOLD){
-                this.canReproduce = true;
-            }
+
 
         }
 
