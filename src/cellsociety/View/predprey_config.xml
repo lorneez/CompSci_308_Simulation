@@ -1,18 +1,34 @@
 <root>
     <sim_type>predatorprey</sim_type>
-    <size>6</size>
-    <size>6</size>
+    <size>8</size>
+    <size>8</size>
     <initialstates>
+        <state>5</state>
+        <state>5</state>
+        <state>2</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
         <state>2</state>
         <state>5</state>
         <state>2</state>
+        <state>2</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
         <state>5</state>
         <state>5</state>
         <state>5</state>
         <state>2</state>
         <state>5</state>
         <state>0</state>
-        <state>2</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>0</state>
         <state>5</state>
         <state>5</state>
         <state>5</state>
@@ -22,13 +38,25 @@
         <state>5</state>
         <state>5</state>
         <state>5</state>
-        <state>2</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
         <state>5</state>
         <state>0</state>
         <state>5</state>
         <state>5</state>
         <state>5</state>
-        <state>0</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
+        <state>5</state>
         <state>5</state>
         <state>5</state>
         <state>5</state>

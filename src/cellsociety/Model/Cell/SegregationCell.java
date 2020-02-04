@@ -1,5 +1,4 @@
 package cellsociety.Model.Cell;
-import cellsociety.Model.Cell.Cell;
 
 /**
  * Class representing a cell object for the segregation simulation
@@ -13,10 +12,9 @@ public class SegregationCell extends Cell{
     public static final int BLUE_STATE = 5;
     public static final int REDNOTSATISFIED_STATE = 0;
     public static final int BLUENOTSATISFIED_STATE = 4;
-
     /**
      * Cell Constructor
-     * @param state
+     * @param state initial cell state
      */
     public SegregationCell(int state){
         super(state);
@@ -50,9 +48,9 @@ public class SegregationCell extends Cell{
         for(Cell check : neighbors){
             if(check != null){
                 if(check.getCurrentState() == this.currentState){
-                    numSameState ++;
+                    numSameState++;
                 }
-                numNeighbors ++;
+                numNeighbors++;
             }
         }
         double satisfied = (double) numSameState/numNeighbors;
