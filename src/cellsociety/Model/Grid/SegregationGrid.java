@@ -9,9 +9,10 @@ import java.util.ArrayList;
 public class SegregationGrid extends Grid {
     ArrayList<Cell> emptyCells;
     ArrayList<Cell> notSatisfiedCells;
+    private boolean done = false;
 
     /**
-     *
+     * SegregationGrid constructor
      * @param rowSize
      * @param colSize
      * @param initial_positions
@@ -20,6 +21,11 @@ public class SegregationGrid extends Grid {
         super(rowSize, colSize, initial_positions);
         initializeGrid(initial_positions);
     }
+
+    /**
+     * sets the grid up with the initial positions
+     * @param initial_positions the inital positions of the grid
+     */
     @Override
     protected void initializeGrid(ArrayList<Integer> initial_positions){
         int index = 0;
@@ -32,6 +38,11 @@ public class SegregationGrid extends Grid {
         setNeighbors();
         setDiagNeighbors();
     }
+
+    /**
+     * updates the grid. Checks for cells that are not satisfied and cells that are empty. Then, it swaps the cells that are not satisfied one by one with the empty cells.
+     * @return a new set of current state for the GridViewer to display
+     */
     @Override
     public ArrayList<Integer> updateGrid(){
         emptyCells = new ArrayList<Cell>();
@@ -50,6 +61,9 @@ public class SegregationGrid extends Grid {
                 }
             }
         }
+        if(notSatisfiedCells.size() == 0){
+            done = true;
+        }
         swapCells();
         for(int q=0; q<colSize; q++) {
             for (int w = 0; w < rowSize; w++) {
@@ -59,14 +73,27 @@ public class SegregationGrid extends Grid {
         return viewState;
     }
 
+    /**
+     * checks if cells are satisfied
+     * @param cell is the cell to check if it is satisfied
+     * @return whether the cell is satisfied
+     */
     private boolean isNotSatisfied(Cell cell) {
         return (cell.getCurrentState() == 0 ) || (cell.getCurrentState() == 4);
     }
 
+    /**
+     * checks if cells are empty
+     * @param cell is the cell to check if it is empty
+     * @return whether the cell is empty
+     */
     private boolean isEmpty(Cell cell) {
         return cell.getCurrentState() != 7;
     }
 
+    /**
+     * swaps empty cells with cells that are not satisfied
+     */
     private void swapCells() {
         for(Cell swap : notSatisfiedCells){
             Random rand = new Random();
@@ -84,6 +111,11 @@ public class SegregationGrid extends Grid {
         }
     }
 
+    /**
+     * switches the current state of a cell
+     * @param cell cell whose current state is being switched
+     * @param nextState the next state of the cell
+     */
     private void switchCurrentState(Cell cell, int nextState) {
         cell.setNextState(nextState);
         cell.update();
@@ -91,17 +123,17 @@ public class SegregationGrid extends Grid {
 
 
     /**
-     *
-     * @return
+     * checks if the simulation is over
+     * @return whether the simulation is over
      */
     public boolean checkIfDone(){
-        return false;
+        return done;
     }
 
     /**
-     *
-     * @param state
-     * @return
+     * makes a new segregation cell
+     * @param state state to initiate the cell to
+     * @return segregation cell
      */
     public Cell makeCell(int state) {
         return new SegregationCell(state);
