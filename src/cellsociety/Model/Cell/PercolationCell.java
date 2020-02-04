@@ -1,7 +1,11 @@
 package cellsociety.Model.Cell;
 import cellsociety.Model.Cell.Cell;
+import javafx.scene.paint.Paint;
 
 public class PercolationCell extends Cell{
+    public static final int blockedState = 0;
+    public static final int openState = 7;
+    public static final int percolatedState = 5;
 
     /**
      * Cell Constructor
@@ -14,7 +18,17 @@ public class PercolationCell extends Cell{
     public static void setProb(){
     }
 
+    /**
+     * Note this will only be called on cells in the open state
+     * @return
+     */
     public int calculateNextState(){
-        return 1;
+        Cell[] neighbors = getAllNeighbors();
+        for(Cell c : neighbors){
+            if(c.getCurrentState() == percolatedState){
+                return percolatedState;
+            }
+        }
+        return openState;
     }
 }
