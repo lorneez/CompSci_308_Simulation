@@ -28,9 +28,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameEngine {
-    public static final int FRAMES_PER_SECOND = 2;
-    public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+    public static double FRAMES_PER_SECOND = 2;
+    public static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+    public Timeline animation;
 
     private String sim_type;
     private ArrayList<Integer> cellStates;
@@ -107,7 +108,7 @@ public class GameEngine {
         // viewer will determine configuration file
         myViewer = new GridViewer();
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
-        Timeline animation = new Timeline();
+        animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();
@@ -116,8 +117,11 @@ public class GameEngine {
 
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
-            ArrayList<Integer> currStates = myGrid.updateGrid();
-            myViewer.updateCellStates(currStates);
+            animation.setRate(myViewer.getScrollValue());
+            if(!myViewer.getPause()){
+                ArrayList<Integer> currStates = myGrid.updateGrid();
+                myViewer.updateCellStates(currStates);
+            }
 
         }else{
             String sim_xml_path = myViewer.getFileName(); // should return the path of the XML file

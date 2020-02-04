@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -22,12 +24,13 @@ public class GridViewer {
     private final int SIZE = 600;
     private final Paint BACKGROUND = Color.GRAY;
     private static final Paint[] SIMBACKGROUND = {Color.ORANGE, Color.YELLOW};
-
+    private ScrollBar speedBar;
     private Stage myStage;
     private Scene myScene;
     private Group myRoot;
     private String file_name = "NONE";
     private boolean splashScreenFinished;
+    private boolean pause = false;
 
     public GridViewer(){
         splashScreenFinished = true;
@@ -35,6 +38,14 @@ public class GridViewer {
         myScene = setUpSplash();
         myStage.setScene(myScene);
         myStage.show();
+    }
+
+    public boolean getPause(){
+        return pause;
+    }
+
+    public double getScrollValue(){
+        return speedBar.getValue();
     }
 
     public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
@@ -71,7 +82,27 @@ public class GridViewer {
                 row++;
             }
         }
+        Button pauseButton = makeButton("Pause", SIZE/2, (25));
+        pauseButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                pause = !pause;
+            }
+        });
+        speedBar = makeScrollBar(0.1, 10, 1.5, SIZE*(0.95),SIZE/2);
+        myRoot.getChildren().add(speedBar);
+
         setCellColors();
+    }
+
+    private ScrollBar makeScrollBar(double min, double max, double val, double y, double x) {
+        ScrollBar myScrollBar = new ScrollBar();
+        myScrollBar.setMin(min);
+        myScrollBar.setMax(max);
+        myScrollBar.setValue(val);
+        myScrollBar.setLayoutY(y);
+        myScrollBar.setLayoutX(x);
+        return myScrollBar;
     }
 
     private void setCellColors(){

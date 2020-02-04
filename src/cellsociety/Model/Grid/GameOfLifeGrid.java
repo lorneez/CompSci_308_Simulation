@@ -19,7 +19,6 @@ public class GameOfLifeGrid extends Grid {
         System.out.println("Game Of Life Grid Constructor");
         this.initializeGrid(initial_positions);
     }
-    @Override
     protected void initializeGrid(ArrayList<Integer> initial_positions){
         int index = 0;
         System.out.println("Game Of Life Grid Initialize");
