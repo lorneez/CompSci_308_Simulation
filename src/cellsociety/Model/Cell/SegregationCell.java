@@ -29,14 +29,6 @@ public class SegregationCell extends Cell{
     }
 
     /**
-     * sets the currrent state
-      * @param state the current state
-     */
-    public void setCurrentState(int state){
-        currentState = state;
-    }
-
-    /**
      * Calculates the next state of the cell and checks if the cell is satisfied.
      * @return the current state of the cell after checking if it is satisfied
      */

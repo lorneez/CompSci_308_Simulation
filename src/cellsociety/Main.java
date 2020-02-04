@@ -20,7 +20,7 @@ public class Main extends Application {
 
     public void start(Stage stage){
         System.out.println("Hello world");
-        GameEngine game = new GameEngine();
+        new GameEngine();
         System.out.println("End");
     }
 }

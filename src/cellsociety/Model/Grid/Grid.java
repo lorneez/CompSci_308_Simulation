@@ -3,7 +3,6 @@ package cellsociety.Model.Grid;
 import cellsociety.Model.Cell.Cell;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Class representing an abstract grid object for any simulation
@@ -69,8 +68,7 @@ public abstract class Grid {
      */
     public boolean checkInBounds(int x,int y){
         if(x < 0 || x >= colSize) return false;
-        if(y < 0 || y >= rowSize) return false;
-        return true;
+        return y >= 0 && y < rowSize;
     }
 
     /**
