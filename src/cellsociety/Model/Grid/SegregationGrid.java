@@ -7,8 +7,8 @@ import cellsociety.Model.Cell.SegregationCell;
 import java.util.ArrayList;
 
 public class SegregationGrid extends Grid {
-    ArrayList<Cell> emptyCells;
-    ArrayList<Cell> notSatisfiedCells;
+    private ArrayList<Cell> emptyCells;
+    private ArrayList<Cell> notSatisfiedCells;
     private boolean done = false;
 
     /**
