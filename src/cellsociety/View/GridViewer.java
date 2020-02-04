@@ -16,6 +16,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Class that represents the user interfaces and displays the grid
+ * @author caryshindell, lornezhang, ameersyedibrahim
+ * Dependencies: GameEngine class
+ * Example: a viewer object displaying the splash screen
+ * Assumptions: rectangular grid
+ */
 public class GridViewer {
 
     private static final Paint[] COLORMAP = {Color.BLACK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BROWN, Color.WHITE};
@@ -32,6 +39,9 @@ public class GridViewer {
     private boolean splashScreenFinished;
     private boolean pause = false;
 
+    /**
+     * Constructor method, sets up the stage and splash screen
+     */
     public GridViewer(){
         splashScreenFinished = true;
         myStage = new Stage();
@@ -40,14 +50,28 @@ public class GridViewer {
         myStage.show();
     }
 
+    /**
+     * get whether or not we are paused
+     * @return boolean paused
+     */
     public boolean getPause(){
         return pause;
     }
 
+    /**
+     * get scroll bar value
+     * @return scroll bar value
+     */
     public double getScrollValue(){
         return speedBar.getValue();
     }
 
+    /**
+     * Set up the simulation scene and grid
+     * @param rowSize number of columns
+     * @param colSize number of rows
+     * @param initial_states intial cell configurations
+     */
     public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
         myRoot = new Group();
         setUpGrid(rowSize, colSize, initial_states);
@@ -57,6 +81,10 @@ public class GridViewer {
         //scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
     }
 
+    /**
+     * Update the cells and change their colors
+     * @param nextStates arraylist of next states, in top to bottom order
+     */
     public void updateCellStates(ArrayList<Integer> nextStates){
         cellStates = nextStates;
         setCellColors();
@@ -93,6 +121,21 @@ public class GridViewer {
         setCellColors();
     }
 
+    public boolean getSplashScreenFinished(){
+        return splashScreenFinished;
+    }
+
+    public void setSplashScreenFinished(boolean target){
+        splashScreenFinished = target;
+    }
+
+    public String getFileName(){
+        return file_name;
+    }
+    public void setFileName(String newFileName){
+        file_name = newFileName;
+    }
+
     private ScrollBar makeScrollBar(double min, double max, double val, double y, double x) {
         ScrollBar myScrollBar = new ScrollBar();
         myScrollBar.setMin(min);
@@ -108,14 +151,6 @@ public class GridViewer {
             int cellstate = cellStates.get(i);
             cells.get(i).setFill(COLORMAP[cellstate]);
         }
-    }
-
-    public boolean getSplashScreenFinished(){
-        return splashScreenFinished;
-    }
-
-    public void setSplashScreenFinished(boolean target){
-        splashScreenFinished = target;
     }
 
     private Scene setUpSplash(){
@@ -163,13 +198,6 @@ public class GridViewer {
         });
         return new Scene(myRoot, SIZE, SIZE, BACKGROUND);
     }
-    public String getFileName(){
-        return file_name;
-    }
-    public void setFileName(String newFileName){
-        file_name = newFileName;
-    }
-
 
     private Button makeButton(String text, int x, int y){
         Button myButton = new Button();
