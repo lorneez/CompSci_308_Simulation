@@ -5,6 +5,13 @@ import cellsociety.Model.Cell.Cell;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Class representing an abstract grid object for any simulation
+ * @author caryshindell, lornezhang, ameersyedibrahim
+ * Dependencies: Cell class
+ * Example: an 8x8 grid
+ * Assumptions: grid is rectangular
+ */
 public abstract class Grid {
     //protected HashMap<Cell, ArrayList<Cell>> cells;
     public Cell[][] cells;
@@ -14,10 +21,10 @@ public abstract class Grid {
     protected boolean firstStep = true;
 
     /**
-     *
-     * @param rowSize
-     * @param colSize
-     * @param initial_positions
+     * Construct a grid object
+     * @param rowSize number of columns
+     * @param colSize number of rows
+     * @param initial_positions initial cell configurations
      */
     public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         this.rowSize = rowSize;
@@ -50,8 +57,20 @@ public abstract class Grid {
         return viewState;
     }
 
-    public int getCell(int row, int col){
+    /*public int getCell(int row, int col){
         return cells[row][col].getCurrentState();
+    }*/
+
+    /**
+     * Check if the given coordinates are valid within the grid
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return whether or not the coordinates are valid
+     */
+    public boolean checkInBounds(int x,int y){
+        if(x < 0 || x >= colSize) return false;
+        if(y < 0 || y >= rowSize) return false;
+        return true;
     }
 
     /**
@@ -120,13 +139,6 @@ public abstract class Grid {
             }
 
         }
-    }
-
-    public boolean checkInBounds(int x,int y){
-        if(x < 0 || x >= colSize) return false;
-        if(y < 0 || y >= rowSize) return false;
-        return true;
-
     }
 
     protected void initializeGrid(ArrayList<Integer> initial_states){
