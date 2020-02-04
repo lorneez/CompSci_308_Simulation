@@ -1,6 +1,4 @@
 package cellsociety.Model.Cell;
-import cellsociety.Model.Cell.Cell;
-import javafx.scene.paint.Paint;
 
 public class PercolationCell extends Cell{
     public static final int blockedState = 0;
@@ -9,15 +7,15 @@ public class PercolationCell extends Cell{
 
     /**
      * Cell Constructor
-     * @param state
+     * @param state the initial state of the cell
      */
     public PercolationCell(int state){
         super(state);
     }
 
-    /**
-     *
-     * @return
+    /** Calculates the cell's next state and sets its next state parameter to that state
+     *  Percolation cell state only changes if it is open and has a percolated neighbor
+     * @return the cell's current state (since updates are delayed)
      */
     public int calculateNextState(){
         if(currentState == blockedState || currentState == percolatedState){

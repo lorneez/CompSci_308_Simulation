@@ -116,6 +116,9 @@ public class GameEngine {
             if(!myViewer.getPause()){
                 ArrayList<Integer> currStates = myGrid.updateGrid();
                 myViewer.updateCellStates(currStates);
+                if(myGrid.checkIfDone()){
+
+                }
             }
 
         }else{
