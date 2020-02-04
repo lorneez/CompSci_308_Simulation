@@ -6,17 +6,23 @@ import cellsociety.Model.Cell.GameOfLifeCell;
 
 import java.util.ArrayList;
 
+/**
+ * Class representing a grid for the GameOfLife simulation
+ * @author caryshindell, lornezhang, ameersyedibrahim
+ * Dependencies: Grid class, Cell class, GameOfLifeCell class
+ * Example: 8x8 grid with some alive cells and some dead cells
+ */
 public class GameOfLifeGrid extends Grid {
 
     /**
-     *
-     * @param rowSize
-     * @param colSize
-     * @param initial_positions
+     * Construct a GameOfLife grid and initialize it
+     * @param rowSize number of columns
+     * @param colSize number of rows
+     * @param initial_positions initial cell configurations
      */
     public GameOfLifeGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         super(rowSize, colSize, initial_positions);
-        this.initializeGrid(initial_positions);
+        initializeGrid(initial_positions);
     }
 
     @Override
@@ -32,21 +38,20 @@ public class GameOfLifeGrid extends Grid {
         setDiagNeighbors();
     }
 
-
-
-    @Override
+    /**
+     * Check if the simulation has reached equilibrium (no one is dying and no one is becoming alive)
+     * @return done
+     */
     public boolean checkIfDone(){
-        return false;
+        return done;
     }
 
     /**
-     *
-     * @param state
-     * @return
+     * make a GameOfLifeCell (rather than an abstract cell)
+     * @param state initial cell state
+     * @return cell object
      */
-    @Override
     public Cell makeCell(int state) {
-        Cell newCell = new GameOfLifeCell(state);
-        return newCell;
+        return new GameOfLifeCell(state);
     }
 }
