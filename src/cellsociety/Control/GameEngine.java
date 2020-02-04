@@ -28,8 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameEngine {
-    public static int FRAMES_PER_SECOND = 2;
-    public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+    public static double FRAMES_PER_SECOND = 2;
+    public static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public Timeline animation;
 
@@ -117,7 +117,7 @@ public class GameEngine {
 
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
-
+            animation.setRate(myViewer.getScrollValue());
             if(!myViewer.getPause()){
                 ArrayList<Integer> currStates = myGrid.updateGrid();
                 myViewer.updateCellStates(currStates);
