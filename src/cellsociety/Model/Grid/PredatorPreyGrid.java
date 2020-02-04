@@ -40,7 +40,7 @@ public class PredatorPreyGrid extends Grid {
      * @return
      */
     @Override
-    public Cell makeCell(int state) {
+    public PredatorPreyCell makeCell(int state) {
         return new PredatorPreyCell(state);
     }
 
