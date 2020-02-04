@@ -43,4 +43,8 @@ public class PredatorPreyGrid extends Grid {
     public Cell makeCell(int state) {
         return new PredatorPreyCell(state);
     }
+
+    public int neighborAvailable(){
+        return -1;
+    }
 }
