@@ -24,6 +24,7 @@ public class PredatorPreyGrid extends Grid {
             for(int j=0; j<rowSize; j++){
                 cells[i][j] = makeCell(initial_positions.get(index));
                 index ++;
+
             }
         }
         setNeighbors();

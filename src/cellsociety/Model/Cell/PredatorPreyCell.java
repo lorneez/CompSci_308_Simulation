@@ -124,7 +124,6 @@ public class PredatorPreyCell extends Cell{
 
     public PredatorPreyCell neighborWater(){
         ArrayList<PredatorPreyCell> openWater = new ArrayList<>();
-
         if( this.leftNeighbor != null && cellIsWater(this.leftNeighbor)){
             openWater.add(this.leftNeighbor);
         }
@@ -148,7 +147,6 @@ public class PredatorPreyCell extends Cell{
 
     public PredatorPreyCell neighborFish(){
         ArrayList<PredatorPreyCell> nearbyFishes = new ArrayList<>();
-
         if(this.leftNeighbor != null && cellIsFish(this.leftNeighbor)){
             nearbyFishes.add(this.leftNeighbor);
         }
