@@ -96,6 +96,7 @@ public abstract class Grid {
                     int neighbory = w+y[i];
                     if(checkInBounds(neighborx,neighbory)){
                         if(i==0){
+
                             cells[j][w].setUpperNeighbor(cells[neighborx][neighbory]);
                         }
                         if(i==1){
