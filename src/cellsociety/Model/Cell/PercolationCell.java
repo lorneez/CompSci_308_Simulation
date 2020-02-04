@@ -16,16 +16,19 @@ public class PercolationCell extends Cell{
     }
 
     /**
-     * Note this will only be called on cells in the open state
+     *
      * @return
      */
     public int calculateNextState(){
+        if(currentState == blockedState || currentState == percolatedState){
+            return currentState;
+        }
         Cell[] neighbors = getAllNeighbors();
         for(Cell c : neighbors){
-            if(c.getCurrentState() == percolatedState){
-                return percolatedState;
+            if(c != null && c.getCurrentState() == percolatedState){
+                setNextState(percolatedState);
             }
         }
-        return openState;
+        return currentState;
     }
 }

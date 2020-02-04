@@ -6,7 +6,6 @@ import cellsociety.Model.Cell.PercolationCell;
 import java.util.ArrayList;
 
 public class PercolationGrid extends Grid {
-    private ArrayList<Cell> openCells;
 
     /**
      *
@@ -20,15 +19,10 @@ public class PercolationGrid extends Grid {
     }
     @Override
     protected void initializeGrid(ArrayList<Integer> initial_positions){
-        openCells = new ArrayList<Cell>();
         int index = 0;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                int cellState = initial_positions.get(index);
-                cells[i][j] = makeCell(cellState);
-                if(cellState == PercolationCell.openState){
-                    openCells.add(cells[i][j]);
-                }
+                cells[i][j] = makeCell(initial_positions.get(index));
                 index++;
             }
         }
@@ -49,16 +43,7 @@ public class PercolationGrid extends Grid {
         }
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                if(openCells.contains(cells[i][j])){
-                    int nextState = cells[i][j].calculateNextState();
-                    viewState.add(nextState);
-                    if(nextState != PercolationCell.openState){
-                        openCells.remove(cells[i][j]);
-                    }
-                }
-                else {
-                    viewState.add(cells[i][j].getCurrentState());
-                }
+                viewState.add(cells[i][j].calculateNextState());
             }
         }
         return viewState;
