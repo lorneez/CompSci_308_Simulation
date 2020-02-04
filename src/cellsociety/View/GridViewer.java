@@ -67,7 +67,6 @@ public class GridViewer {
         cellStates = new ArrayList<Integer>();
         cells = new ArrayList<Rectangle>();
         int cellSize = (int) (SIZE*0.8 / colSize);
-        System.out.println(cellSize);
         int row = 0;
         int col = 0;
         for(Integer state : initial_states){
@@ -75,7 +74,6 @@ public class GridViewer {
             Rectangle cell = new Rectangle(SIZE*0.1 + col*cellSize, SIZE*0.1 + row*cellSize, cellSize, cellSize);
             cells.add(cell);
             myRoot.getChildren().add(cell);
-            System.out.println("added to gridview");
             col++;
             if(col >= rowSize){
                 col = 0;
@@ -148,7 +146,7 @@ public class GridViewer {
         percolationButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "./src/cellsociety/View/gameoflife_config.xml";
+                file_name = "./src/cellsociety/View/percolation_config.xml";
             }
         });/*
         predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){

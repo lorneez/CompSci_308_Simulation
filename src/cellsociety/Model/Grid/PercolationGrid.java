@@ -16,6 +16,7 @@ public class PercolationGrid extends Grid {
      */
     public PercolationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         super(rowSize, colSize, initial_positions);
+        initializeGrid(initial_positions);
     }
     @Override
     protected void initializeGrid(ArrayList<Integer> initial_positions){

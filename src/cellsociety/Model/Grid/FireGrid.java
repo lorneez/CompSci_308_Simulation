@@ -15,18 +15,14 @@ public class FireGrid extends Grid {
      */
     public FireGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
         super(rowSize, colSize, initial_positions);
-        //System.out.println("Fire Grid Constructor");
         this.initializeGrid(initial_positions);
 
     }
     protected void initializeGrid(ArrayList<Integer> initial_positions){
         int index = 0;
-        //System.out.println("Fire Grid Initialize");
 
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                //System.out.println("State:" +initial_positions.get(index));
-                //System.out.println(makeCell(initial_positions.get(index)).getCurrentState());
                 cells[i][j] = makeCell(initial_positions.get(index));
                 index ++;
             }
@@ -41,7 +37,6 @@ public class FireGrid extends Grid {
      */
     @Override
     public Cell makeCell(int state) {
-        //System.out.println("Made Fire Cell");
         Cell newCell = new FireCell(state);
         return newCell;
     }
