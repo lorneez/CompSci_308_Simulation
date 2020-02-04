@@ -50,4 +50,12 @@ if(state==dead){check for 3}
 cell survives: at least 2
 if(state==alive){check for 2}
 
+Segregation Notes:
+States include type and relocation
+Type: empty, A, B
+calculate reolcate: find # of non null neighbors and number of same state neighbors if it is not an empty cell. set satisfied condition.
+add all not satisfied to an arraylist. also make a list of  null spaces.
+one by one, u check, move, and add to empty list
 
+
+clear neighbors function. and then reset neighbors after relocate

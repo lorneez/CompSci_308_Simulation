@@ -87,7 +87,7 @@ public class GridViewer {
                 pause = !pause;
             }
         });
-        speedBar = makeScrollBar(0.1, 10, 1.5, SIZE*(0.95),SIZE/2);
+        speedBar = makeScrollBar(0.1, 10, 1, SIZE*(0.95),SIZE/2);
         myRoot.getChildren().add(speedBar);
 
         setCellColors();
@@ -126,8 +126,8 @@ public class GridViewer {
         //ADDED
         Button fireButton = makeButton("Fire", SIZE/2, (SIZE/2)+50);
         Button gameOfLifeButton = makeButton("GameOfLife", SIZE/2, SIZE/2);
-        /*Button predatorPreyButton = makeButton("PredatorPrey", .., ..)
-        Button segregationButton = makeButton("Segregation", .., ..)
+        Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - 50);
+        /*Button predatorPreyButton = makeButton("PredatorPrey", ..
         */
         Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + 100);
 
@@ -148,7 +148,14 @@ public class GridViewer {
             public void handle(ActionEvent event) {
                 file_name = "./src/cellsociety/View/percolation_config.xml";
             }
-        });/*
+        });
+        segregationButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                file_name = "./src/cellsociety/View/segregation_config.xml";
+            }
+        });
+        /*
         predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -156,12 +163,7 @@ public class GridViewer {
             }
         });
 
-        segregationButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                file_name = "Segregation";
-            }
-        });
+
         */
         return new Scene(myRoot, SIZE, SIZE, BACKGROUND);
     }

@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameEngine {
-    public static double FRAMES_PER_SECOND = 2;
+    public static double FRAMES_PER_SECOND = 1;
     public static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public Timeline animation;
@@ -81,11 +81,13 @@ public class GameEngine {
             FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
         }else if (sim_type.equals("gameoflife")){
             myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates);
-
-        }/*else if (sim_type == "segregation"){
+        }
+        else if (sim_type.equals("segregation")){
+            System.out.println("MADE NEW SEGREGATION");
             myGrid = new SegregationGrid(rowSize, colSize, cellStates);
-            SegregationCell.setProb(gridParameters);
-        }else if (sim_type == "predatorprey"){
+            SegregationCell.setProb(gridParameters.get(0));
+        }
+        /*else if (sim_type == "predatorprey"){
             myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates);
             PredatorPreyCell.setProb(gridParameters);
         }*/
