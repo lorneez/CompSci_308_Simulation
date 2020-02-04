@@ -45,8 +45,18 @@ public abstract class Grid {
     }
 
     /**
-     *
+     * make the cell object specific to the simulation we are running
+     * @param state initial cell state
+     * @return cell object (as an abstract CELL object not a specific simulation cell object)
      */
+    public abstract Cell makeCell(int state);
+
+    /**
+     * Check if the simulation has reached equilibrium
+     * @return done
+     */
+    public abstract boolean checkIfDone();
+
     protected void setNeighbors(){
         int[] x = {0,0,1,-1};
         int[] y = {1,-1,0,0};
@@ -109,23 +119,16 @@ public abstract class Grid {
 
     }
 
-    /**
-     *
-     * @param initial_positions
-     */
-    protected abstract void initializeGrid(ArrayList<Integer> initial_positions);
-
-    /**
-     *
-     * @param state
-     * @return
-     */
-    public abstract Cell makeCell(int state);
-
-    // public void setDiagnonalNeighbors
-
-    public abstract boolean checkIfDone();
-
+    protected void initializeGrid(ArrayList<Integer> initial_states){
+        int index = 0;
+        for(int i=0; i<colSize; i++){
+            for(int j=0; j<rowSize; j++){
+                cells[i][j] = makeCell(initial_states.get(index));
+                index++;
+            }
+        }
+        setNeighbors();
+    }
 }
 
 

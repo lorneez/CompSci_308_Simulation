@@ -1,23 +1,32 @@
 package cellsociety.Model.Cell;
 import java.util.Random;
 
+/**
+ * Class representing a cell for the fire simulation
+ * @author caryshindell, lornezhang,
+ * Dependencies: Cell Class
+ * Example: a cell on fire with 4 neighbors
+ * Assumptions: 4 neighbors
+ */
 public class FireCell extends Cell{
+    public static final int TREE_STATE = 4;
+    public static final int DEAD_STATE = 3;
+    public static final int FIRE_STATE = 6;
     private static double probCatch;
     private static double probDie;
 
     /**
      * Cell Constructor
-     * @param state
+     * @param state initial cell state
      */
     public FireCell(int state){
         super(state);
-
     }
 
     /**
-     *
-     * @param param1
-     * @param param2
+     * Set the probability parameters
+     * @param param1 probCatch (probability a cell catches fire)
+     * @param param2 probDie (probability a cell dies)
      */
     public static void setProb(double param1, double param2){
         probCatch = param1;
@@ -25,31 +34,30 @@ public class FireCell extends Cell{
     }
 
     /**
-     *
+     * Calculate and set the next state according to whether neighbors and itself are on fire/trees
+     * @return current cell state (since updates are delayed)
      */
     public int calculateNextState(){
-        if(currentState == 4){
-            if((rightNeighbor!=null && rightNeighbor.getCurrentState()==6) || (leftNeighbor!=null && leftNeighbor.getCurrentState()==6) || (upperNeighbor!=null && upperNeighbor.getCurrentState()==6) || (lowerNeighbor!=null && lowerNeighbor.getCurrentState()==6)){
+        if(currentState == TREE_STATE){
+            if((rightNeighbor!=null && rightNeighbor.getCurrentState()==FIRE_STATE) || (leftNeighbor!=null && leftNeighbor.getCurrentState()==FIRE_STATE) || (upperNeighbor!=null && upperNeighbor.getCurrentState()==FIRE_STATE) || (lowerNeighbor!=null && lowerNeighbor.getCurrentState()==FIRE_STATE)){
                 Random rand = new Random();
                 double rand_int1 = rand.nextDouble();
                 if(rand_int1 < probCatch){
-                    this.setNextState(6);
+                    nextState = FIRE_STATE;
                 }
                 else{
-                    this.setNextState(4);
+                    nextState = TREE_STATE;
                 }
             }
-
         }
-        else if(currentState == 6){
+        else if(currentState == FIRE_STATE){
             Random rand = new Random();
             double rand_int2 = rand.nextDouble();
-
             if(rand_int2 < probDie){
-                this.setNextState(3);
+                nextState = DEAD_STATE;
             }
             else{
-                this.setNextState(6);
+                nextState = FIRE_STATE;
             }
         }
         return currentState;
