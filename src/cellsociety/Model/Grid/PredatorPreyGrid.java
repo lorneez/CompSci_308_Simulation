@@ -28,7 +28,7 @@ public class PredatorPreyGrid extends Grid {
         setNeighbors();
     }
     @Override
-    protected boolean checkIfDone(){
+    public boolean checkIfDone(){
 
         return false;
 
