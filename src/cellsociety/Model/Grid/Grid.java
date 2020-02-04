@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public abstract class Grid {
     //protected HashMap<Cell, ArrayList<Cell>> cells;
-    public Cell[][] cells;
+    protected Cell[][] cells;
     protected int rowSize;
     protected int colSize;
     protected boolean done = false;
