@@ -136,13 +136,13 @@ public class GridViewer {
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "/Users/lorneez/Projects/CompSci308/simulation_team27/src/cellsociety/View/fire_config.xml";
+                file_name = "./src/cellsociety/View/fire_config.xml";
             }
         });
         gameOfLifeButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "/Users/lorneez/Projects/CompSci308/simulation_team27/src/cellsociety/View/gameoflife_config.xml";
+                file_name = "./src/cellsociety/View/gameoflife_config.xml";
             }
         });/*
         predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
