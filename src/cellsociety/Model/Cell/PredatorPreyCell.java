@@ -6,6 +6,7 @@ public class PredatorPreyCell extends Cell{
     private static double chronons_passed;
     private final int REPRODUCTION_THRESHOLD = 6; // chronon threshold, not sure what this number should be
     private final int FISH_ENERGY = 10;
+    private boolean canReproduce = false;
 
     /**
      * Cell Constructor
@@ -25,12 +26,32 @@ public class PredatorPreyCell extends Cell{
 
         /* pseudo-code for fish behavior
 
-        if state == 1 && neighborAvailable() != -1:
-            **move the fish**
-            this.chronons_passed++;
+        if state == 1:
 
-        if state == 1 && chronons_passed == REPRODUCTION_THRESHOLD:
+        // if at least one empty square exists, randomly find one and move the fish there
+        if neighborAvailable() != -1 && canReproduce:
+            the_neighbor = neighborAvailable()
+            the_neighbor.state = 1
+            the_neighbor.chronons_passed = 0;
+            the_neighbor.canReproduce = false;
+            this.state = 1
+            this.chronons_passed = 0;
+            this.canReproduce = false
+
+        else if neighborAvailable() != -1:
+            the_neighbor = neighborAvailable()
+            the_neighbor.state = 1
+            the_neighbor.chronons_passed = this.chronons_passed+=1
+            this.state = 0
             this.chronons_passed = 0
+
+
+        else if neighborAvailable() == -1:
+            this.chronons_passed +=1;
+
+
+        if chronons_passed == REPRODUCTION_THRESHOLD:
+            this.canReproduce = true;
 
         */
 
@@ -43,7 +64,7 @@ public class PredatorPreyCell extends Cell{
                 this.state == 0
                 this.chronons_passed == 0
 
-            // 
+            // if there is an adjacent square occupied by a fish, the shark will move there randomly
             else neighborFish() != -1:
 
                 the_fish_neighbor = neighborFish();
@@ -53,16 +74,33 @@ public class PredatorPreyCell extends Cell{
                 this.chronons_passed = 0
                 this.state = 0
 
-
-            else neighborFish == -1 && neighborAvailable() != -1:
+            // if the shark can reproduce AND if no fish are neighbors, randomly move to an unoccupied square
+            else if neighborFish == -1 && neighborAvailable() != -1 && canReproduce:
                 the_neighbor = neighborAvailable()
+                the_neighbor.state = 2
+                the_neighbor.chronons_passed = 0;
+                the_neighbor.energy = this.energy-=1;
+                this.state = 2
+                this.chronons_passed = 0
+
+            // if no fish are neighbors, randomly move to an unoccupied square
+            else if neighborFish == -1 && neighborAvailable() != -1:
+                the_neighbor = neighborAvailable()
+                the_neighbor.state = 2
+                the_neighbor.chronons_passed = this.chronons_passed+=1
+
+                the_neighbor.energy = this.energy-=1;
                 this.state = 0
                 this.chronons_passed = 0
-                the_neighbor.state = 2
-                the_neighbor.chronons_passed = 0
+
+           else if neighborFish == -1 && neighborAvailable() != -1:
+                 this.chronons_passed+=1
 
 
             if chronons_passed == REPRODUCTION_THRESHOLD:
+                this.canReproduce = true;
+
+
 
 
 
