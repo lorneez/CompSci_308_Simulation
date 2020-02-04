@@ -23,7 +23,7 @@ public class SegregationCell extends Cell{
     }
 
     /**
-     * 
+     *
      * @param param1
      */
     public static void setProb(double param1){

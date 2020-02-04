@@ -5,11 +5,8 @@ import cellsociety.Model.Cell.FireCell;
 import cellsociety.View.GridViewer;
 import cellsociety.Model.Cell.SegregationCell;
 import cellsociety.Model.Grid.SegregationGrid;
-import cellsociety.Model.Cell.GameOfLifeCell;
 import cellsociety.Model.Grid.GameOfLifeGrid;
-import cellsociety.Model.Cell.PredatorPreyCell;
 import cellsociety.Model.Grid.PredatorPreyGrid;
-import cellsociety.Model.Cell.PercolationCell;
 import cellsociety.Model.Grid.PercolationGrid;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,12 +24,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Class that drives the simulation and communicates with the grid and viewer classes
+ * @author caryshindell, lornezhang, ameersyedibrahim
+ * Dependencies: Grid class, GridViewer class, configuration files
+ * Example: a game engine running the percolation simulation
+ * Assumptions: rectangular grid
+ */
 public class GameEngine {
     public static double FRAMES_PER_SECOND = 1;
     public static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-    public Timeline animation;
 
+    private Timeline animation;
     private String sim_type;
     private ArrayList<Integer> cellStates;
     private Grid myGrid;
@@ -42,12 +46,24 @@ public class GameEngine {
     private int col;
 
     /**
-     *
+     * Constructor method. initializes some things and cells start
      */
     public GameEngine(){
         start();
         gridParameters = new ArrayList<>();
         cellStates = new ArrayList<>();
+    }
+
+    /**
+     * Creates the viewer, starts the splash screen. Viewer will determine configuration file
+     */
+    public void start(){
+        myViewer = new GridViewer();
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
+        animation = new Timeline();
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.getKeyFrames().add(frame);
+        animation.play();
     }
 
     private void parseFile(String sim_xml_path) throws ParserConfigurationException, IOException, SAXException {
@@ -76,39 +92,26 @@ public class GameEngine {
     }
 
     private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize){
-        if(sim_type.equals("fire")){
-            myGrid = new FireGrid(rowSize, colSize, cellStates);
-            FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
-        }else if (sim_type.equals("gameoflife")){
-            myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates);
-        }
-        else if (sim_type.equals("segregation")){
-            myGrid = new SegregationGrid(rowSize, colSize, cellStates);
-            SegregationCell.setProb(gridParameters.get(0));
-        }
-        else if (sim_type.equals("predatorprey")){
-            myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates);
-        }
-        else if (sim_type.equals("percolation")){
-            myGrid = new PercolationGrid(rowSize, colSize, cellStates);
+        switch (sim_type) {
+            case "fire":
+                myGrid = new FireGrid(rowSize, colSize, cellStates);
+                FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
+                break;
+            case "gameoflife":
+                myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates);
+                break;
+            case "segregation":
+                myGrid = new SegregationGrid(rowSize, colSize, cellStates);
+                SegregationCell.setProb(gridParameters.get(0));
+                break;
+            case "predatorprey":
+                myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates);
+                break;
+            case "percolation":
+                myGrid = new PercolationGrid(rowSize, colSize, cellStates);
+                break;
         }
     }
-
-    /**
-     *
-     */
-    public void start(){
-        // create the viewer
-        // splash screen
-        // viewer will determine configuration file
-        myViewer = new GridViewer();
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
-        animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
-    }
-
 
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
