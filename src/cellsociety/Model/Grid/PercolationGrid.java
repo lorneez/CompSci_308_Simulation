@@ -32,6 +32,7 @@ public class PercolationGrid extends Grid {
             }
         }
         setNeighbors();
+        setDiagNeighbors();
     }
 
     /**
