@@ -33,7 +33,7 @@ import java.util.Collections;
  * Assumptions: rectangular grid
  */
 public class GameEngine {
-    public static double FRAMES_PER_SECOND = 1;
+    public static final double FRAMES_PER_SECOND = 1;
     public static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -41,7 +41,6 @@ public class GameEngine {
     private String sim_type;
     private ArrayList<Integer> cellStates;
     private Grid myGrid;
-    private ArrayList<Double> gridParameters;
     private GridViewer myViewer;
     private int row;
     private int col;
@@ -73,9 +72,9 @@ public class GameEngine {
 
     private void parseFile(String sim_xml_path) throws ParserConfigurationException, IOException, SAXException {
         cellStates = new ArrayList<>();
-        gridParameters = new ArrayList<>();
         blockTypes = new ArrayList<>();
         blockPercentages = new ArrayList<>();
+        ArrayList<Double> gridParameters = new ArrayList<>();
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

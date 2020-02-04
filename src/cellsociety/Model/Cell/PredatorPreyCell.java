@@ -18,9 +18,11 @@ public class PredatorPreyCell extends Cell{
 
     private double energy;
     private double chronons_passed;
-    private final int REPRODUCTION_THRESHOLD = 4; // chronon threshold, not sure what this number should be
-    private final int FISH_ENERGY = 8;
-    private final int SHARK_ENERGY = 15;
+    private final int REPRODUCTION_THRESHOLD = 10; // chronon threshold, not sure what this number should be
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int FISH_ENERGY = 4;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int SHARK_ENERGY = 10;
     private boolean canReproduce = false;
 
     /**
@@ -78,9 +80,8 @@ public class PredatorPreyCell extends Cell{
 
         if(openWater.size()!= 0){
             Random rand = new Random();
-            PredatorPreyCell slot = openWater.get(rand.nextInt(openWater.size()));
 
-            return slot;
+            return openWater.get(rand.nextInt(openWater.size()));
         }
         return null;
     }
@@ -107,9 +108,8 @@ public class PredatorPreyCell extends Cell{
         if(nearbyFishes.size()!= 0){
 
             Random rand = new Random();
-            PredatorPreyCell slot =  nearbyFishes.get(rand.nextInt(nearbyFishes.size()));
 
-            return slot;
+            return nearbyFishes.get(rand.nextInt(nearbyFishes.size()));
         }
 
         return null;

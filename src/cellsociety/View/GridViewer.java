@@ -5,7 +5,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -13,7 +12,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Class that represents the user interfaces and displays the grid
@@ -31,7 +29,7 @@ public class GridViewer {
     private ArrayList<Rectangle> cells;
     private ArrayList<Integer> cellStates;
     private ScrollBar speedBar;
-    private Stage myStage;
+    private final Stage myStage;
     private Scene myScene;
     private Group myRoot;
     private String file_name = "NONE";

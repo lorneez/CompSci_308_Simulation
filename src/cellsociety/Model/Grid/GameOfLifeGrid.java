@@ -1,7 +1,6 @@
 package cellsociety.Model.Grid;
 
 import cellsociety.Model.Cell.Cell;
-import cellsociety.Model.Cell.FireCell;
 import cellsociety.Model.Cell.GameOfLifeCell;
 
 import java.util.ArrayList;
