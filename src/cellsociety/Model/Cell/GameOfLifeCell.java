@@ -1,50 +1,44 @@
 package cellsociety.Model.Cell;
-import cellsociety.Model.Cell.Cell;
 
+/**
+ * Class representing a cell object for the GameOfLife simulation
+ * @author caryshindell, lornezhang, ameersyedibrahim
+ * Dependencies: Cell class
+ * Example: cell that is alive and has 3 alive neighbors
+ */
 public class GameOfLifeCell extends Cell{
+    public static final int ALIVE_STATE = 4;
+    public static final int DEAD_STATE = 0;
+    
     /**
      * Cell Constructor
-     * @param state
+     * @param state initial cell state
      */
     public GameOfLifeCell(int state){
         super(state);
     }
 
+    /**
+     * Check how many neighbors cell has that are alive. If cell is alive and has 2 or 3 alive neighbors, stays alive,
+     * otherwise it dies. If cell is dead and has exactly 3 alive neighbors it becomes alive.
+     * @return current cell state (since updating is delayed)
+     */
     public int calculateNextState(){
-        int aliveNeighbors = 0;
-        if((rightNeighbor!=null && rightNeighbor.getCurrentState()==4)){
-            aliveNeighbors++;
+        int aliveNeighbors = DEAD_STATE;
+        for(Cell neighbor : getAllNeighbors()){
+            if(neighbor != null && neighbor.getCurrentState() == ALIVE_STATE){
+                aliveNeighbors++;
+            }
         }
-        if((leftNeighbor!=null && leftNeighbor.getCurrentState()==4)){
-            aliveNeighbors++;
+        if(currentState == DEAD_STATE && aliveNeighbors == 3){
+            nextState = ALIVE_STATE;
         }
-        if((upperNeighbor!=null && upperNeighbor.getCurrentState()==4)){
-            aliveNeighbors++;
-        }
-        if((lowerNeighbor!=null && lowerNeighbor.getCurrentState()==4)){
-            aliveNeighbors++;
-        }
-        if((lowerLeftNeighbor!=null && lowerLeftNeighbor.getCurrentState()==4)){
-            aliveNeighbors++;
-        }
-        if((lowerRightNeighbor!=null && lowerRightNeighbor.getCurrentState()==4)){
-            aliveNeighbors++;
-        }
-        if((upperRightNeighbor!=null && upperRightNeighbor.getCurrentState()==4)){
-            aliveNeighbors++;
-        }
-        if((upperLeftNeighbor!=null && upperLeftNeighbor.getCurrentState()==4)){
-            aliveNeighbors++;
-        }
-        if(currentState == 0 && aliveNeighbors == 3){
-            this.setNextState(4);
-        }
-        else if(currentState == 4){
-            if((aliveNeighbors == 2 || aliveNeighbors == 3)){
-                this.setNextState(4);
+        else if(currentState == ALIVE_STATE){
+            if(aliveNeighbors == 2 || aliveNeighbors == 3){
+                nextState = ALIVE_STATE;
             }
             else{
-                this.setNextState(0);
+                nextState = DEAD_STATE;
             }
         }
         return currentState;
