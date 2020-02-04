@@ -19,9 +19,12 @@ public abstract class Cell {
     public Cell(int state){
         this.currentState = state;
         this.nextState = state;
-
-
     }
+
+    protected Cell[] getAllNeighbors(){
+        return new Cell[]{rightNeighbor, leftNeighbor, lowerNeighbor, upperNeighbor, upperRightNeighbor, upperLeftNeighbor, lowerRightNeighbor, lowerLeftNeighbor};
+    }
+
     public void setUpperRightNeighbor(Cell upperRightNeighbor){
         this.upperRightNeighbor = upperRightNeighbor;
     }

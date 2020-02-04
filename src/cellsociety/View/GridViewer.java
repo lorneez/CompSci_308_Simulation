@@ -18,11 +18,11 @@ import java.util.Map;
 
 public class GridViewer {
 
-    private static final Paint[] COLORMAP = {Color.BLACK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BROWN};
+    private static final Paint[] COLORMAP = {Color.BLACK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BROWN, Color.WHITE};
     private ArrayList<Rectangle> cells;
     private ArrayList<Integer> cellStates;
     private final int SIZE = 600;
-    private final Paint BACKGROUND = Color.WHITE;
+    private final Paint BACKGROUND = Color.GRAY;
     private static final Paint[] SIMBACKGROUND = {Color.ORANGE, Color.YELLOW};
     private ScrollBar speedBar;
     private Stage myStage;
