@@ -35,6 +35,7 @@ public class GridViewer {
     private String file_name = "NONE";
     private boolean splashScreenFinished;
     private boolean pause = false;
+    private boolean restart;
     private Button endButton;
     private Button doneButton;
     private Button resetButton;
@@ -75,6 +76,7 @@ public class GridViewer {
      * @param initial_states intial cell configurations
      */
     public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
+        restart = false;
         setUpGrid(rowSize, colSize, initial_states);
         myScene = new Scene(myRoot, SIZE + MENU_SIZE + MENU_SIZE, SIZE, SIMBACKGROUND[1]);
         myStage.setScene(myScene);
@@ -234,9 +236,12 @@ public class GridViewer {
         resetButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                int x = 1;
+                restart = true;
             }
         });
+    }
+    public boolean getRestart(){
+        return restart;
     }
 
 }

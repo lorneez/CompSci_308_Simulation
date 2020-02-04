@@ -47,6 +47,7 @@ public class GameEngine {
     private int totalBlocks;
     private ArrayList<Integer> blockTypes;
     private ArrayList<Double> blockPercentages;
+    private String lastSimulationRun;
 
 
     private boolean done;
@@ -138,6 +139,9 @@ public class GameEngine {
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
             System.out.println("stepping");
+            if(myViewer.getRestart()){
+                myViewer.setSplashScreenFinished(true);
+            }
             animation.setRate(myViewer.getScrollValue());
             if(!myViewer.getPause() && !myGrid.checkIfDone()){
                 ArrayList<Integer> currStates = myGrid.updateGrid();
@@ -151,10 +155,14 @@ public class GameEngine {
         }else{
             System.out.println("done stepping");
             String sim_xml_path = myViewer.getFileName(); // should return the path of the XML file
+            if(myViewer.getRestart()){
+                sim_xml_path = lastSimulationRun;
+            }
             // see if the viewer has determined the file name yet
             // if so, parse the file name and we are done with the splash screen
             if(!sim_xml_path.equals("NONE")){
                 try {
+                    lastSimulationRun = sim_xml_path;
                     myViewer.setFileName("NONE");
                     parseFile(sim_xml_path);
                     myViewer.setUpSimulation(row,col,cellStates);
