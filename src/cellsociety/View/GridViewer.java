@@ -35,6 +35,11 @@ public class GridViewer {
     private String file_name = "NONE";
     private boolean splashScreenFinished;
     private boolean pause = false;
+    private Button endButton;
+    private Button doneButton;
+    private Button resetButton;
+
+
 
     /**
      * Constructor method, sets up the stage and splash screen
@@ -110,6 +115,8 @@ public class GridViewer {
                 pause = !pause;
             }
         });
+        addEndButton();
+        addResetButton();
         speedBar = makeScrollBar(0.1, 10, 1, SIZE*(0.95),SIZE/2);
         setCellColors();
     }
@@ -198,14 +205,36 @@ public class GridViewer {
         return myButton;
     }
     public void addDoneButton(){
-        Button doneButton = makeButton("Run Another Simulation", SIZE/2 + 100, SIZE - 25);
+        doneButton = makeButton("Run Another Simulation", MENU_SIZE/3, SIZE/2);
         setSplashScreenFinished(true);
         doneButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
+                myRoot.getChildren().remove(endButton);
                 myScene = setUpSplash();
                 myStage.setScene(myScene);
                 myStage.show();
+            }
+        });
+    }
+    private void addEndButton(){
+        endButton = makeButton("End Simulation", MENU_SIZE/3, SIZE/2);
+        setSplashScreenFinished(true);
+        endButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                myRoot.getChildren().remove(doneButton);
+                addDoneButton();
+            }
+        });
+    }
+    public void addResetButton(){
+        resetButton = makeButton("Reset Simulation", MENU_SIZE/3, SIZE/2 + 50);
+        setSplashScreenFinished(true);
+        resetButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                int x = 1;
             }
         });
     }

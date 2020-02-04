@@ -1,8 +1,8 @@
 <root>
     <sim_type>percolation</sim_type>
-    <size>100</size>
-    <size>100</size>
-    <totalblocks>10000</totalblocks>
+    <size>200</size>
+    <size>200</size>
+    <totalblocks>40000</totalblocks>
     <blocktype>0</blocktype>
     <blocktype>7</blocktype>
     <blocktype>5</blocktype>

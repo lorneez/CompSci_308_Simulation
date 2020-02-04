@@ -3,9 +3,9 @@
     <globalparam>
         <param>0.6</param>
         <param>0.4</param>
-        <size>100</size>
-        <size>100</size>
-        <totalblocks>10000</totalblocks>
+        <size>200</size>
+        <size>200</size>
+        <totalblocks>40000</totalblocks>
         <blocktype>4</blocktype>
         <blocktype>6</blocktype>
         <blocktype>3</blocktype>
