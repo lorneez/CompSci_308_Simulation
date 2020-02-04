@@ -1,4 +1,5 @@
 package cellsociety.Model.Grid;
+import java.util.Collections;
 import java.util.Random;
 
 import cellsociety.Model.Cell.Cell;
@@ -96,16 +97,17 @@ public class SegregationGrid extends Grid {
      */
     private void swapCells() {
         for(Cell swap : notSatisfiedCells){
-            Random rand = new Random();
-            int rand_int1 = rand.nextInt(emptyCells.size());
+            //Random rand = new Random();
+            //int rand_int1 = rand.nextInt(emptyCells.size());
+            Collections.shuffle(emptyCells);
             if(swap.getCurrentState() == 0){
-                switchCurrentState(emptyCells.get(rand_int1), 1);
+                switchCurrentState(emptyCells.get(0), 1);
             }
             else{
-                switchCurrentState(emptyCells.get(rand_int1), 5);
+                switchCurrentState(emptyCells.get(0), 5);
             }
 
-            emptyCells.remove(rand_int1);
+            emptyCells.remove(0);
             switchCurrentState(swap, 7);
             emptyCells.add(swap);
         }

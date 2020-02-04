@@ -18,9 +18,9 @@ public class PredatorPreyCell extends Cell{
 
     private double energy;
     private double chronons_passed;
-    private final int REPRODUCTION_THRESHOLD = 10; // chronon threshold, not sure what this number should be
-    private final int FISH_ENERGY = 4;
-    private final int SHARK_ENERGY = 10;
+    private final int REPRODUCTION_THRESHOLD = 4; // chronon threshold, not sure what this number should be
+    private final int FISH_ENERGY = 8;
+    private final int SHARK_ENERGY = 15;
     private boolean canReproduce = false;
 
     /**
@@ -29,12 +29,10 @@ public class PredatorPreyCell extends Cell{
      */
     public PredatorPreyCell(int state){
         super(state);
-
         if (this.currentState == 0){
             energy = SHARK_ENERGY;
         }
         this.chronons_passed = 0;
-
     }
 
     /**
@@ -48,7 +46,6 @@ public class PredatorPreyCell extends Cell{
         // if cell is a fish
         if (this.currentState == 2){
             this.fishConditions();
-
         }
         // if the cell is a shark
         else if (this.currentState == 0){

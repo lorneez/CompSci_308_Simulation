@@ -59,3 +59,6 @@ one by one, u check, move, and add to empty list
 
 
 clear neighbors function. and then reset neighbors after relocate
+
+
+add user input based on text file.

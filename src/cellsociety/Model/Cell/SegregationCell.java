@@ -47,7 +47,7 @@ public class SegregationCell extends Cell{
         int numNeighbors = 0;
         for(Cell check : neighbors){
             if(check != null){
-                if(check.getCurrentState() == this.currentState){
+                if(check.getCurrentState() == this.currentState || check.getCurrentState() == this.currentState - 1){
                     numSameState++;
                 }
                 numNeighbors++;
@@ -57,7 +57,7 @@ public class SegregationCell extends Cell{
         if(satisfied <= satisfy){
             setNotSatisfied();
         }
-        return currentState;
+        return nextState;
     }
 
     /**

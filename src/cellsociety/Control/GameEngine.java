@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Class that drives the simulation and communicates with the grid and viewer classes
@@ -44,6 +45,11 @@ public class GameEngine {
     private GridViewer myViewer;
     private int row;
     private int col;
+    private int totalBlocks;
+    private ArrayList<Integer> blockTypes;
+    private ArrayList<Double> blockPercentages;
+
+
     private boolean done;
 
     /**
@@ -68,26 +74,43 @@ public class GameEngine {
     private void parseFile(String sim_xml_path) throws ParserConfigurationException, IOException, SAXException {
         cellStates = new ArrayList<>();
         gridParameters = new ArrayList<>();
+        blockTypes = new ArrayList<>();
+        blockPercentages = new ArrayList<>();
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(fXmlFile);
-
         this.sim_type = doc.getElementsByTagName("sim_type").item(0).getTextContent();
         NodeList size_list = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
         row = Integer.valueOf(size_list.item(0).getTextContent());
         col = Integer.valueOf(size_list.item(1).getTextContent());
-
+        NodeList blocksInput = doc.getElementsByTagName("totalblocks");
+        totalBlocks = Integer.valueOf(blocksInput.item(0).getTextContent());
+        NodeList blockTypesRead = doc.getElementsByTagName("blocktype");
+        for(int i=0; i<blockTypesRead.getLength(); i++){
+            blockTypes.add(Integer.valueOf(blockTypesRead.item(i).getTextContent()));
+        }
+        int defaultBlock = blockTypes.get(0);
+        NodeList blockPercentagesRead = doc.getElementsByTagName("percentage");
+        for(int i=0; i<blockPercentagesRead.getLength(); i++){
+            blockPercentages.add(Double.valueOf(blockPercentagesRead.item(i).getTextContent()));
+        }
         NodeList param_list = doc.getElementsByTagName("param");
         for(int i=0; i<param_list.getLength(); i++){
             gridParameters.add(Double.valueOf(param_list.item(i).getTextContent()));
         }
-
-        NodeList states_list = doc.getElementsByTagName("state");
-        for(int i=0; i<states_list.getLength(); i++){
-            cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
+        int count = 0;
+        for(int i=0; i<blockTypes.size(); i++){
+            System.out.println(totalBlocks*(blockPercentages.get(i)));
+            for(int w=0; w<totalBlocks*(blockPercentages.get(i))-1; w++){
+                cellStates.add(blockTypes.get(i));
+                count ++;
+            }
         }
-
+        for(int i=0; i<totalBlocks-count;i++){
+            cellStates.add(defaultBlock);
+        }
+        Collections.shuffle(cellStates);
         this.initializeGrid(gridParameters, row, col);
     }
 

@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,13 +23,13 @@ import java.util.Map;
  * Assumptions: rectangular grid
  */
 public class GridViewer {
-
     private static final Paint[] COLORMAP = {Color.BLACK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BROWN, Color.WHITE};
+    private final int SIZE = 700;
+    private final int MENU_SIZE = 200;
+    private final Paint SPLASHBACKGROUND = Color.GRAY;
+    private static final Paint[] SIMBACKGROUND = {Color.ORANGE, Color.YELLOW};
     private ArrayList<Rectangle> cells;
     private ArrayList<Integer> cellStates;
-    private final int SIZE = 600;
-    private final Paint BACKGROUND = Color.GRAY;
-    private static final Paint[] SIMBACKGROUND = {Color.ORANGE, Color.YELLOW};
     private ScrollBar speedBar;
     private Stage myStage;
     private Scene myScene;
@@ -74,10 +73,8 @@ public class GridViewer {
      */
     public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
         setUpGrid(rowSize, colSize, initial_states);
-        myScene = new Scene(myRoot, SIZE, SIZE, SIMBACKGROUND[1]);
+        myScene = new Scene(myRoot, SIZE + MENU_SIZE + MENU_SIZE, SIZE, SIMBACKGROUND[1]);
         myStage.setScene(myScene);
-        //scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
-        //scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
     }
 
     /**
@@ -94,12 +91,12 @@ public class GridViewer {
         myRoot = new Group();
         cellStates = new ArrayList<Integer>();
         cells = new ArrayList<Rectangle>();
-        int cellSize = (int) (SIZE*0.8 / colSize);
+        double cellSize = (double) (SIZE*0.8 / colSize);
         int row = 0;
         int col = 0;
         for(Integer state : initial_states){
             cellStates.add(state);
-            Rectangle cell = new Rectangle(SIZE*0.1 + col*cellSize, SIZE*0.1 + row*cellSize, cellSize, cellSize);
+            Rectangle cell = new Rectangle(MENU_SIZE + SIZE * 0.1 + col * cellSize, SIZE * 0.1 + row * cellSize, cellSize, cellSize);
             cells.add(cell);
             myRoot.getChildren().add(cell);
             col++;
@@ -116,8 +113,6 @@ public class GridViewer {
             }
         });
         speedBar = makeScrollBar(0.1, 10, 1, SIZE*(0.95),SIZE/2);
-        myRoot.getChildren().add(speedBar);
-
         setCellColors();
     }
 
@@ -132,6 +127,7 @@ public class GridViewer {
     public String getFileName(){
         return file_name;
     }
+
     public void setFileName(String newFileName){
         file_name = newFileName;
     }
@@ -143,6 +139,7 @@ public class GridViewer {
         myScrollBar.setValue(val);
         myScrollBar.setLayoutY(y);
         myScrollBar.setLayoutX(x);
+        myRoot.getChildren().add(myScrollBar);
         return myScrollBar;
     }
 
@@ -155,15 +152,10 @@ public class GridViewer {
 
     private Scene setUpSplash(){
         myRoot = new Group();
-        // add text
-        // add 5 buttons to choose simulation
-
-        //ADDED
         Button fireButton = makeButton("Fire", SIZE/2, (SIZE/2)+50);
         Button gameOfLifeButton = makeButton("GameOfLife", SIZE/2, SIZE/2);
         Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - 50);
         Button predatorPreyButton = makeButton("PredatorPrey", SIZE/2, SIZE/2 - 100);
-
         Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + 100);
 
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -196,7 +188,7 @@ public class GridViewer {
                 file_name = "./src/cellsociety/View/predprey_config.xml";
             }
         });
-        return new Scene(myRoot, SIZE, SIZE, BACKGROUND);
+        return new Scene(myRoot, SIZE + MENU_SIZE + MENU_SIZE, SIZE,  SPLASHBACKGROUND);
     }
 
     private Button makeButton(String text, int x, int y){
