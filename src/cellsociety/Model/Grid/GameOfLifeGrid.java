@@ -18,6 +18,8 @@ public class GameOfLifeGrid extends Grid {
         super(rowSize, colSize, initial_positions);
         this.initializeGrid(initial_positions);
     }
+
+    @Override
     protected void initializeGrid(ArrayList<Integer> initial_positions){
         int index = 0;
         for(int i=0; i<colSize; i++){
@@ -33,12 +35,10 @@ public class GameOfLifeGrid extends Grid {
 
 
     @Override
-    protected boolean checkIfDone(){
-
+    public boolean checkIfDone(){
         return false;
-
-
     }
+
     /**
      *
      * @param state

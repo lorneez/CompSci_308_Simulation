@@ -5,24 +5,32 @@ import cellsociety.Model.Cell.PercolationCell;
 
 import java.util.ArrayList;
 
+/**
+ * Class representing a grid object for the percolation simulation
+ * @author caryshindell, lornezhang, ameersyedibrahim
+ * Dependencies: Grid class, Cell class, PercolationCell class
+ * Example: a 8x8 grid with some cells empty, some blocked, and some percolated
+ * Assumptions: percolation can happen diagonally
+ */
 public class PercolationGrid extends Grid {
 
     /**
-     *
-     * @param rowSize
-     * @param colSize
-     * @param initial_positions
+     * Construct a percolation grid and initialize it
+     * @param rowSize number of columns
+     * @param colSize number of rows
+     * @param initial_states list of initial cell configurations
      */
-    public PercolationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
-        super(rowSize, colSize, initial_positions);
-        initializeGrid(initial_positions);
+    public PercolationGrid(int rowSize, int colSize, ArrayList<Integer> initial_states){
+        super(rowSize, colSize, initial_states);
+        initializeGrid(initial_states);
     }
+
     @Override
-    protected void initializeGrid(ArrayList<Integer> initial_positions){
+    protected void initializeGrid(ArrayList<Integer> initial_states){
         int index = 0;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                cells[i][j] = makeCell(initial_positions.get(index));
+                cells[i][j] = makeCell(initial_states.get(index));
                 index++;
             }
         }
@@ -31,37 +39,18 @@ public class PercolationGrid extends Grid {
     }
 
     /**
-     *
+     * Check if the simulation has reached a standstill
+     * @return boolean done
      */
-    @Override
-    public ArrayList<Integer> updateGrid(){
-        ArrayList<Integer> viewState = new ArrayList<Integer>();
-        for(int i=0; i<colSize; i++){
-            for(int j=0; j<rowSize; j++){
-                cells[i][j].update();
-            }
-        }
-        for(int i=0; i<colSize; i++){
-            for(int j=0; j<rowSize; j++){
-                viewState.add(cells[i][j].calculateNextState());
-            }
-        }
-        return viewState;
+    public boolean checkIfDone(){
+        return done;
     }
 
-    @Override
-    protected boolean checkIfDone(){
-
-        return false;
-
-
-    }
     /**
-     *
-     * @param state
-     * @return
+     * Construct a percolation cell (rather than an abstract cell)
+     * @param state cell state
+     * @return the cell object
      */
-    @Override
     public Cell makeCell(int state) {
         return new PercolationCell(state);
     }

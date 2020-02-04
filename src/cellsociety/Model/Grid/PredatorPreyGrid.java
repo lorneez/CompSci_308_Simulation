@@ -28,7 +28,7 @@ public class PredatorPreyGrid extends Grid {
         setNeighbors();
     }
     @Override
-    protected boolean checkIfDone(){
+    public boolean checkIfDone(){
 
         return false;
 
@@ -40,21 +40,8 @@ public class PredatorPreyGrid extends Grid {
      * @return
      */
     @Override
-    public Cell makeCell(int state) {
+    public PredatorPreyCell makeCell(int state) {
         return new PredatorPreyCell(state);
     }
 
-    // return an integer which indicates that if any of the 4 neighbors is empty (the state is 0)
-    // return the first available neighbor if there are many
-    // return 1 for left, 2 for right, 3 for up, 4 for down
-    public int neighborAvailable(){
-        return -1;
-    }
-
-    // return an integer which indicates that if any of the 4 neighbors is a fish (the state is 1)
-    // return the first available neighbor if there are many
-    // return 1 for left, 2 for right, 3 for up, 4 for down
-    public int neighborFish(){
-        return -1;
-    }
 }

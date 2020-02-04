@@ -89,7 +89,6 @@ public class GameEngine {
         }
         else if (sim_type == "predatorprey"){
             myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates);
-            PredatorPreyCell.setProb(gridParameters);
         }
         else if (sim_type.equals("percolation")){
             myGrid = new PercolationGrid(rowSize, colSize, cellStates);
@@ -115,7 +114,7 @@ public class GameEngine {
     private void step(){
         if(!myViewer.getSplashScreenFinished()){
             animation.setRate(myViewer.getScrollValue());
-            if(!myViewer.getPause()){
+            if(!myViewer.getPause() && !myGrid.checkIfDone()){
                 ArrayList<Integer> currStates = myGrid.updateGrid();
                 myViewer.updateCellStates(currStates);
             }

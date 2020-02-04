@@ -90,17 +90,19 @@ public class SegregationGrid extends Grid {
     }
 
 
-    @Override
-    protected boolean checkIfDone(){
+    /**
+     *
+     * @return
+     */
+    public boolean checkIfDone(){
         return false;
-
     }
+
     /**
      *
      * @param state
      * @return
      */
-    @Override
     public Cell makeCell(int state) {
         return new SegregationCell(state);
     }
