@@ -51,7 +51,6 @@ public class GameEngine {
      */
     public GameEngine(){
         start();
-        gridParameters = new ArrayList<>();
     }
 
     /**
@@ -68,6 +67,7 @@ public class GameEngine {
 
     private void parseFile(String sim_xml_path) throws ParserConfigurationException, IOException, SAXException {
         cellStates = new ArrayList<>();
+        gridParameters = new ArrayList<>();
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
