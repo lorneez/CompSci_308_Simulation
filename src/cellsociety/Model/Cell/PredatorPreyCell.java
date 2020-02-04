@@ -176,4 +176,36 @@ public class PredatorPreyCell extends Cell{
         return cell.getCurrentState() == 2;
     }
 
+    /**
+     * Define the right neighbor
+     * @param rightNeighbor cell object representing the right neighbor
+     */
+    public void setRightNeighbor(PredatorPreyCell rightNeighbor){
+        this.rightNeighbor = rightNeighbor;
+    }
+
+    /**
+     * Define the left neighbor
+     * @param leftNeighbor cell object representing the left neighbor
+     */
+    public void setLeftNeighbor(PredatorPreyCell leftNeighbor){
+        this.leftNeighbor = leftNeighbor;
+    }
+
+    /**
+     * Define the upper neighbor
+     * @param upperNeighbor cell object representing the upper neighbor
+     */
+    public void setUpperNeighbor(PredatorPreyCell upperNeighbor){
+        this.upperNeighbor = upperNeighbor;
+    }
+
+    /**
+     * Define the lower neighbor
+     * @param lowerNeighbor cell object representing the lower neighbor
+     */
+    public void setLowerNeighbor(PredatorPreyCell lowerNeighbor){
+        this.lowerNeighbor = lowerNeighbor;
+    }
+
 }
