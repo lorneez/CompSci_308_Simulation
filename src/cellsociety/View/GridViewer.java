@@ -5,6 +5,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
  */
 public class GridViewer {
     private static final Paint[] COLORMAP = {Color.BLACK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BROWN, Color.WHITE};
+    private static final double INITIAL_SCROLL_SPEED = 1;
     private final int SIZE = 700;
     private final int MENU_SIZE = 200;
     private final Paint SPLASHBACKGROUND = Color.GRAY;
@@ -36,9 +40,14 @@ public class GridViewer {
     private boolean splashScreenFinished;
     private boolean pause = false;
     private boolean restart;
+    private boolean newParameters;
     private Button endButton;
     private Button doneButton;
     private Button resetButton;
+    private String lastSimulationRan;
+    private GridPane gridpane;
+    private ArrayList<Double> gridParametersUpdated;
+    private ArrayList<Double> blockPercentagesUpdated;
 
 
 
@@ -77,8 +86,12 @@ public class GridViewer {
      */
     public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
         restart = false;
+        newParameters = false;
+        gridParametersUpdated = new ArrayList<Double>();
+        blockPercentagesUpdated = new ArrayList<Double>();
+
         setUpGrid(rowSize, colSize, initial_states);
-        myScene = new Scene(myRoot, SIZE + MENU_SIZE + MENU_SIZE, SIZE, SIMBACKGROUND[1]);
+        myScene = new Scene(myRoot, SIZE + MENU_SIZE + MENU_SIZE, SIZE, SPLASHBACKGROUND);
         myStage.setScene(myScene);
     }
 
@@ -119,8 +132,54 @@ public class GridViewer {
         });
         addEndButton();
         addResetButton();
-        speedBar = makeScrollBar(0.1, 10, 1, SIZE*(0.95),SIZE/2);
+        speedBar = makeScrollBar(0.1, 10, INITIAL_SCROLL_SPEED, SIZE*(0.95),SIZE/2);
         setCellColors();
+        addAdditionalButtons(lastSimulationRan);
+    }
+
+    private void addAdditionalButtons(String file_name) {
+        String sim = file_name.split("/")[4].split("_")[0];
+        if(sim.equals("fire")){
+            addFireButtons();
+        }
+    }
+
+    private void addFireButtons() {
+        gridpane = new GridPane();
+        makeLabel("Percent Tree:", SIZE + MENU_SIZE, SIZE/2 - 150);
+        TextField percentTree = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 125);
+        makeLabel("Percent Fire:", SIZE + MENU_SIZE, SIZE/2 -100);
+        TextField percentFire = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 75);
+        makeLabel("Percent Dead:", SIZE + MENU_SIZE, SIZE/2 -50);
+        TextField percentDead = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2-25);
+        makeLabel("Probability Catch:", SIZE + MENU_SIZE, SIZE/2);
+        TextField probCatch = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 + 25);
+        makeLabel("Probability Die:", SIZE + MENU_SIZE, SIZE/2 + 50);
+        TextField probDie = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 + 75);
+        Button fireReset = makeButton("Reset With New Parameters", SIZE + MENU_SIZE, SIZE/2 + 125);
+        fireReset.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                gridParametersUpdated.add(Double.valueOf(probCatch.getText()));
+                gridParametersUpdated.add(Double.valueOf(probDie.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentTree.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentFire.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentDead.getText()));
+                restart = true;
+                newParameters = true;
+            }
+        });
+    }
+
+    public ArrayList<Double> getGridParametersUpdated(){
+        return gridParametersUpdated;
+    }
+    public ArrayList<Double> getBlockPercentagesUpdated(){
+        return blockPercentagesUpdated;
+    }
+
+    public boolean getNewParameters(){
+        return newParameters;
     }
 
     public boolean getSplashScreenFinished(){
@@ -164,40 +223,47 @@ public class GridViewer {
         Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - 50);
         Button predatorPreyButton = makeButton("PredatorPrey", SIZE/2, SIZE/2 - 100);
         Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + 100);
-
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 file_name = "./src/cellsociety/View/fire_config.xml";
+                lastSimulationRan = file_name;
             }
         });
         gameOfLifeButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 file_name = "./src/cellsociety/View/gameoflife_config.xml";
+                lastSimulationRan = file_name;
+
             }
         });
         percolationButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 file_name = "./src/cellsociety/View/percolation_config.xml";
+                lastSimulationRan = file_name;
+
             }
         });
         segregationButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 file_name = "./src/cellsociety/View/segregation_config.xml";
+                lastSimulationRan = file_name;
+
             }
         });
         predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 file_name = "./src/cellsociety/View/predprey_config.xml";
+                lastSimulationRan = file_name;
+
             }
         });
         return new Scene(myRoot, SIZE + MENU_SIZE + MENU_SIZE, SIZE,  SPLASHBACKGROUND);
     }
-
     private Button makeButton(String text, int x, int y){
         Button myButton = new Button();
         myButton.setText(text);
@@ -205,6 +271,22 @@ public class GridViewer {
         myButton.setLayoutY(y);
         myRoot.getChildren().add(myButton);
         return myButton;
+    }
+    private Label makeLabel(String text, int x, int y){
+        Label label = new Label();
+        label.setText(text);
+        label.setLayoutX(x);
+        label.setLayoutY(y);
+        myRoot.getChildren().add(label);
+        return label;
+    }
+    private TextField makeTextField(String text, int x, int y){
+        TextField textField = new TextField();
+        textField.setText(text);
+        textField.setLayoutX(x);
+        textField.setLayoutY(y);
+        myRoot.getChildren().add(textField);
+        return textField;
     }
     public void addDoneButton(){
         doneButton = makeButton("Run Another Simulation", MENU_SIZE/3, SIZE/2);

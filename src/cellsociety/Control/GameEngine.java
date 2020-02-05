@@ -45,9 +45,9 @@ public class GameEngine {
     private int row;
     private int col;
     private int totalBlocks;
-    private ArrayList<Integer> blockTypes;
     private ArrayList<Double> blockPercentages;
     private String lastSimulationRun;
+    private ArrayList<Double> gridParameters;
 
 
     private boolean done;
@@ -73,9 +73,9 @@ public class GameEngine {
 
     private void parseFile(String sim_xml_path) throws ParserConfigurationException, IOException, SAXException {
         cellStates = new ArrayList<>();
-        blockTypes = new ArrayList<>();
+        ArrayList<Integer> blockTypes = new ArrayList<>();
         blockPercentages = new ArrayList<>();
-        ArrayList<Double> gridParameters = new ArrayList<>();
+        gridParameters = new ArrayList<>();
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -98,6 +98,10 @@ public class GameEngine {
         NodeList param_list = doc.getElementsByTagName("param");
         for(int i=0; i<param_list.getLength(); i++){
             gridParameters.add(Double.valueOf(param_list.item(i).getTextContent()));
+        }
+        if(myViewer.getNewParameters()){
+            gridParameters = myViewer.getGridParametersUpdated();
+            blockPercentages = myViewer.getBlockPercentagesUpdated();
         }
         int count = 0;
         for(int i=0; i<blockTypes.size(); i++){
@@ -163,11 +167,12 @@ public class GameEngine {
             if(!sim_xml_path.equals("NONE")){
                 try {
                     lastSimulationRun = sim_xml_path;
-                    myViewer.setFileName("NONE");
                     parseFile(sim_xml_path);
                     myViewer.setUpSimulation(row,col,cellStates);
                     myViewer.setSplashScreenFinished(false);
                     done = false;
+                    myViewer.setFileName("NONE");
+
 
                 } catch (ParserConfigurationException e) {
                     e.printStackTrace();
