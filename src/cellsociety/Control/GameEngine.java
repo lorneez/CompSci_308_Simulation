@@ -64,7 +64,17 @@ public class GameEngine {
      */
     public void start(){
         myViewer = new GridViewer();
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step());
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
+            try {
+                step();
+            } catch (IOException ex) {
+                System.out.println("Caught IO Exception");
+            } catch (SAXException ex) {
+                System.out.println("Caught SAXException");
+            } catch (ParserConfigurationException ex) {
+                System.out.println("Caught ParserConfigException");
+            }
+        });
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
@@ -140,7 +150,7 @@ public class GameEngine {
         }
     }
 
-    private void step(){
+    private void step() throws IOException, SAXException, ParserConfigurationException {
         if(!myViewer.getSplashScreenFinished()){
             System.out.println("stepping");
             if(myViewer.getRestart()){
@@ -165,7 +175,6 @@ public class GameEngine {
             // see if the viewer has determined the file name yet
             // if so, parse the file name and we are done with the splash screen
             if(!sim_xml_path.equals("NONE")){
-                try {
                     lastSimulationRun = sim_xml_path;
                     parseFile(sim_xml_path);
                     myViewer.setUpSimulation(row,col,cellStates);
@@ -174,13 +183,6 @@ public class GameEngine {
                     myViewer.setFileName("NONE");
 
 
-                } catch (ParserConfigurationException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (SAXException e) {
-                    e.printStackTrace();
-                }
 
 
             }

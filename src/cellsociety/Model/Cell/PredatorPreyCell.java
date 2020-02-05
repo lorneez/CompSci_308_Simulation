@@ -22,7 +22,7 @@ public class PredatorPreyCell extends Cell{
     @SuppressWarnings("FieldCanBeLocal")
     private final int FISH_ENERGY = 4;
     @SuppressWarnings("FieldCanBeLocal")
-    private final int SHARK_ENERGY = 10;
+    private final int SHARK_ENERGY = 100;
     private boolean canReproduce = false;
 
     /**
