@@ -142,10 +142,101 @@ public class GridViewer {
         if(sim.equals("fire")){
             addFireButtons();
         }
+        else if(sim.equals("gameoflife")){
+            addGameOfLifeButtons();
+        }
+        else if(sim.equals("percolation")){
+            addPercolationButtons();
+        }
+        else if(sim.equals("segregation")){
+            addSegregationButtons();
+        }
+        else if(sim.equals("predprey")){
+            addPredatorPreyButtons();
+        }
+    }
+
+    private void addPredatorPreyButtons() {
+        makeLabel("Percent Water:", SIZE + MENU_SIZE, SIZE/2 - 150);
+        TextField percentWater = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 125);
+        makeLabel("Percent Fish:", SIZE + MENU_SIZE, SIZE/2 -100);
+        TextField percentFish = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 75);
+        makeLabel("Percent Shark:", SIZE + MENU_SIZE, SIZE/2 -50);
+        TextField percentShark = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2-25);
+        Button predatorPreyReset = makeButton("Reset With New Parameters", SIZE + MENU_SIZE, SIZE/2 + 10);
+        predatorPreyReset.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                blockPercentagesUpdated.add(Double.valueOf(percentWater.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentFish.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentShark.getText()));
+                restart = true;
+                newParameters = true;
+            }
+        });
+    }
+
+    private void addSegregationButtons() {
+        makeLabel("Percent Empty:", SIZE + MENU_SIZE, SIZE/2 - 150);
+        TextField percentEmpty = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 125);
+        makeLabel("Percent Red:", SIZE + MENU_SIZE, SIZE/2 -100);
+        TextField percentRed = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 75);
+        makeLabel("Percent Blue:", SIZE + MENU_SIZE, SIZE/2 -50);
+        TextField percentBlue = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2-25);
+        makeLabel("Percent Satisfy:", SIZE + MENU_SIZE, SIZE/2);
+        TextField satisfyPercent = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 + 25);
+        Button segregationReset = makeButton("Reset With New Parameters", SIZE + MENU_SIZE, SIZE/2 + 60);
+        segregationReset.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                gridParametersUpdated.add(Double.valueOf(satisfyPercent.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentEmpty.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentRed.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentBlue.getText()));
+                restart = true;
+                newParameters = true;
+            }
+        });
+    }
+
+    private void addPercolationButtons() {
+        makeLabel("Percent Blocked:", SIZE + MENU_SIZE, SIZE/2 - 150);
+        TextField percentBocked = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 125);
+        makeLabel("Percent Open:", SIZE + MENU_SIZE, SIZE/2 - 100);
+        TextField percentOpen = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 75);
+        makeLabel("Percent Percolated:", SIZE + MENU_SIZE, SIZE/2 -50);
+        TextField percentPercolated = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2-25);
+        Button percolationReset = makeButton("Reset With New Parameters", SIZE + MENU_SIZE, SIZE/2 + 10);
+        percolationReset.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                blockPercentagesUpdated.add(Double.valueOf(percentBocked.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentOpen.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentPercolated.getText()));
+                restart = true;
+                newParameters = true;
+            }
+        });
+    }
+
+    private void addGameOfLifeButtons() {
+        makeLabel("Percent Alive:", SIZE + MENU_SIZE, SIZE/2 - 150);
+        TextField percentAlive = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 125);
+        makeLabel("Percent Dead:", SIZE + MENU_SIZE, SIZE/2 -100);
+        TextField percentDead = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 75);
+        Button gameOfLifeReset = makeButton("Reset With New Parameters", SIZE + MENU_SIZE, SIZE/2 - 40);
+        gameOfLifeReset.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                blockPercentagesUpdated.add(Double.valueOf(percentAlive.getText()));
+                blockPercentagesUpdated.add(Double.valueOf(percentDead.getText()));
+                restart = true;
+                newParameters = true;
+            }
+        });
     }
 
     private void addFireButtons() {
-        gridpane = new GridPane();
         makeLabel("Percent Tree:", SIZE + MENU_SIZE, SIZE/2 - 150);
         TextField percentTree = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 - 125);
         makeLabel("Percent Fire:", SIZE + MENU_SIZE, SIZE/2 -100);
@@ -156,7 +247,7 @@ public class GridViewer {
         TextField probCatch = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 + 25);
         makeLabel("Probability Die:", SIZE + MENU_SIZE, SIZE/2 + 50);
         TextField probDie = makeTextField("%", SIZE + MENU_SIZE,  SIZE/2 + 75);
-        Button fireReset = makeButton("Reset With New Parameters", SIZE + MENU_SIZE, SIZE/2 + 125);
+        Button fireReset = makeButton("Reset With New Parameters", SIZE + MENU_SIZE, SIZE/2 + 110);
         fireReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
