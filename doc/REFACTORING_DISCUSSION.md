@@ -1,5 +1,9 @@
 # Refactor
 
+Cary Shindell, css57
+Lorne Zhang, lz150
+Ameer Syedibrahim, as877
+
 ## Longest Method
 Our longest method was the setUpSplash() method in the GridViewer class. The method was extremely long because we implemented many buttons on the splash screen and each button had its own handle method. In order to refactor this method and make it more consise, we condensed the handle methods into one forloop that looped through an array of the files and buttons to initiate inside the handle method.
 
