@@ -53,6 +53,7 @@ public class GameEngine {
     private ArrayList<Double> gridParameters;
     private Document doc;
     private int[] possibleStates;
+    private ArrayList<Integer> edgeBehavior;
 
 
     private boolean done;
@@ -98,43 +99,46 @@ public class GameEngine {
 
         this.parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
 
+        NodeList sizeList = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
+        setRowCol(sizeList);
+
+        NodeList paramList = doc.getElementsByTagName("param");
+        setParameters(paramList);
+
+        NodeList neighborList = doc.getElementsByTagName("neighbor");
+        allocateNeighbors(neighborList);
+
+        NodeList edgeTypesList = doc.getElementsByTagName("edge");
+        determineEdgeBehavior(edgeTypesList);
 
         try{
             this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
         }catch(NullPointerException ne){
             System.out.println("Exception: No Simulation Type Given");
-            // restart simulation code
+            myViewer.displayPopUp();
+            animation.stop();
         }
 
         try{
             isValidSimType(simType);
         }catch(Exception ex){
             System.out.println("Exception: Invalid Simulation Type");
-            // restart simulation code
+            myViewer.displayPopUp();
+            animation.stop();
         }
-
 
         if (parseMethod.equals("percentage")){
             parseByPercentage();
         }else if (parseMethod.equals("longlist")){
             parseLongList();
         }
-        System.out.println("neighbors: " + neighbors);
+
         this.initializeGrid(gridParameters, row, col, neighbors);
     }
 
     private void parseLongList(){
 
-        NodeList size_list = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
-        row = Integer.valueOf(size_list.item(0).getTextContent());
-        col = Integer.valueOf(size_list.item(1).getTextContent());
-
-        NodeList param_list = doc.getElementsByTagName("param");
-        for(int i=0; i<param_list.getLength(); i++){
-            gridParameters.add(Double.valueOf(param_list.item(i).getTextContent()));
-        }
         NodeList states_list = doc.getElementsByTagName("state");
-
         try{
             checkValidCellStates(states_list);
         }catch(Exception ex){
@@ -144,7 +148,6 @@ public class GameEngine {
         for(int i=0; i<states_list.getLength(); i++){
             cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
         }
-
         NodeList neighbor_list = doc.getElementsByTagName("neighbor");
         for(int i=0; i<neighbor_list.getLength(); i++){
             String isNeighborConsidered = neighbor_list.item(i).getTextContent();
@@ -162,11 +165,9 @@ public class GameEngine {
         blockPercentages = new ArrayList<>();
         ArrayList<Integer> blockTypes = new ArrayList<>();
 
-        NodeList size_list = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
-        row = Integer.valueOf(size_list.item(0).getTextContent());
-        col = Integer.valueOf(size_list.item(1).getTextContent());
         NodeList blocksInput = doc.getElementsByTagName("totalblocks");
         totalBlocks = Integer.valueOf(blocksInput.item(0).getTextContent());
+
         NodeList blockTypesRead = doc.getElementsByTagName("blocktype");
 
         try{
@@ -178,43 +179,18 @@ public class GameEngine {
         for(int i=0; i<blockTypesRead.getLength(); i++){
             blockTypes.add(Integer.valueOf(blockTypesRead.item(i).getTextContent()));
         }
-        int defaultBlock = blockTypes.get(0);
+
         NodeList blockPercentagesRead = doc.getElementsByTagName("percentage");
+
         for(int i=0; i<blockPercentagesRead.getLength(); i++){
             blockPercentages.add(Double.valueOf(blockPercentagesRead.item(i).getTextContent()));
-        }
-        NodeList param_list = doc.getElementsByTagName("param");
-        for(int i=0; i<param_list.getLength(); i++){
-            gridParameters.add(Double.valueOf(param_list.item(i).getTextContent()));
         }
         if(myViewer.getNewParameters()){
             gridParameters = myViewer.getGridParametersUpdated();
             blockPercentages = myViewer.getBlockPercentagesUpdated();
         }
-        int count = 0;
-        for(int i=0; i<blockTypes.size(); i++){
-            System.out.println(totalBlocks*(blockPercentages.get(i)));
-            for(int w=0; w<totalBlocks*(blockPercentages.get(i))-1; w++){
-                cellStates.add(blockTypes.get(i));
-                count ++;
-            }
-        }
-        NodeList neighbor_list = doc.getElementsByTagName("neighbor");
-        for(int i=0; i<neighbor_list.getLength(); i++){
-            String isNeighborConsidered = neighbor_list.item(i).getTextContent();
+        assignCellStates(blockTypes);
 
-            if(isNeighborConsidered.equals("true")){
-                neighbors.add(true);
-            }
-            else {
-                neighbors.add(false);
-            }
-
-        }
-        for(int i=0; i<totalBlocks-count;i++){
-            cellStates.add(defaultBlock);
-        }
-        Collections.shuffle(cellStates);
     }
 
     private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize, ArrayList<Boolean> ignoredNeighbors){
@@ -312,5 +288,52 @@ public class GameEngine {
             }
         }
         return false;
+    }
+
+    private void setRowCol(NodeList sizeList){
+        row = Integer.valueOf(sizeList.item(0).getTextContent());
+        col = Integer.valueOf(sizeList.item(1).getTextContent());
+    }
+
+    private void setParameters(NodeList paramList){
+        for(int i=0; i<paramList.getLength(); i++){
+            gridParameters.add(Double.valueOf(paramList.item(i).getTextContent()));
+        }
+    }
+
+    private void determineEdgeBehavior(NodeList edges){
+        for(int i=0; i<edges.getLength(); i++){
+            edgeBehavior.add(Integer.valueOf(edges.item(i).getTextContent()));
+        }
+    }
+
+    private void allocateNeighbors(NodeList neighborList){
+        for(int i=0; i<neighborList.getLength(); i++){
+            String isNeighborConsidered = neighborList.item(i).getTextContent();
+
+            if(isNeighborConsidered.equals("true")){
+                neighbors.add(true);
+            }
+            else {
+                neighbors.add(false);
+            }
+
+        }
+    }
+
+    private void assignCellStates(ArrayList<Integer> blockTypes){
+        int count = 0;
+        int defaultBlock = blockTypes.get(0);
+        for(int i=0; i<blockTypes.size(); i++){
+            System.out.println(totalBlocks*(blockPercentages.get(i)));
+            for(int w=0; w<totalBlocks*(blockPercentages.get(i))-1; w++){
+                cellStates.add(blockTypes.get(i));
+                count ++;
+            }
+        }
+        for(int i=0; i<totalBlocks-count;i++){
+            cellStates.add(defaultBlock);
+        }
+        Collections.shuffle(cellStates);
     }
 }

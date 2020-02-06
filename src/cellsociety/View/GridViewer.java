@@ -73,9 +73,6 @@ public class GridViewer {
         myStage.setScene(myScene);
         myStage.show();
     }
-
-
-
     /**
      * get whether or not we are paused
      * @return boolean paused
@@ -133,6 +130,31 @@ public class GridViewer {
             linechart.getData().add(dataSeries1);
         }
 
+    }
+
+    public void displayPopUp(){
+        Group errorRoot = new Group();
+        Stage errorStage = new Stage();
+        Scene errorScene = setUpPopUp(errorStage, errorRoot);
+        errorStage.setScene(errorScene);
+        errorStage.show();
+        setSplashScreenFinished(true);
+        myStage.close();
+
+
+    }
+
+    private Scene setUpPopUp(Stage errorStage, Group errorRoot){
+        //TextField  message = makeTextField("Edit Configuration File to Input Correct Simulation Type", MENU_SIZE/3,  SIZE/2 + 75, errorRoot);
+        Label message = makeLabel("Error: Edit Configuration File",GRAPH_SIZE/4,  (GRAPH_SIZE/3)+50, errorRoot);
+        Button exitButton = makeButton("Exit", (GRAPH_SIZE/4) + 25 , (GRAPH_SIZE/3)+75, errorRoot);
+        exitButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                errorStage.close();
+            }
+        });
+        return new Scene(errorRoot, GRAPH_SIZE, GRAPH_SIZE,  SPLASHBACKGROUND);
     }
 
     private void initiateCellMap() {
@@ -197,7 +219,7 @@ public class GridViewer {
                 row++;
             }
         }
-        Button pauseButton = makeButton("Pause", SIZE/2, (25));
+        Button pauseButton = makeButton("Pause", SIZE/2, (25), myRoot);
         pauseButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -230,13 +252,13 @@ public class GridViewer {
     }
 
     private void addPredatorPreyButtons() {
-        makeLabel("Percent Water:", MENU_SIZE/3, SIZE/2 - 150);
-        TextField percentWater = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125);
-        makeLabel("Percent Fish:", MENU_SIZE/3, SIZE/2 -100);
-        TextField percentFish = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75);
-        makeLabel("Percent Shark:", MENU_SIZE/3, SIZE/2 -50);
-        TextField percentShark = makeTextField("%", MENU_SIZE/3,  SIZE/2-25);
-        Button predatorPreyReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + 10);
+        makeLabel("Percent Water:", MENU_SIZE/3, SIZE/2 - 150, myRoot);
+        TextField percentWater = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125, myRoot);
+        makeLabel("Percent Fish:", MENU_SIZE/3, SIZE/2 -100, myRoot);
+        TextField percentFish = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75, myRoot);
+        makeLabel("Percent Shark:", MENU_SIZE/3, SIZE/2 -50, myRoot);
+        TextField percentShark = makeTextField("%", MENU_SIZE/3,  SIZE/2-25, myRoot);
+        Button predatorPreyReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + 10, myRoot);
         predatorPreyReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -250,15 +272,15 @@ public class GridViewer {
     }
 
     private void addSegregationButtons() {
-        makeLabel("Percent Empty:", MENU_SIZE/3, SIZE/2 - 150);
-        TextField percentEmpty = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125);
-        makeLabel("Percent Red:", MENU_SIZE/3, SIZE/2 -100);
-        TextField percentRed = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75);
-        makeLabel("Percent Blue:", MENU_SIZE/3, SIZE/2 -50);
-        TextField percentBlue = makeTextField("%", MENU_SIZE/3,  SIZE/2-25);
-        makeLabel("Percent Satisfy:", MENU_SIZE/3, SIZE/2);
-        TextField satisfyPercent = makeTextField("%", MENU_SIZE/3,  SIZE/2 + 25);
-        Button segregationReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + 60);
+        makeLabel("Percent Empty:", MENU_SIZE/3, SIZE/2 - 150, myRoot);
+        TextField percentEmpty = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125, myRoot);
+        makeLabel("Percent Red:", MENU_SIZE/3, SIZE/2 -100, myRoot);
+        TextField percentRed = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75, myRoot);
+        makeLabel("Percent Blue:", MENU_SIZE/3, SIZE/2 -50, myRoot);
+        TextField percentBlue = makeTextField("%", MENU_SIZE/3,  SIZE/2-25, myRoot);
+        makeLabel("Percent Satisfy:", MENU_SIZE/3, SIZE/2, myRoot);
+        TextField satisfyPercent = makeTextField("%", MENU_SIZE/3,  SIZE/2 + 25, myRoot);
+        Button segregationReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + 60, myRoot);
         segregationReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -273,13 +295,13 @@ public class GridViewer {
     }
 
     private void addPercolationButtons() {
-        makeLabel("Percent Blocked:", MENU_SIZE/3, SIZE/2 - 150);
-        TextField percentBocked = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125);
-        makeLabel("Percent Open:", MENU_SIZE/3, SIZE/2 - 100);
-        TextField percentOpen = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75);
-        makeLabel("Percent Percolated:", MENU_SIZE/3, SIZE/2 -50);
-        TextField percentPercolated = makeTextField("%", MENU_SIZE/3,  SIZE/2-25);
-        Button percolationReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + 10);
+        makeLabel("Percent Blocked:", MENU_SIZE/3, SIZE/2 - 150, myRoot);
+        TextField percentBocked = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125, myRoot);
+        makeLabel("Percent Open:", MENU_SIZE/3, SIZE/2 - 100, myRoot);
+        TextField percentOpen = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75, myRoot);
+        makeLabel("Percent Percolated:", MENU_SIZE/3, SIZE/2 -50, myRoot);
+        TextField percentPercolated = makeTextField("%", MENU_SIZE/3,  SIZE/2-25, myRoot);
+        Button percolationReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + 10, myRoot);
         percolationReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -293,11 +315,11 @@ public class GridViewer {
     }
 
     private void addGameOfLifeButtons() {
-        makeLabel("Percent Alive:", MENU_SIZE/3, SIZE/2 - 150);
-        TextField percentAlive = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125);
-        makeLabel("Percent Dead:", MENU_SIZE/3, SIZE/2 -100);
-        TextField percentDead = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75);
-        Button gameOfLifeReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 - 40);
+        makeLabel("Percent Alive:", MENU_SIZE/3, SIZE/2 - 150, myRoot);
+        TextField percentAlive = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125, myRoot);
+        makeLabel("Percent Dead:", MENU_SIZE/3, SIZE/2 -100, myRoot);
+        TextField percentDead = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75, myRoot);
+        Button gameOfLifeReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 - 40, myRoot);
         gameOfLifeReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -310,17 +332,17 @@ public class GridViewer {
     }
 
     private void addFireButtons() {
-        makeLabel("Percent Tree:", MENU_SIZE/3, SIZE/2 - 150);
-        TextField percentTree = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125);
-        makeLabel("Percent Fire:", MENU_SIZE/3, SIZE/2 -100);
-        TextField percentFire = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75);
-        makeLabel("Percent Dead:", MENU_SIZE/3, SIZE/2 -50);
-        TextField percentDead = makeTextField("%", MENU_SIZE/3,  SIZE/2-25);
-        makeLabel("Probability Catch:", MENU_SIZE/3, SIZE/2);
-        TextField probCatch = makeTextField("%", MENU_SIZE/3,  SIZE/2 + 25);
-        makeLabel("Probability Die:", MENU_SIZE/3, SIZE/2 + 50);
-        TextField probDie = makeTextField("%", MENU_SIZE/3,  SIZE/2 + 75);
-        Button fireReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + 110);
+        makeLabel("Percent Tree:", MENU_SIZE/3, SIZE/2 - 150, myRoot);
+        TextField percentTree = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 125, myRoot);
+        makeLabel("Percent Fire:", MENU_SIZE/3, SIZE/2 -100, myRoot);
+        TextField percentFire = makeTextField("%", MENU_SIZE/3,  SIZE/2 - 75, myRoot);
+        makeLabel("Percent Dead:", MENU_SIZE/3, SIZE/2 -50, myRoot);
+        TextField percentDead = makeTextField("%", MENU_SIZE/3,  SIZE/2-25, myRoot);
+        makeLabel("Probability Catch:", MENU_SIZE/3, SIZE/2, myRoot);
+        TextField probCatch = makeTextField("%", MENU_SIZE/3,  SIZE/2 + 25, myRoot);
+        makeLabel("Probability Die:", MENU_SIZE/3, SIZE/2 + 50, myRoot);
+        TextField probDie = makeTextField("%", MENU_SIZE/3,  SIZE/2 + 75, myRoot);
+        Button fireReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + 110, myRoot);
         fireReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -375,11 +397,11 @@ public class GridViewer {
 
     private Scene setUpSplash(){
         myRoot = new Group();
-        Button fireButton = makeButton("Fire", SIZE/2, (SIZE/2)+50);
-        Button gameOfLifeButton = makeButton("GameOfLife", SIZE/2, SIZE/2);
-        Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - 50);
-        Button predatorPreyButton = makeButton("PredatorPrey", SIZE/2, SIZE/2 - 100);
-        Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + 100);
+        Button fireButton = makeButton("Fire", SIZE/2, (SIZE/2)+50, myRoot);
+        Button gameOfLifeButton = makeButton("GameOfLife", SIZE/2, SIZE/2, myRoot);
+        Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - 50, myRoot);
+        Button predatorPreyButton = makeButton("PredatorPrey", SIZE/2, SIZE/2 - 100, myRoot);
+        Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + 100, myRoot);
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -421,32 +443,32 @@ public class GridViewer {
         });
         return new Scene(myRoot, SIZE + MENU_SIZE + GRAPH_SIZE, SIZE,  SPLASHBACKGROUND);
     }
-    private Button makeButton(String text, int x, int y){
+    private Button makeButton(String text, int x, int y, Group the_group){
         Button myButton = new Button();
         myButton.setText(text);
         myButton.setLayoutX(x);
         myButton.setLayoutY(y);
-        myRoot.getChildren().add(myButton);
+        the_group.getChildren().add(myButton);
         return myButton;
     }
-    private Label makeLabel(String text, int x, int y){
+    private Label makeLabel(String text, int x, int y, Group the_group){
         Label label = new Label();
         label.setText(text);
         label.setLayoutX(x);
         label.setLayoutY(y);
-        myRoot.getChildren().add(label);
+        the_group.getChildren().add(label);
         return label;
     }
-    private TextField makeTextField(String text, int x, int y){
+    private TextField makeTextField(String text, int x, int y, Group the_group){
         TextField textField = new TextField();
         textField.setText(text);
         textField.setLayoutX(x);
         textField.setLayoutY(y);
-        myRoot.getChildren().add(textField);
+        the_group.getChildren().add(textField);
         return textField;
     }
     public void addDoneButton(){
-        doneButton = makeButton("Run Another Simulation", MENU_SIZE/3, SIZE/2 - 250);
+        doneButton = makeButton("Run Another Simulation", MENU_SIZE/3, SIZE/2 - 250, myRoot);
         setSplashScreenFinished(true);
         doneButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -458,15 +480,8 @@ public class GridViewer {
             }
         });
     }
-
-    public void restartSimulation(){
-        myRoot.getChildren().remove(endButton);
-        myScene = setUpSplash();
-        myStage.setScene(myScene);
-        myStage.show();
-    }
     private void addEndButton(){
-        endButton = makeButton("End Simulation", MENU_SIZE/3, SIZE/2 - 250);
+        endButton = makeButton("End Simulation", MENU_SIZE/3, SIZE/2 - 250, myRoot);
         setSplashScreenFinished(true);
         endButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -477,7 +492,7 @@ public class GridViewer {
         });
     }
     public void addResetButton(){
-        resetButton = makeButton("Reset Simulation", MENU_SIZE/3, SIZE/2 + - 200);
+        resetButton = makeButton("Reset Simulation", MENU_SIZE/3, SIZE/2 + - 200, myRoot);
         setSplashScreenFinished(true);
         resetButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override

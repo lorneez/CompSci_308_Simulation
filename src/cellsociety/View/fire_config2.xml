@@ -15,7 +15,11 @@
         <size>36</size>
         <size>36</size>
     </globalparam>
-
+    <edgetype>
+        <edge>1</edge>
+        <edge>0</edge>
+        <edge>0</edge>
+    </edgetype>
     <initialstates>
         <state>4</state>
         <state>4</state>

@@ -20,9 +20,12 @@ public abstract class Grid {
     protected int colSize;
     protected boolean done = false;
     protected boolean firstStep = true;
-    private String gridType;
+
+    protected String gridType;
+    protected static final int[] possibleStates = {};
     private int xShift;
     private int yShift;
+
 
     /**
      * Construct a grid object
