@@ -5,12 +5,18 @@ import cellsociety.Model.Cell.Cell;
 import cellsociety.Model.Cell.SegregationCell;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SegregationGrid extends Grid {
     private ArrayList<Cell> emptyCells;
     private ArrayList<Cell> notSatisfiedCells;
     private boolean done = false;
     public static final int[] possibleStates = {1, 5, 7};
+    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+        put(1, "Red");
+        put(5, "Blue");
+        put(7, "Empty");
+    }};
 
     /**
      * Construct a segregationgrid object and initialize the grid configuration
@@ -23,7 +29,9 @@ public class SegregationGrid extends Grid {
     public SegregationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, int[] edgeParams){
         super(rowSize, colSize, initial_positions, ignoredNeighbors, edgeParams);
     }
-
+    public HashMap<Integer,String> getStateNames(){
+        return stateNames;
+    }
     /**
      * updates the grid. Checks for cells that are not satisfied and cells that are empty. Then, it swaps the cells that are not satisfied one by one with the empty cells.
      * @return a new set of current state for the GridViewer to display

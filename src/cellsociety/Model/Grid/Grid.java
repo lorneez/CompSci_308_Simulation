@@ -101,6 +101,8 @@ public abstract class Grid {
         }
         return new int[]{x,y};
     }
+    public abstract HashMap<Integer,String> getStateNames();
+
 
     /**
      * make the cell object specific to the simulation we are running

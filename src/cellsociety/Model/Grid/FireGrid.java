@@ -4,6 +4,8 @@ import cellsociety.Model.Cell.Cell;
 import cellsociety.Model.Cell.FireCell;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class that represents a grid for the fire simulation
@@ -14,6 +16,11 @@ import java.util.ArrayList;
 public class FireGrid extends Grid {
 
     public static final int[] possibleStates = {3, 4, 6};
+    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+        put(3, "Dead");
+        put(4, "Tree");
+        put(6, "Fire");
+    }};
 
     /**
      * Construct a firegrid object and initialize the grid configuration
@@ -25,6 +32,9 @@ public class FireGrid extends Grid {
      */
     public FireGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, int[] edgeParams){
         super(rowSize, colSize, initial_positions, ignoredNeighbors, edgeParams);
+    }
+    public HashMap<Integer,String> getStateNames(){
+        return stateNames;
     }
 
     /**
