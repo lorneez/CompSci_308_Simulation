@@ -63,7 +63,7 @@ public class PredatorPreyCell extends Cell{
      * Determine which of the surrounding neighbors of the current cell are water
      * @return a randomly selected water cell (if more than one exists), otherwise null
      */
-    public PredatorPreyCell neighborWater(){
+    private PredatorPreyCell neighborWater(){
 
         ArrayList<PredatorPreyCell> openWater = new ArrayList<>();
         for(int i=0; i<numNeighbors; i++){
@@ -84,7 +84,7 @@ public class PredatorPreyCell extends Cell{
      * Determine which of the surrounding neighbors of the current cell are fish
      * @return a randomly selected fish cell (if more than one exists), otherwise null
      */
-    public PredatorPreyCell neighborFish(){
+    private PredatorPreyCell neighborFish(){
         ArrayList<PredatorPreyCell> nearbyFishes = new ArrayList<>();
         for(int i=0; i<numNeighbors; i++){
             if(this.neighbors.get(i) != null && cellIsFish(this.neighbors.get(i))){
@@ -107,7 +107,7 @@ public class PredatorPreyCell extends Cell{
      *
      * This particular method executes if the current cell is a fish
      */
-    public void fishConditions(){
+    private void fishConditions(){
         if(chronons_passed == REPRODUCTION_THRESHOLD_FISH){
             this.canReproduce = true;
 
@@ -142,7 +142,7 @@ public class PredatorPreyCell extends Cell{
      *
      * This particular method executes if the current cell is a shark
      */
-    public void sharkConditions(){
+    private void sharkConditions(){
         // enable reproduction if the number of chronons is reached
         if (this.chronons_passed == REPRODUCTION_THRESHOLD_SHARK){
             this.canReproduce = true;
@@ -191,7 +191,7 @@ public class PredatorPreyCell extends Cell{
      * @param cell any given cell in this class to be determined if it is water
      * @return true or false depending on whether the cell is water or not
      */
-    public boolean cellIsWater(PredatorPreyCell cell){
+    private boolean cellIsWater(PredatorPreyCell cell){
         return cell.getCurrentState() == 5;
     }
 
@@ -200,7 +200,7 @@ public class PredatorPreyCell extends Cell{
      * @param cell any given cell in this class to be determined if it is a fish
      * @return true or false depending on whether the cell is fish or not
      */
-    public boolean cellIsFish(PredatorPreyCell cell){
+    private boolean cellIsFish(PredatorPreyCell cell){
         return cell.getCurrentState() == 2;
     }
 

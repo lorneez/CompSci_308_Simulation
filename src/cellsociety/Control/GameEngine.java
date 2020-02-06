@@ -86,6 +86,12 @@ public class GameEngine {
         animation.play();
     }
 
+
+    /**
+     * Accept a String XML file path and extract all information from file
+     * @param sim_xml_path string representation of file path
+     * Assigns values from file to instance variables
+     */
     private void parseFile(String sim_xml_path) throws IOException, SAXException, ParserConfigurationException {
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -125,6 +131,11 @@ public class GameEngine {
         this.initializeGrid(gridParameters, row, col, neighbors);
     }
 
+    /**
+     * 1 of 2 ways to parse the configuration file that looks at all the states specified in
+     * the file and loads them into the grid.
+     * Useful for small grid sizes or when users want to specify how the grid looks
+     * */
     private void parseLongList(){
 
         NodeList states_list = doc.getElementsByTagName("state");
@@ -149,6 +160,11 @@ public class GameEngine {
             }
         }
     }
+
+    /**
+     * 2nd way to parse the configuration file. Allows for much more cells to appear on grid and allows user to
+     * specify which percentage of each cell will appear.
+     */
 
     private void parseByPercentage(){
         blockPercentages = new ArrayList<>();
@@ -182,6 +198,10 @@ public class GameEngine {
 
     }
 
+    /**
+     * Depending on the simulation type, initialize the grid from its corresponding class
+     * Also sets the possibleStates instance variable
+     * */
     private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize, ArrayList<Boolean> ignoredNeighbors){
         int[] edgeParams = new int[]{0, 0, 0}; // change this later to be dynamic... it is grid type, xShift, yShift
         switch (simType) {
