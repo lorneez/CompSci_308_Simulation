@@ -68,6 +68,7 @@ public class GridViewer {
         myStage.setScene(myScene);
         myStage.show();
     }
+
     /**
      * get whether or not we are paused
      * @return boolean paused
@@ -106,27 +107,17 @@ public class GridViewer {
         myStage.setScene(myScene);
     }
 
-    public void setStateNames(HashMap<Integer, String> x){
-        stateNames = x;
+    /**
+     * Set the map of state number to name
+     * @param stateNames map of state number to name
+     */
+    public void setStateNames(HashMap<Integer, String> stateNames){
+        this.stateNames = stateNames;
     }
 
     /**
-     * construct a single unique integer from a pair of coordinates. Assume size<10000
+     * Displays a pop up when an error occurs, telling the user to exit
      */
-    private int coordinatePair(int x, int y){
-        return x*10000 + y;
-    }
-
-    private void initiateChart() {
-        for(int x : cellCount.keySet()){
-            XYChart.Series dataSeries1 = new XYChart.Series();
-            dataSeries1.getData().add(new XYChart.Data( 0, cellCount.get(x)));
-            dataSeries1.setName(stateNames.get(x));
-            linechart.getData().add(dataSeries1);
-        }
-
-    }
-
     public void displayPopUp(){
         Group errorRoot = new Group();
         Stage errorStage = new Stage();
@@ -135,65 +126,13 @@ public class GridViewer {
         errorStage.show();
         setSplashScreenFinished(true);
         myStage.close();
-
-
-    }
-
-    private Scene setUpPopUp(Stage errorStage, Group errorRoot){
-        //TextField  message = makeTextField("Edit Configuration File to Input Correct Simulation Type", MENU_SIZE/3,  SIZE/2 + 75, errorRoot);
-        Label message = makeLabel("Error: Edit Configuration File",GRAPH_SIZE/4,  (GRAPH_SIZE/3)+OFFSETS[3], errorRoot);
-        Button exitButton = makeButton("Exit", (GRAPH_SIZE/4) + 25 , (GRAPH_SIZE/3)+OFFSETS[5], errorRoot);
-        exitButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                errorStage.close();
-            }
-        });
-        return new Scene(errorRoot, GRAPH_SIZE, GRAPH_SIZE,  SPLASHBACKGROUND);
-    }
-
-    private void initiateCellMap() {
-        cellCount = new HashMap<>();
-        for(int x : cellStates.values()){
-            cellCount.putIfAbsent(x,0);
-            cellCount.put(x,cellCount.get(x) + 1);
-        }
-        for(int x: cellCount.values()){
-            System.out.println(x);
-        }
-    }
-
-    private void setUpGraph() {
-        step = 0;
-        NumberAxis xAxis = new NumberAxis();
-        xAxis.setLabel("Step");
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Cells");
-        linechart = new LineChart(xAxis, yAxis);
-
-
-
-        linechart.setLayoutX(MENU_SIZE + SIZE);
-        linechart.setLayoutY(100);
-        myRoot.getChildren().add(linechart);
-
-    }
-
-    /**
-     * Update the cells and change their colors
-     * @param nextStates arraylist of next states, in top to bottom order
-     */
-    public void updateCellStates(ArrayList<int[]> nextStates){
-        for (int[] cellInfo : nextStates) {
-            cellStates.put(coordinatePair(cellInfo[0], cellInfo[1]), cellInfo[2]);
-            cells.get(coordinatePair(cellInfo[0], cellInfo[1])).setFill(COLORMAP[cellInfo[2]]);
-        }
-        initiateCellMap();
-        updateGraph();
     }
 
     /**
      * assume grid is always square. For different grid shapes, just need to change this method (and stuff in grid class)
+     * @param rowSize number of columns
+     * @param colSize number of rows
+     * @param initial_states integer list representing initial cell states. Order is "arbitrary", this method interprets it
      */
     public void setUpGrid(int rowSize, int colSize, ArrayList<Integer> initial_states){
         myRoot = new Group();
@@ -225,6 +164,137 @@ public class GridViewer {
         addResetButton();
         speedBar = makeScrollBar(0.1, 10, INITIAL_SCROLL_SPEED, SIZE*(0.95),SIZE/2);
         addAdditionalButtons(lastSimulationRan);
+    }
+
+    /**
+     * Update the cells and change their colors
+     * @param nextStates arraylist of next states, in top to bottom order
+     */
+    public void updateCellStates(ArrayList<int[]> nextStates){
+        for (int[] cellInfo : nextStates) {
+            cellStates.put(coordinatePair(cellInfo[0], cellInfo[1]), cellInfo[2]);
+            cells.get(coordinatePair(cellInfo[0], cellInfo[1])).setFill(COLORMAP[cellInfo[2]]);
+        }
+        initiateCellMap();
+        updateGraph();
+    }
+
+    public ArrayList<Double> getGridParametersUpdated(){
+        return gridParametersUpdated;
+    }
+    public ArrayList<Double> getBlockPercentagesUpdated(){
+        return blockPercentagesUpdated;
+    }
+
+    public boolean getNewParameters(){
+        return newParameters;
+    }
+
+    public boolean getSplashScreenFinished(){
+        return splashScreenFinished;
+    }
+
+    public void setSplashScreenFinished(boolean target){
+        splashScreenFinished = target;
+    }
+
+    public String getFileName(){
+        return file_name;
+    }
+
+    public void setFileName(String newFileName){
+        file_name = newFileName;
+    }
+
+    /**
+     * Add a button to take you back to splash screen
+     */
+    public void addDoneButton(){
+        doneButton = makeButton("Run Another Simulation", MENU_SIZE/3, SIZE/2 - OFFSETS[11], myRoot);
+        setSplashScreenFinished(true);
+        doneButton.setOnAction(new EventHandler<>() {
+            @Override
+            public void handle(ActionEvent event) {
+                myRoot.getChildren().remove(endButton);
+                myScene = setUpSplash();
+                myStage.setScene(myScene);
+                myStage.show();
+            }
+        });
+    }
+
+    public boolean getRestart(){
+        return restart;
+    }
+
+    /**
+     * Add button to end simulation
+     */
+    public void addResetButton(){
+        Button resetButton = makeButton("Reset Simulation", MENU_SIZE / 3, SIZE / 2 - OFFSETS[11], myRoot);
+        setSplashScreenFinished(true);
+        resetButton.setOnAction(new EventHandler<>() {
+            @Override
+            public void handle(ActionEvent event) {
+                restart = true;
+            }
+        });
+    }
+
+    private Scene setUpPopUp(Stage errorStage, Group errorRoot){
+        //TextField  message = makeTextField("Edit Configuration File to Input Correct Simulation Type", MENU_SIZE/3,  SIZE/2 + 75, errorRoot);
+        Label message = makeLabel("Error: Edit Configuration File",GRAPH_SIZE/4,  (GRAPH_SIZE/3)+OFFSETS[3], errorRoot);
+        Button exitButton = makeButton("Exit", (GRAPH_SIZE/4) + 25 , (GRAPH_SIZE/3)+OFFSETS[5], errorRoot);
+        exitButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                errorStage.close();
+            }
+        });
+        return new Scene(errorRoot, GRAPH_SIZE, GRAPH_SIZE,  SPLASHBACKGROUND);
+    }
+
+    /**
+     * construct a single unique integer from a pair of coordinates. Assume size<10000
+     */
+    private int coordinatePair(int x, int y){
+        return x*10000 + y;
+    }
+
+    private void initiateChart() {
+        for(int x : cellCount.keySet()){
+            XYChart.Series dataSeries1 = new XYChart.Series();
+            dataSeries1.getData().add(new XYChart.Data( 0, cellCount.get(x)));
+            dataSeries1.setName(stateNames.get(x));
+            linechart.getData().add(dataSeries1);
+        }
+    }
+
+    private void initiateCellMap() {
+        cellCount = new HashMap<>();
+        for(int x : cellStates.values()){
+            cellCount.putIfAbsent(x,0);
+            cellCount.put(x,cellCount.get(x) + 1);
+        }
+        for(int x: cellCount.values()){
+            System.out.println(x);
+        }
+    }
+
+    private void setUpGraph() {
+        step = 0;
+        NumberAxis xAxis = new NumberAxis();
+        xAxis.setLabel("Step");
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Cells");
+        linechart = new LineChart(xAxis, yAxis);
+
+
+
+        linechart.setLayoutX(MENU_SIZE + SIZE);
+        linechart.setLayoutY(100);
+        myRoot.getChildren().add(linechart);
+
     }
 
     private void addAdditionalButtons(String file_name) {
@@ -357,15 +427,6 @@ public class GridViewer {
         });
     }
 
-    public ArrayList<Double> getGridParametersUpdated(){   return gridParametersUpdated;    }
-    public ArrayList<Double> getBlockPercentagesUpdated(){ return blockPercentagesUpdated;  }
-
-    public boolean getNewParameters(){ return newParameters; }
-    public boolean getSplashScreenFinished(){ return splashScreenFinished;  }
-    public void setSplashScreenFinished(boolean target){  splashScreenFinished = target; }
-    public String getFileName(){  return file_name; }
-    public void setFileName(String newFileName){ file_name = newFileName; }
-
     private ScrollBar makeScrollBar(double min, double max, double val, double y, double x) {
         ScrollBar myScrollBar = new ScrollBar();
         myScrollBar.setMin(min);
@@ -423,19 +484,7 @@ public class GridViewer {
         the_group.getChildren().add(textField);
         return textField;
     }
-    public void addDoneButton(){
-        doneButton = makeButton("Run Another Simulation", MENU_SIZE/3, SIZE/2 - OFFSETS[11], myRoot);
-        setSplashScreenFinished(true);
-        doneButton.setOnAction(new EventHandler<>() {
-            @Override
-            public void handle(ActionEvent event) {
-                myRoot.getChildren().remove(endButton);
-                myScene = setUpSplash();
-                myStage.setScene(myScene);
-                myStage.show();
-            }
-        });
-    }
+
     private void addEndButton(){
         endButton = makeButton("End Simulation", MENU_SIZE/3, SIZE/2 - OFFSETS[11], myRoot);
         setSplashScreenFinished(true);
@@ -446,19 +495,6 @@ public class GridViewer {
                 addDoneButton();
             }
         });
-    }
-    public void addResetButton(){
-        Button resetButton = makeButton("Reset Simulation", MENU_SIZE / 3, SIZE / 2 - OFFSETS[11], myRoot);
-        setSplashScreenFinished(true);
-        resetButton.setOnAction(new EventHandler<>() {
-            @Override
-            public void handle(ActionEvent event) {
-                restart = true;
-            }
-        });
-    }
-    public boolean getRestart(){
-        return restart;
     }
     
     private void updateGraph(){
