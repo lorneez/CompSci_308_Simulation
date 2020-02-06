@@ -46,8 +46,8 @@ public abstract class Grid {
      * Update the grid and keep track of whether any cell states changed
      * @return a list of the cell states to be given to the viewer
      */
-    public ArrayList<Integer> updateGrid(){
-        ArrayList<Integer> viewState = new ArrayList<Integer>();
+    public ArrayList<int[]> updateGrid(){
+        ArrayList<int[]> viewState = new ArrayList<>();
         boolean equilibrium = true;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
@@ -61,7 +61,8 @@ public abstract class Grid {
         firstStep = false;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                viewState.add(cells.get(coordinatePair(i,j)).calculateNextState());
+                int state = cells.get(coordinatePair(i,j)).calculateNextState();
+                viewState.add(new int[]{i,j,state});
             }
         }
         return viewState;
@@ -96,9 +97,6 @@ public abstract class Grid {
                 return new int[]{-1, -1};
             }
         }
-        else if(gridType.equals("sphere")){
-
-        }
         return new int[]{x,y};
     }
     public abstract HashMap<Integer,String> getStateNames();
@@ -130,7 +128,6 @@ public abstract class Grid {
                             cells.get(coordinatePair(j,w)).setNeighbor(i, null);
                         }
                         else{
-                            System.out.println(cells.get(coordinatePair(j,w)));
                             cells.get(coordinatePair(j,w)).setNeighbor(i, cells.get(coordinatePair(neighborCoords[0], neighborCoords[1])));
                         }
                     }

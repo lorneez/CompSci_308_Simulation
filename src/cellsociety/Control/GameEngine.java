@@ -155,9 +155,7 @@ public class GameEngine {
             else {
                 neighbors.add(false);
             }
-
         }
-
     }
 
     private void parseByPercentage(){
@@ -257,7 +255,7 @@ public class GameEngine {
             }
             animation.setRate(myViewer.getScrollValue());
             if(!myViewer.getPause() && !myGrid.checkIfDone()){
-                ArrayList<Integer> currStates = myGrid.updateGrid();
+                ArrayList<int[]> currStates = myGrid.updateGrid();
                 myViewer.updateCellStates(currStates);
             }
             if(myGrid.checkIfDone() && !done){

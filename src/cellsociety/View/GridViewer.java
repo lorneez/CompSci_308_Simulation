@@ -37,8 +37,8 @@ public class GridViewer {
     private final int GRAPH_SIZE = 500;
     private final Paint SPLASHBACKGROUND = Color.GRAY;
     private static final Paint[] SIMBACKGROUND = {Color.ORANGE, Color.YELLOW};
-    private ArrayList<Rectangle> cells;
-    private ArrayList<Integer> cellStates;
+    private HashMap<Integer, Rectangle> cells;
+    private HashMap<Integer, Integer> cellStates;
     private ScrollBar speedBar;
     private final Stage myStage;
     private Scene myScene;
@@ -118,6 +118,12 @@ public class GridViewer {
         stateNames = x;
     }
 
+    /**
+     * construct a single unique integer from a pair of coordinates. Assume size<10000
+     */
+    private int coordinatePair(int x, int y){
+        return x*10000 + y;
+    }
 
     private void initiateChart() {
         for(int x : cellCount.keySet()){
@@ -131,7 +137,7 @@ public class GridViewer {
 
     private void initiateCellMap() {
         cellCount = new HashMap<Integer,Integer>();
-        for(int x : cellStates){
+        for(int x : cellStates.values()){
             cellCount.putIfAbsent(x,0);
             cellCount.put(x,cellCount.get(x) + 1);
         }
@@ -160,25 +166,30 @@ public class GridViewer {
      * Update the cells and change their colors
      * @param nextStates arraylist of next states, in top to bottom order
      */
-    public void updateCellStates(ArrayList<Integer> nextStates){
-        cellStates = nextStates;
-        setCellColors();
+    public void updateCellStates(ArrayList<int[]> nextStates){
+        for (int[] cellInfo : nextStates) {
+            cellStates.put(coordinatePair(cellInfo[0], cellInfo[1]), cellInfo[2]);
+            cells.get(coordinatePair(cellInfo[0], cellInfo[1])).setFill(COLORMAP[cellInfo[2]]);
+        }
         initiateCellMap();
         updateGraph();
     }
 
-    // assume grid is always square
+    /**
+     * assume grid is always square. For different grid shapes, just need to change this method (and stuff in grid class)
+     */
     public void setUpGrid(int rowSize, int colSize, ArrayList<Integer> initial_states){
         myRoot = new Group();
-        cellStates = new ArrayList<Integer>();
-        cells = new ArrayList<Rectangle>();
-        double cellSize = (double) (SIZE*0.8 / colSize);
+        cellStates = new HashMap<Integer, Integer>();
+        cells = new HashMap<Integer, Rectangle>();
+        double cellSize = SIZE*0.8 / colSize;
         int row = 0;
         int col = 0;
         for(Integer state : initial_states){
-            cellStates.add(state);
+            cellStates.put(coordinatePair(row,col), state);
             Rectangle cell = new Rectangle(MENU_SIZE + SIZE * 0.1 + col * cellSize, SIZE * 0.1 + row * cellSize, cellSize, cellSize);
-            cells.add(cell);
+            cell.setFill(COLORMAP[state]);
+            cells.put(coordinatePair(row,col), cell);
             myRoot.getChildren().add(cell);
             col++;
             if(col >= rowSize){
@@ -196,7 +207,6 @@ public class GridViewer {
         addEndButton();
         addResetButton();
         speedBar = makeScrollBar(0.1, 10, INITIAL_SCROLL_SPEED, SIZE*(0.95),SIZE/2);
-        setCellColors();
         addAdditionalButtons(lastSimulationRan);
     }
 
@@ -361,13 +371,6 @@ public class GridViewer {
         myScrollBar.setLayoutX(x);
         myRoot.getChildren().add(myScrollBar);
         return myScrollBar;
-    }
-
-    private void setCellColors(){
-        for(int i=0; i<cellStates.size(); i++){
-            int cellstate = cellStates.get(i);
-            cells.get(i).setFill(COLORMAP[cellstate]);
-        }
     }
 
     private Scene setUpSplash(){

@@ -37,10 +37,10 @@ public class SegregationGrid extends Grid {
      * @return a new set of current state for the GridViewer to display
      */
     @Override
-    public ArrayList<Integer> updateGrid(){
+    public ArrayList<int[]> updateGrid(){
         emptyCells = new ArrayList<Cell>();
         notSatisfiedCells = new ArrayList<Cell>();
-        ArrayList<Integer> viewState = new ArrayList<Integer>();
+        ArrayList<int[]> viewState = new ArrayList<>();
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
                 if(isEmpty(cells.get(coordinatePair(i,j)))){
@@ -60,7 +60,8 @@ public class SegregationGrid extends Grid {
         swapCells();
         for(int q=0; q<colSize; q++) {
             for (int w = 0; w < rowSize; w++) {
-                viewState.add(cells.get(coordinatePair(q,w)).getCurrentState());
+                int state = cells.get(coordinatePair(q,w)).getCurrentState();
+                viewState.add(new int[]{q,w,state});
             }
         }
         return viewState;
