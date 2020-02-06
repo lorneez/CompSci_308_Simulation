@@ -1,6 +1,5 @@
 package cellsociety.Model.Grid;
 import java.util.Collections;
-import java.util.Random;
 
 import cellsociety.Model.Cell.Cell;
 import cellsociety.Model.Cell.SegregationCell;
@@ -13,31 +12,14 @@ public class SegregationGrid extends Grid {
     private boolean done = false;
 
     /**
-     * SegregationGrid constructor
-     * @param rowSize
-     * @param colSize
-     * @param initial_positions
+     * Construct a segregationgrid object and initialize the grid configuration
+     * @param rowSize number of columns
+     * @param colSize number of rows
+     * @param initial_positions initial grid configuration in 1D list form
+     * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
      */
-    public SegregationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
-        super(rowSize, colSize, initial_positions);
-        initializeGrid(initial_positions);
-    }
-
-    /**
-     * sets the grid up with the initial positions
-     * @param initial_positions the inital positions of the grid
-     */
-    @Override
-    protected void initializeGrid(ArrayList<Integer> initial_positions){
-        int index = 0;
-        for(int i=0; i<colSize; i++){
-            for(int j=0; j<rowSize; j++){
-                cells[i][j] = makeCell(initial_positions.get(index));
-                index ++;
-            }
-        }
-        setNeighbors();
-        setDiagNeighbors();
+    public SegregationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors){
+        super(rowSize, colSize, initial_positions, ignoredNeighbors);
     }
 
     /**

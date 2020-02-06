@@ -17,24 +17,11 @@ public class GameOfLifeGrid extends Grid {
      * Construct a GameOfLife grid and initialize it
      * @param rowSize number of columns
      * @param colSize number of rows
-     * @param initial_positions initial cell configurations
+     * @param initial_states initial cell configurations
+     * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
      */
-    public GameOfLifeGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
-        super(rowSize, colSize, initial_positions);
-        initializeGrid(initial_positions);
-    }
-
-    @Override
-    protected void initializeGrid(ArrayList<Integer> initial_positions){
-        int index = 0;
-        for(int i=0; i<colSize; i++){
-            for(int j=0; j<rowSize; j++){
-                cells[i][j] = makeCell(initial_positions.get(index));
-                index ++;
-            }
-        }
-        setNeighbors();
-        setDiagNeighbors();
+    public GameOfLifeGrid(int rowSize, int colSize, ArrayList<Integer> initial_states, ArrayList<Boolean> ignoredNeighbors){
+        super(rowSize, colSize, initial_states, ignoredNeighbors);
     }
 
     /**

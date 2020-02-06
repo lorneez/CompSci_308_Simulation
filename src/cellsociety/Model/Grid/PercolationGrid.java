@@ -15,27 +15,14 @@ import java.util.ArrayList;
 public class PercolationGrid extends Grid {
 
     /**
-     * Construct a percolation grid and initialize it
+     * Construct a percolationgrid object and initialize the grid configuration
      * @param rowSize number of columns
      * @param colSize number of rows
-     * @param initial_states list of initial cell configurations
+     * @param initial_positions initial grid configuration in 1D list form
+     * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
      */
-    public PercolationGrid(int rowSize, int colSize, ArrayList<Integer> initial_states){
-        super(rowSize, colSize, initial_states);
-        initializeGrid(initial_states);
-    }
-
-    @Override
-    protected void initializeGrid(ArrayList<Integer> initial_states){
-        int index = 0;
-        for(int i=0; i<colSize; i++){
-            for(int j=0; j<rowSize; j++){
-                cells[i][j] = makeCell(initial_states.get(index));
-                index++;
-            }
-        }
-        setNeighbors();
-        setDiagNeighbors();
+    public PercolationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors){
+        super(rowSize, colSize, initial_positions, ignoredNeighbors);
     }
 
     /**

@@ -7,33 +7,23 @@ import java.util.ArrayList;
 public class PredatorPreyGrid extends Grid {
 
     /**
-     *
-     * @param rowSize
-     * @param colSize
-     * @param initial_positions
+     * Construct a predatorpreygrid object and initialize the grid configuration
+     * @param rowSize number of columns
+     * @param colSize number of rows
+     * @param initial_positions initial grid configuration in 1D list form
+     * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
      */
-    public PredatorPreyGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
-        super(rowSize, colSize, initial_positions);
-        initializeGrid(initial_positions);
+    public PredatorPreyGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors){
+        super(rowSize, colSize, initial_positions, ignoredNeighbors);
     }
-    @Override
-    protected void initializeGrid(ArrayList<Integer> initial_positions){
-        int index = 0;
-        for(int i=0; i<colSize; i++){
-            for(int j=0; j<rowSize; j++){
-                cells[i][j] = makeCell(initial_positions.get(index));
-                index ++;
 
-            }
-        }
-        setNeighbors();
-    }
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean checkIfDone(){
-
-        return false;
-
-
+        return done;
     }
     /**
      *
@@ -44,6 +34,5 @@ public class PredatorPreyGrid extends Grid {
     public PredatorPreyCell makeCell(int state) {
         return new PredatorPreyCell(state);
     }
-
 
 }
