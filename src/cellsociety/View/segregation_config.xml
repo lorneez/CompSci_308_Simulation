@@ -12,9 +12,9 @@
     <globalparam>
         <param>0.45</param>
     </globalparam>
-    <size>150</size>
-    <size>150</size>
-    <totalblocks>22500</totalblocks>
+    <size>50</size>
+    <size>50</size>
+    <totalblocks>2500</totalblocks>
     <blocktype>7</blocktype>
     <blocktype>1</blocktype>
     <blocktype>5</blocktype>

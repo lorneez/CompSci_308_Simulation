@@ -9,9 +9,9 @@
     <neighbor>true</neighbor>
     <neighbor>true</neighbor>
     <neighbor>true</neighbor>
-    <size>200</size>
-    <size>200</size>
-    <totalblocks>40000</totalblocks>
+    <size>50</size>
+    <size>50</size>
+    <totalblocks>2500</totalblocks>
     <blocktype>0</blocktype>
     <blocktype>7</blocktype>
     <blocktype>5</blocktype>
