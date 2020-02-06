@@ -18,6 +18,7 @@ public abstract class Grid {
     protected int colSize;
     protected boolean done = false;
     protected boolean firstStep = true;
+    protected String gridType;
 
     /**
      * Construct a grid object
@@ -26,10 +27,11 @@ public abstract class Grid {
      * @param initial_positions initial grid configuration in 1D list form
      * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
      */
-    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors){
+    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, String gridType){
         this.rowSize = rowSize;
         this.colSize = colSize;
         this.cells = new Cell[rowSize][colSize];
+        this.gridType = gridType;
         initializeGrid(initial_positions, ignoredNeighbors);
     }
 
@@ -63,14 +65,24 @@ public abstract class Grid {
     }*/
 
     /**
-     * Check if the given coordinates are valid within the grid
+     * check if coordinates are in bounds. If not, return null (-1) or what edge it maps to (e.g. torus will wrap around)
      * @param x x coordinate
      * @param y y coordinate
-     * @return whether or not the coordinates are valid
+     * @return coordinates of the neighbor (or -1's if null)
      */
-    public boolean checkInBounds(int x,int y){
-        if(x < 0 || x >= colSize) return false;
-        return y >= 0 && y < rowSize;
+    public int[] checkInBounds(int x,int y){
+        if(gridType.equals("torus")){
+            if(x<0) x += rowSize;
+            else if(x>=rowSize) x -= rowSize;
+            if(y<0) y += colSize;
+            else if(y>=colSize) y -= colSize;
+        }
+        else if(gridType.equals("basic")){
+            if(x < 0 || x >= colSize || y < 0 || y >= rowSize){
+                return new int[]{-1, -1};
+            }
+        }
+        return new int[]{x,y};
     }
 
     /**
@@ -89,18 +101,18 @@ public abstract class Grid {
     protected void setNeighbors(ArrayList<Boolean> ignoredNeighbors){
         int[] x = {0,0,1,-1,1,1,-1,-1};
         int[] y = {1,-1,0,0,1,-1,1,-1};
+        // torus:
         for(int j=0; j<colSize; j++){
             for(int w=0; w<rowSize; w++){
                 for(int i=0; i<Cell.numNeighbors;i++){
-                    int neighborx = j+x[i];
-                    int neighbory = w+y[i];
-                    if(checkInBounds(neighborx,neighbory)){
+                    int[] neighborCoords = checkInBounds(j+x[i], w+y[i]);
+                    if(neighborCoords[0] != -1){
                         // 0, 1, 2, 3, 4, 5, 6, 7 are upper, lower, right, left, upper right, lower right, upper left, lower left respectively
                         if(!ignoredNeighbors.get(i)){
                             cells[j][w].setNeighbor(i, null);
                         }
                         else{
-                            cells[j][w].setNeighbor(i, cells[neighborx][neighbory]);
+                            cells[j][w].setNeighbor(i, cells[neighborCoords[0]][neighborCoords[1]]);
                         }
                     }
                 }

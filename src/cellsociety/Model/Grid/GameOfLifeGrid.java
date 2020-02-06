@@ -20,8 +20,8 @@ public class GameOfLifeGrid extends Grid {
      * @param initial_states initial cell configurations
      * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
      */
-    public GameOfLifeGrid(int rowSize, int colSize, ArrayList<Integer> initial_states, ArrayList<Boolean> ignoredNeighbors){
-        super(rowSize, colSize, initial_states, ignoredNeighbors);
+    public GameOfLifeGrid(int rowSize, int colSize, ArrayList<Integer> initial_states, ArrayList<Boolean> ignoredNeighbors, String gridType){
+        super(rowSize, colSize, initial_states, ignoredNeighbors, gridType);
     }
 
     /**
