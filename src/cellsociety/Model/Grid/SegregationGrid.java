@@ -10,6 +10,7 @@ public class SegregationGrid extends Grid {
     private ArrayList<Cell> emptyCells;
     private ArrayList<Cell> notSatisfiedCells;
     private boolean done = false;
+    public static final int[] possibleStates = {1, 5, 7};
 
     /**
      * Construct a segregationgrid object and initialize the grid configuration

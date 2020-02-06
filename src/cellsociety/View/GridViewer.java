@@ -73,6 +73,8 @@ public class GridViewer {
         myStage.show();
     }
 
+
+
     /**
      * get whether or not we are paused
      * @return boolean paused
@@ -371,7 +373,7 @@ public class GridViewer {
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "./src/cellsociety/View/fire_config2.xml";
+                file_name = "./src/cellsociety/View/fire_config.xml";
                 lastSimulationRan = file_name;
             }
         });
@@ -445,6 +447,13 @@ public class GridViewer {
                 myStage.show();
             }
         });
+    }
+
+    public void restartSimulation(){
+        myRoot.getChildren().remove(endButton);
+        myScene = setUpSplash();
+        myStage.setScene(myScene);
+        myStage.show();
     }
     private void addEndButton(){
         endButton = makeButton("End Simulation", MENU_SIZE/3, SIZE/2 - 250);
