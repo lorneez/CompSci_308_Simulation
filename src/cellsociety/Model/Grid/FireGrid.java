@@ -17,11 +17,11 @@ public class FireGrid extends Grid {
      * Construct a firegrid object and initialize the grid configuration
      * @param rowSize number of columns
      * @param colSize number of rows
-     * @param initial_states initial grid configuration in 1D list form
+     * @param initial_positions initial grid configuration in 1D list form
+     * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
      */
-    public FireGrid(int rowSize, int colSize, ArrayList<Integer> initial_states){
-        super(rowSize, colSize, initial_states);
-        this.initializeGrid(initial_states);
+    public FireGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors){
+        super(rowSize, colSize, initial_positions, ignoredNeighbors);
     }
 
     /**

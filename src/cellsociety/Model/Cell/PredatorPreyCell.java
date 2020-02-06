@@ -12,10 +12,7 @@ import java.util.Random;
  */
 public class PredatorPreyCell extends Cell{
 
-    protected PredatorPreyCell rightNeighbor;
-    protected PredatorPreyCell leftNeighbor;
-    protected PredatorPreyCell lowerNeighbor;
-    protected PredatorPreyCell upperNeighbor;
+    protected ArrayList<PredatorPreyCell> neighbors;
 
     private double energy;
     private double chronons_passed;
@@ -68,17 +65,10 @@ public class PredatorPreyCell extends Cell{
     public PredatorPreyCell neighborWater(){
 
         ArrayList<PredatorPreyCell> openWater = new ArrayList<>();
-        if( this.leftNeighbor != null && cellIsWater(this.leftNeighbor)){
-            openWater.add(this.leftNeighbor);
-        }
-        if( this.rightNeighbor != null && cellIsWater(this.rightNeighbor)){
-            openWater.add(this.rightNeighbor);
-        }
-        if( this.upperNeighbor != null && cellIsWater(this.upperNeighbor)){
-            openWater.add(this.upperNeighbor);
-        }
-        if( this.lowerNeighbor != null && cellIsWater(this.lowerNeighbor)){
-            openWater.add(this.lowerNeighbor);
+        for(int i=0; i<numNeighbors; i++){
+            if( this.neighbors.get(i) != null && cellIsWater(this.neighbors.get(i))){
+                openWater.add(this.neighbors.get(i));
+            }
         }
 
         if(openWater.size()!= 0){
@@ -95,26 +85,17 @@ public class PredatorPreyCell extends Cell{
      */
     public PredatorPreyCell neighborFish(){
         ArrayList<PredatorPreyCell> nearbyFishes = new ArrayList<>();
-        if(this.leftNeighbor != null && cellIsFish(this.leftNeighbor)){
-            nearbyFishes.add(this.leftNeighbor);
-        }
-        if(this.rightNeighbor != null && cellIsFish(this.rightNeighbor)){
-            nearbyFishes.add(this.rightNeighbor);
-        }
-        if( this.upperNeighbor != null && cellIsFish(this.upperNeighbor)){
-            nearbyFishes.add(this.upperNeighbor);
-        }
-        if(this.lowerNeighbor != null && cellIsFish(this.lowerNeighbor)){
-            nearbyFishes.add(this.lowerNeighbor);
+        for(int i=0; i<numNeighbors; i++){
+            if(this.neighbors.get(i) != null && cellIsFish(this.neighbors.get(i))){
+                nearbyFishes.add(this.neighbors.get(i));
+            }
         }
 
         if(nearbyFishes.size()!= 0){
-
             Collections.shuffle(nearbyFishes);
 
             return nearbyFishes.get(0);
         }
-
         return null;
     }
 
@@ -228,39 +209,12 @@ public class PredatorPreyCell extends Cell{
     }
 
     /**
-     * Define the right neighbor
-     * @param rightNeighbor cell object representing the right neighbor
+     * Define a neighbor in a given position (e.g. left) with a certain cell
+     * @param whichNeighbor position (as an index to the list)
+     * @param neighborCell cell object representing the neighbor
      */
     @Override
-    public void setRightNeighbor(Cell rightNeighbor){
-        this.rightNeighbor = (PredatorPreyCell) rightNeighbor;
+    public void setNeighbor(int whichNeighbor, Cell neighborCell){
+        neighbors.set(whichNeighbor, (PredatorPreyCell) neighborCell);
     }
-
-    /**
-     * Define the left neighbor
-     * @param leftNeighbor cell object representing the left neighbor
-     */
-    @Override
-    public void setLeftNeighbor(Cell leftNeighbor){
-        this.leftNeighbor = (PredatorPreyCell) leftNeighbor;
-    }
-
-    /**
-     * Define the upper neighbor
-     * @param upperNeighbor cell object representing the upper neighbor
-     */
-    @Override
-    public void setUpperNeighbor(Cell upperNeighbor){
-        this.upperNeighbor = (PredatorPreyCell)  upperNeighbor;
-    }
-
-    /**
-     * Define the lower neighbor
-     * @param lowerNeighbor cell object representing the lower neighbor
-     */
-    @Override
-    public void setLowerNeighbor(Cell lowerNeighbor){
-        this.lowerNeighbor = (PredatorPreyCell) lowerNeighbor;
-    }
-
 }

@@ -23,12 +23,14 @@ public abstract class Grid {
      * Construct a grid object
      * @param rowSize number of columns
      * @param colSize number of rows
-     * @param initial_positions initial cell configurations
+     * @param initial_positions initial grid configuration in 1D list form
+     * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
      */
-    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions){
+    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors){
         this.rowSize = rowSize;
         this.colSize = colSize;
         this.cells = new Cell[rowSize][colSize];
+        initializeGrid(initial_positions, ignoredNeighbors);
     }
 
     /**
@@ -84,54 +86,21 @@ public abstract class Grid {
      */
     public abstract boolean checkIfDone();
 
-    protected void setNeighbors(){
-        int[] x = {0,0,1,-1};
-        int[] y = {1,-1,0,0};
+    protected void setNeighbors(ArrayList<Boolean> ignoredNeighbors){
+        int[] x = {0,0,1,-1,1,1,-1,-1};
+        int[] y = {1,-1,0,0,1,-1,1,-1};
         for(int j=0; j<colSize; j++){
             for(int w=0; w<rowSize; w++){
-                for(int i=0; i<4;i++){
+                for(int i=0; i<Cell.numNeighbors;i++){
                     int neighborx = j+x[i];
                     int neighbory = w+y[i];
                     if(checkInBounds(neighborx,neighbory)){
-                        if(i==0){
-
-                            cells[j][w].setUpperNeighbor(cells[neighborx][neighbory]);
+                        // 0, 1, 2, 3, 4, 5, 6, 7 are upper, lower, right, left, upper right, lower right, upper left, lower left respectively
+                        if(!ignoredNeighbors.get(i)){
+                            cells[j][w].setNeighbor(i, null);
                         }
-                        if(i==1){
-                            cells[j][w].setLowerNeighbor(cells[neighborx][neighbory]);
-                        }
-                        if(i==2){
-                            cells[j][w].setRightNeighbor(cells[neighborx][neighbory]);
-                        }
-                        if(i==3){
-                            cells[j][w].setLeftNeighbor(cells[neighborx][neighbory]);
-                        }
-                    }
-                }
-            }
-
-        }
-    }
-    protected void setDiagNeighbors(){
-        int[] x = {1,1,-1,-1};
-        int[] y = {1,-1,1,-1};
-        for(int j=0; j<colSize; j++){
-            for(int w=0; w<rowSize; w++){
-                for(int i=0; i<4;i++){
-                    int neighborx = j+x[i];
-                    int neighbory = w+y[i];
-                    if(checkInBounds(neighborx,neighbory)){
-                        if(i==0){
-                            cells[j][w].setUpperRightNeighbor(cells[neighborx][neighbory]);
-                        }
-                        if(i==1){
-                            cells[j][w].setLowerRightNeighbor(cells[neighborx][neighbory]);
-                        }
-                        if(i==2){
-                            cells[j][w].setUpperLeftNeighbor(cells[neighborx][neighbory]);
-                        }
-                        if(i==3){
-                            cells[j][w].setLowerLeftNeighbor(cells[neighborx][neighbory]);
+                        else{
+                            cells[j][w].setNeighbor(i, cells[neighborx][neighbory]);
                         }
                     }
                 }
@@ -140,7 +109,7 @@ public abstract class Grid {
         }
     }
 
-    protected void initializeGrid(ArrayList<Integer> initial_states){
+    protected void initializeGrid(ArrayList<Integer> initial_states, ArrayList<Boolean> ignoredNeighbors){
         int index = 0;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
@@ -148,7 +117,7 @@ public abstract class Grid {
                 index++;
             }
         }
-        setNeighbors();
+        setNeighbors(ignoredNeighbors);
     }
 }
 

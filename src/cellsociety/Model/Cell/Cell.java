@@ -1,5 +1,7 @@
 package cellsociety.Model.Cell;
 
+import java.util.ArrayList;
+
 /**
  * Class representing an abstract cell object, including its current and next states, and neighbors
  * @author caryshindell, lornezhang, ameersyedibrahim
@@ -8,16 +10,10 @@ package cellsociety.Model.Cell;
  * Assumptions: max of 8 neighbors
  */
 public abstract class Cell {
+    public static final int numNeighbors = 8;
     protected int currentState;
     protected int nextState;
-    protected Cell rightNeighbor;
-    protected Cell leftNeighbor;
-    protected Cell lowerNeighbor;
-    protected Cell upperNeighbor;
-    protected Cell upperRightNeighbor;
-    protected Cell upperLeftNeighbor;
-    protected Cell lowerRightNeighbor;
-    protected Cell lowerLeftNeighbor;
+    protected ArrayList<Cell> neighbors;
 
     /**
      * Cell Constructor
@@ -29,67 +25,12 @@ public abstract class Cell {
     }
 
     /**
-     * Define the upper right neighbor
-     * @param upperRightNeighbor cell object representing the upper right neighbor
+     * Define a neighbor in a given position (e.g. left) with a certain cell
+     * @param whichNeighbor position (as an index to the list)
+     * @param neighborCell cell object representing the neighbor
      */
-    public void setUpperRightNeighbor(Cell upperRightNeighbor){
-        this.upperRightNeighbor = upperRightNeighbor;
-    }
-
-    /**
-     * Define the upper left neighbor
-     * @param upperLeftNeighbor cell object representing the upper left neighbor
-     */
-    public void setUpperLeftNeighbor(Cell upperLeftNeighbor){
-        this.upperLeftNeighbor = upperLeftNeighbor;
-    }
-
-    /**
-     * Define the lower right neighbor
-     * @param lowerRightNeighbor cell object representing the lower right neighbor
-     */
-    public void setLowerRightNeighbor(Cell lowerRightNeighbor){
-        this.lowerRightNeighbor = lowerRightNeighbor;
-    }
-
-    /**
-     * Define the lower left neighbor
-     * @param lowerLeftNeighbor cell object representing the lower left neighbor
-     */
-    public void setLowerLeftNeighbor(Cell lowerLeftNeighbor){
-        this.lowerLeftNeighbor = lowerLeftNeighbor;
-    }
-
-    /**
-     * Define the right neighbor
-     * @param rightNeighbor cell object representing the right neighbor
-     */
-    public void setRightNeighbor(Cell rightNeighbor){
-        this.rightNeighbor = rightNeighbor;
-    }
-
-    /**
-     * Define the left neighbor
-     * @param leftNeighbor cell object representing the left neighbor
-     */
-    public void setLeftNeighbor(Cell leftNeighbor){
-        this.leftNeighbor = leftNeighbor;
-    }
-
-    /**
-     * Define the upper neighbor
-     * @param upperNeighbor cell object representing the upper neighbor
-     */
-    public void setUpperNeighbor(Cell upperNeighbor){
-        this.upperNeighbor = upperNeighbor;
-    }
-
-    /**
-     * Define the lower neighbor
-     * @param lowerNeighbor cell object representing the lower neighbor
-     */
-    public void setLowerNeighbor(Cell lowerNeighbor){
-        this.lowerNeighbor = lowerNeighbor;
+    public void setNeighbor(int whichNeighbor, Cell neighborCell){
+        neighbors.set(whichNeighbor, neighborCell);
     }
 
     /**
@@ -129,7 +70,7 @@ public abstract class Cell {
      */
     public abstract int calculateNextState();
 
-    protected Cell[] getAllNeighbors(){
-        return new Cell[]{rightNeighbor, leftNeighbor, lowerNeighbor, upperNeighbor, upperRightNeighbor, upperLeftNeighbor, lowerRightNeighbor, lowerLeftNeighbor};
+    protected ArrayList<Cell> getAllNeighbors(){
+        return neighbors;
     }
 }

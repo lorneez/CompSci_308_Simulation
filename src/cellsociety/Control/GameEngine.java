@@ -38,7 +38,8 @@ public class GameEngine {
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
     private Timeline animation;
-    private String sim_type;
+    private String simType;
+    private String parseMethod;
     private ArrayList<Integer> cellStates;
     private Grid myGrid;
     private GridViewer myViewer;
@@ -48,6 +49,7 @@ public class GameEngine {
     private ArrayList<Double> blockPercentages;
     private String lastSimulationRun;
     private ArrayList<Double> gridParameters;
+    private Document doc;
 
 
     private boolean done;
@@ -82,15 +84,48 @@ public class GameEngine {
     }
 
     private void parseFile(String sim_xml_path) throws ParserConfigurationException, IOException, SAXException {
-        cellStates = new ArrayList<>();
-        ArrayList<Integer> blockTypes = new ArrayList<>();
-        blockPercentages = new ArrayList<>();
-        gridParameters = new ArrayList<>();
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(fXmlFile);
-        this.sim_type = doc.getElementsByTagName("sim_type").item(0).getTextContent();
+        doc = dBuilder.parse(fXmlFile);
+
+        cellStates = new ArrayList<>();
+        gridParameters = new ArrayList<>();
+
+        this.parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
+
+        if (parseMethod.equals("percentage")){
+            parseByPercentage();
+        }else if (parseMethod.equals("longlist")){
+            parseLongList();
+        }
+        this.initializeGrid(gridParameters, row, col);
+    }
+
+    private void parseLongList(){
+        this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
+        System.out.println(simType);
+        NodeList size_list = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
+        row = Integer.valueOf(size_list.item(0).getTextContent());
+        col = Integer.valueOf(size_list.item(1).getTextContent());
+
+        NodeList param_list = doc.getElementsByTagName("param");
+        for(int i=0; i<param_list.getLength(); i++){
+            gridParameters.add(Double.valueOf(param_list.item(i).getTextContent()));
+        }
+        System.out.println("H");
+        NodeList states_list = doc.getElementsByTagName("state");
+        for(int i=0; i<states_list.getLength(); i++){
+            cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
+        }
+
+    }
+
+    private void parseByPercentage(){
+        blockPercentages = new ArrayList<>();
+        ArrayList<Integer> blockTypes = new ArrayList<>();
+
+        this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
         NodeList size_list = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
         row = Integer.valueOf(size_list.item(0).getTextContent());
         col = Integer.valueOf(size_list.item(1).getTextContent());
@@ -125,27 +160,26 @@ public class GameEngine {
             cellStates.add(defaultBlock);
         }
         Collections.shuffle(cellStates);
-        this.initializeGrid(gridParameters, row, col);
     }
 
-    private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize){
-        switch (sim_type) {
+    private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize, ArrayList<Boolean> ignoredNeighbors){
+        switch (simType) {
             case "fire":
-                myGrid = new FireGrid(rowSize, colSize, cellStates);
+                myGrid = new FireGrid(rowSize, colSize, cellStates, ignoredNeighbors);
                 FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
                 break;
             case "gameoflife":
-                myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates);
+                myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates, ignoredNeighbors);
                 break;
             case "segregation":
-                myGrid = new SegregationGrid(rowSize, colSize, cellStates);
+                myGrid = new SegregationGrid(rowSize, colSize, cellStates, ignoredNeighbors);
                 SegregationCell.setProb(gridParameters.get(0));
                 break;
             case "predatorprey":
-                myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates);
+                myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates, ignoredNeighbors);
                 break;
             case "percolation":
-                myGrid = new PercolationGrid(rowSize, colSize, cellStates);
+                myGrid = new PercolationGrid(rowSize, colSize, cellStates, ignoredNeighbors);
                 break;
         }
     }
@@ -181,10 +215,6 @@ public class GameEngine {
                     myViewer.setSplashScreenFinished(false);
                     done = false;
                     myViewer.setFileName("NONE");
-
-
-
-
             }
         }
     }
