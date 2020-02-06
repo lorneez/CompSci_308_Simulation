@@ -24,9 +24,10 @@ public class SegregationGrid extends Grid {
      * @param colSize number of rows
      * @param initial_positions initial grid configuration in 1D list form
      * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
+     * @param edgeParams grid edge type, xShift, yShift
      */
-    public SegregationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, String gridType){
-        super(rowSize, colSize, initial_positions, ignoredNeighbors, gridType);
+    public SegregationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, int[] edgeParams){
+        super(rowSize, colSize, initial_positions, ignoredNeighbors, edgeParams);
     }
     public HashMap<Integer,String> getStateNames(){
         return stateNames;

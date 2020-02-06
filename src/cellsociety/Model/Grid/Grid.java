@@ -14,12 +14,15 @@ import java.util.HashMap;
  */
 public abstract class Grid {
     //protected HashMap<Cell, ArrayList<Cell>> cells;
+    public static final String[] gridTypes = new String[]{"basic", "torus"};
     protected Cell[][] cells;
     protected int rowSize;
     protected int colSize;
     protected boolean done = false;
     protected boolean firstStep = true;
-    protected String gridType;
+    private String gridType;
+    private int xShift;
+    private int yShift;
 
     /**
      * Construct a grid object
@@ -27,12 +30,15 @@ public abstract class Grid {
      * @param colSize number of rows
      * @param initial_positions initial grid configuration in 1D list form
      * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
+     * @param edgeParams grid edge type, xShift, yShift
      */
-    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, String gridType){
+    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, int[] edgeParams){
         this.rowSize = rowSize;
         this.colSize = colSize;
         this.cells = new Cell[rowSize][colSize];
-        this.gridType = gridType;
+        this.gridType = gridTypes[edgeParams[0]];
+        xShift = edgeParams[1];
+        yShift = edgeParams[2];
         initializeGrid(initial_positions, ignoredNeighbors);
     }
 
@@ -73,6 +79,13 @@ public abstract class Grid {
      */
     public int[] checkInBounds(int x,int y){
         if(gridType.equals("torus")){
+            // first do the shifts, if there are any
+            // can only be one type of shift, x or y
+            if(x<0) y -= yShift;
+            else if(x>=rowSize) y += yShift;
+            if(y<0) x -= xShift;
+            else if(y>=colSize) x += xShift;
+            // now do the wrap-arounds
             if(x<0) x += rowSize;
             else if(x>=rowSize) x -= rowSize;
             if(y<0) y += colSize;

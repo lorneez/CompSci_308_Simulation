@@ -220,28 +220,28 @@ public class GameEngine {
     }
 
     private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize, ArrayList<Boolean> ignoredNeighbors){
-        String gridType = "basic"; // change this later to be dynamic
+        int[] edgeParams = new int[]{0, 0, 0}; // change this later to be dynamic... it is grid type, xShift, yShift
         switch (simType) {
             case "fire":
-                myGrid = new FireGrid(rowSize, colSize, cellStates, ignoredNeighbors, gridType);
+                myGrid = new FireGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
                 FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
                 possibleStates = FireGrid.possibleStates;
                 break;
             case "gameoflife":
-                myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates, ignoredNeighbors, gridType);
+                myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
                 possibleStates = GameOfLifeGrid.possibleStates;
                 break;
             case "segregation":
-                myGrid = new SegregationGrid(rowSize, colSize, cellStates, ignoredNeighbors, gridType);
+                myGrid = new SegregationGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
                 SegregationCell.setProb(gridParameters.get(0));
                 possibleStates = SegregationGrid.possibleStates;
                 break;
             case "predatorprey":
-                myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates, ignoredNeighbors, gridType);
+                myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
                 possibleStates = PredatorPreyGrid.possibleStates;
                 break;
             case "percolation":
-                myGrid = new PercolationGrid(rowSize, colSize, cellStates, ignoredNeighbors, gridType);
+                myGrid = new PercolationGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
                 possibleStates = PercolationGrid.possibleStates;
                 break;
 
