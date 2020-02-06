@@ -1,5 +1,6 @@
 <root>
     <sim_type>gameoflife</sim_type>
+    <parse>percentage</parse>
     <size>200</size>
     <size>200</size>
     <totalblocks>40000</totalblocks>

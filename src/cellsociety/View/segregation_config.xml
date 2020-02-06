@@ -1,5 +1,6 @@
 <root>
     <sim_type>segregation</sim_type>
+    <parse>percentage</parse>
     <globalparam>
         <param>0.4</param>
     </globalparam>
