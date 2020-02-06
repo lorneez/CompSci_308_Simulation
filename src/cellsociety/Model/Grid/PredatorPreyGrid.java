@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class PredatorPreyGrid extends Grid {
 
     public static final int[] possibleStates = {0, 2, 5};
-    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+    public static final HashMap<Integer, String> stateNames = new HashMap<>() {{
         put(0, "Shark");
         put(2, "Fish");
         put(5, "Water");
@@ -27,18 +27,21 @@ public class PredatorPreyGrid extends Grid {
     public HashMap<Integer,String> getStateNames(){
         return stateNames;
     }
+
     /**
-     *
-     * @return
+     * Check if the simulation has reached equilibrium... for predator prey we just return false because there are cases
+     * where no cell states change but e.g. sharks will die later
+     * @return boolean done
      */
     @Override
     public boolean checkIfDone(){
-        return done;
+        return false;
     }
+
     /**
-     *
+     * Make a predator prey cell rather than an abstract cell
      * @param state
-     * @return
+     * @return predator prey cell object
      */
     @Override
     public PredatorPreyCell makeCell(int state) {

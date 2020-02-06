@@ -1,8 +1,5 @@
 package cellsociety.Model.Cell;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 /**
  * Class representing a cell object for the percolation simulation
  * @author caryshindell, lornezhang, ameersyedibrahim

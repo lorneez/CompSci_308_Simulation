@@ -40,7 +40,6 @@ public class GameEngine {
 
     private Timeline animation;
     private String simType;
-    private String parseMethod;
     private ArrayList<Integer> cellStates;
     private ArrayList<Boolean> neighbors;
     private Grid myGrid;
@@ -95,7 +94,7 @@ public class GameEngine {
         cellStates = new ArrayList<>();
         gridParameters = new ArrayList<>();
         neighbors = new ArrayList<>();
-        this.parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
+        String parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
         NodeList sizeList = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
         setRowCol(sizeList);
         NodeList paramList = doc.getElementsByTagName("param");
@@ -156,7 +155,7 @@ public class GameEngine {
         ArrayList<Integer> blockTypes = new ArrayList<>();
 
         NodeList blocksInput = doc.getElementsByTagName("totalblocks");
-        totalBlocks = Integer.valueOf(blocksInput.item(0).getTextContent());
+        totalBlocks = Integer.parseInt(blocksInput.item(0).getTextContent());
 
         NodeList blockTypesRead = doc.getElementsByTagName("blocktype");
 
@@ -248,26 +247,25 @@ public class GameEngine {
         }
     }
 
-    private boolean isValidSimType(String s) throws Exception {
+    private void isValidSimType(String s) throws Exception {
 
-        for(int i =0; i<allSimTypes.length; i++){
-            if(allSimTypes[i].equals(s)){
-                return true;
+        for (String allSimType : allSimTypes) {
+            if (allSimType.equals(s)) {
+                return;
             }
         }
 
         throw new Exception("Simulation Type Invalid Exception");
     }
 
-    private boolean checkValidCellStates(NodeList states) throws Exception{
-        int state = -1;
+    private void checkValidCellStates(NodeList states) throws Exception{
+        int state;
         for(int i = 0; i<states.getLength(); i++){
-            state = Integer.valueOf(states.item(i).getTextContent());
+            state = Integer.parseInt(states.item(i).getTextContent());
             if(!checkIfStateInSim(state)){
                 throw new Exception("One Or More Cells Have Incorrect States");
             }
         }
-        return true;
     }
 
     private boolean checkIfStateInSim(int state){
@@ -281,8 +279,8 @@ public class GameEngine {
     }
 
     private void setRowCol(NodeList sizeList){
-        row = Integer.valueOf(sizeList.item(0).getTextContent());
-        col = Integer.valueOf(sizeList.item(1).getTextContent());
+        row = Integer.parseInt(sizeList.item(0).getTextContent());
+        col = Integer.parseInt(sizeList.item(1).getTextContent());
     }
 
     private void setParameters(NodeList paramList){

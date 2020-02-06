@@ -5,7 +5,6 @@ import cellsociety.Model.Cell.FireCell;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class that represents a grid for the fire simulation
@@ -16,7 +15,7 @@ import java.util.Map;
 public class FireGrid extends Grid {
 
     public static final int[] possibleStates = {3, 4, 6};
-    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+    public static final HashMap<Integer, String> stateNames = new HashMap<>() {{
         put(3, "Dead");
         put(4, "Tree");
         put(6, "Fire");

@@ -16,15 +16,15 @@ public abstract class Grid {
     protected HashMap<Integer, Cell> cells;
     public static final String[] gridTypes = new String[]{"basic", "torus"};
     //protected Cell[][] cells;
-    protected int rowSize;
-    protected int colSize;
+    protected final int rowSize;
+    protected final int colSize;
     protected boolean done = false;
     protected boolean firstStep = true;
 
-    protected String gridType;
+    protected final String gridType;
     protected static final int[] possibleStates = {};
-    private int xShift;
-    private int yShift;
+    private final int xShift;
+    private final int yShift;
 
 
     /**

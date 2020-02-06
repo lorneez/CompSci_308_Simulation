@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class GameOfLifeGrid extends Grid {
 
     public static final int[] possibleStates = {0, 4};
-    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+    public static final HashMap<Integer, String> stateNames = new HashMap<>() {{
         put(0, "Dead");
         put(4, "Alive");
     }};
