@@ -41,6 +41,7 @@ public class GameEngine {
     private String simType;
     private String parseMethod;
     private ArrayList<Integer> cellStates;
+    private ArrayList<Boolean> neighbors;
     private Grid myGrid;
     private GridViewer myViewer;
     private int row;
@@ -91,6 +92,7 @@ public class GameEngine {
 
         cellStates = new ArrayList<>();
         gridParameters = new ArrayList<>();
+        neighbors = new ArrayList<>();
 
         this.parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
 
@@ -99,7 +101,8 @@ public class GameEngine {
         }else if (parseMethod.equals("longlist")){
             parseLongList();
         }
-        this.initializeGrid(gridParameters, row, col);
+        System.out.println("neighbors: " + neighbors);
+        this.initializeGrid(gridParameters, row, col, neighbors);
     }
 
     private void parseLongList(){
@@ -117,6 +120,19 @@ public class GameEngine {
         NodeList states_list = doc.getElementsByTagName("state");
         for(int i=0; i<states_list.getLength(); i++){
             cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
+        }
+
+        NodeList neighbor_list = doc.getElementsByTagName("neighbor");
+        for(int i=0; i<neighbor_list.getLength(); i++){
+            String isNeighborConsidered = neighbor_list.item(i).getTextContent();
+
+            if(isNeighborConsidered.equals("true")){
+                neighbors.add(true);
+            }
+            else {
+                neighbors.add(false);
+            }
+
         }
 
     }
@@ -155,6 +171,18 @@ public class GameEngine {
                 cellStates.add(blockTypes.get(i));
                 count ++;
             }
+        }
+        NodeList neighbor_list = doc.getElementsByTagName("neighbor");
+        for(int i=0; i<neighbor_list.getLength(); i++){
+            String isNeighborConsidered = neighbor_list.item(i).getTextContent();
+
+            if(isNeighborConsidered.equals("true")){
+                neighbors.add(true);
+            }
+            else {
+                neighbors.add(false);
+            }
+
         }
         for(int i=0; i<totalBlocks-count;i++){
             cellStates.add(defaultBlock);

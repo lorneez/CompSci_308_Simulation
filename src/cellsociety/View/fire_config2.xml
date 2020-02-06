@@ -4,6 +4,14 @@
         <param>0.5</param>
         <param>0.4</param>
     </globalparam>
+    <neighbor>1</neighbor>
+    <neighbor>1</neighbor>
+    <neighbor>1</neighbor>
+    <neighbor>1</neighbor>
+    <neighbor>0</neighbor>
+    <neighbor>0</neighbor>
+    <neighbor>0</neighbor>
+    <neighbor>0</neighbor>
     <size>36</size>
     <size>36</size>
     <initialstates>
