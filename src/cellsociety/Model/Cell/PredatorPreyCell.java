@@ -15,13 +15,11 @@ public class PredatorPreyCell extends Cell{
 
     private double energy;
     private double chronons_passed;
-    private final int REPRODUCTION_THRESHOLD_FISH = 10; // chronon threshold, not sure what this number should be
-    private final int REPRODUCTION_THRESHOLD_SHARK = 4; // chronon threshold, not sure what this number should be
+    private static final int REPRODUCTION_THRESHOLD_FISH = 10; // chronon threshold, not sure what this number should be
+    private static final int REPRODUCTION_THRESHOLD_SHARK = 4; // chronon threshold, not sure what this number should be
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int FISH_ENERGY = 10;
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int SHARK_ENERGY = 20;
+    private static final int FISH_ENERGY = 10;
+    private static final int SHARK_ENERGY = 20;
     private boolean canReproduce = false;
 
     /**

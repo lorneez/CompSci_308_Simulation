@@ -4,6 +4,7 @@ import cellsociety.Model.Cell.Cell;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class representing an abstract grid object for any simulation
@@ -13,9 +14,8 @@ import java.util.HashMap;
  * Assumptions: grid is rectangular
  */
 public abstract class Grid {
-    protected HashMap<Integer, Cell> cells;
+    protected Map<Integer, Cell> cells;
     public static final String[] gridTypes = new String[]{"basic", "torus"};
-    //protected Cell[][] cells;
     protected final int rowSize;
     protected final int colSize;
     protected boolean done = false;
@@ -71,10 +71,6 @@ public abstract class Grid {
         return viewState;
     }
 
-    /*public int getCell(int row, int col){
-        return cells[row][col].getCurrentState();
-    }*/
-
     /**
      * check if coordinates are in bounds. If not, return null (-1) or what edge it maps to (e.g. torus will wrap around)
      * @param x x coordinate
@@ -95,10 +91,8 @@ public abstract class Grid {
             if(y<0) y += colSize;
             else if(y>=colSize) y -= colSize;
         }
-        else if(gridType.equals("basic")){
-            if(x < 0 || x >= colSize || y < 0 || y >= rowSize){
-                return new int[]{-1, -1};
-            }
+        else if(gridType.equals("basic") && (x < 0 || x >= colSize || y < 0 || y >= rowSize)){
+            return new int[]{-1, -1};
         }
         return new int[]{x,y};
     }

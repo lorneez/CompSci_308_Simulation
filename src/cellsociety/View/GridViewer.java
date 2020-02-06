@@ -17,10 +17,7 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Class that represents the user interfaces and displays the grid
@@ -32,13 +29,13 @@ import java.util.ListIterator;
 public class GridViewer {
     private static final Paint[] COLORMAP = {Color.BLACK, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BROWN, Color.WHITE};
     private static final double INITIAL_SCROLL_SPEED = 1;
-    private final int SIZE = 700;
-    private final int MENU_SIZE = 200;
-    private final int GRAPH_SIZE = 500;
-    private final Paint SPLASHBACKGROUND = Color.GRAY;
+    private static final int SIZE = 700;
+    private static final int MENU_SIZE = 200;
+    private static final int GRAPH_SIZE = 500;
+    private static final Paint SPLASHBACKGROUND = Color.GRAY;
     private static final Paint[] SIMBACKGROUND = {Color.ORANGE, Color.YELLOW};
-    private HashMap<Integer, Rectangle> cells;
-    private HashMap<Integer, Integer> cellStates;
+    private Map<Integer, Rectangle> cells;
+    private Map<Integer, Integer> cellStates;
     private ScrollBar speedBar;
     private final Stage myStage;
     private Scene myScene;
@@ -56,11 +53,9 @@ public class GridViewer {
     private GridPane gridpane;
     private ArrayList<Double> gridParametersUpdated;
     private ArrayList<Double> blockPercentagesUpdated;
-    private HashMap<Integer, Integer> cellCount;
+    private Map<Integer, Integer> cellCount;
     private XYChart.Series test;
-    private HashMap<Integer, String> stateNames;
-
-
+    private Map<Integer, String> stateNames;
 
     /**
      * Constructor method, sets up the stage and splash screen
