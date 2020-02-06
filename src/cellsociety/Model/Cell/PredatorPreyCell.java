@@ -2,7 +2,6 @@ package cellsociety.Model.Cell;
 import cellsociety.Model.Cell.Cell;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * Class representing a cell object for the predator prey simulation
@@ -26,8 +25,8 @@ public class PredatorPreyCell extends Cell{
     private boolean canReproduce = false;
 
     /**
-     * Cell Constructor
-     * @param state
+     * Cell Constructor for predator prey cell
+     * @param state intial cell state
      */
     public PredatorPreyCell(int state){
         super(state);

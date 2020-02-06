@@ -12,7 +12,7 @@ public class SegregationGrid extends Grid {
     private ArrayList<Cell> notSatisfiedCells;
     private boolean done = false;
     public static final int[] possibleStates = {1, 5, 7};
-    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+    public static final HashMap<Integer, String> stateNames = new HashMap<>() {{
         put(1, "Red");
         put(5, "Blue");
         put(7, "Empty");
@@ -38,8 +38,8 @@ public class SegregationGrid extends Grid {
      */
     @Override
     public ArrayList<int[]> updateGrid(){
-        emptyCells = new ArrayList<Cell>();
-        notSatisfiedCells = new ArrayList<Cell>();
+        emptyCells = new ArrayList<>();
+        notSatisfiedCells = new ArrayList<>();
         ArrayList<int[]> viewState = new ArrayList<>();
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){

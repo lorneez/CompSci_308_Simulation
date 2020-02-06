@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class PercolationGrid extends Grid {
 
     public static final int[] possibleStates = {0, 5, 7};
-    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+    public static final HashMap<Integer, String> stateNames = new HashMap<>() {{
         put(0, "Blocked");
         put(7, "Open");
         put(5, "Percolated");
