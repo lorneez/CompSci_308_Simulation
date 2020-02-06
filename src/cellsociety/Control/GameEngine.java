@@ -53,7 +53,7 @@ public class GameEngine {
     private ArrayList<Double> gridParameters;
     private Document doc;
     private int[] possibleStates;
-    private ArrayList<Integer> edgeBehavior;
+    private int[] edgeBehavior;
 
 
     private boolean done;
@@ -96,6 +96,7 @@ public class GameEngine {
         cellStates = new ArrayList<>();
         gridParameters = new ArrayList<>();
         neighbors = new ArrayList<>();
+        edgeBehavior = new int[3];
 
         this.parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
 
@@ -194,7 +195,7 @@ public class GameEngine {
     }
 
     private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize, ArrayList<Boolean> ignoredNeighbors){
-        int[] edgeParams = new int[]{0, 0, 0}; // change this later to be dynamic... it is grid type, xShift, yShift
+        int[] edgeParams = edgeBehavior;
         switch (simType) {
             case "fire":
                 myGrid = new FireGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
@@ -303,7 +304,7 @@ public class GameEngine {
 
     private void determineEdgeBehavior(NodeList edges){
         for(int i=0; i<edges.getLength(); i++){
-            edgeBehavior.add(Integer.valueOf(edges.item(i).getTextContent()));
+            edgeBehavior[i] = Integer.valueOf(edges.item(i).getTextContent());
         }
     }
 

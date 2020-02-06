@@ -19,6 +19,10 @@ public class PredatorPreyCell extends Cell{
     private final int REPRODUCTION_THRESHOLD_FISH = 10; // chronon threshold, not sure what this number should be
     private final int REPRODUCTION_THRESHOLD_SHARK = 4; // chronon threshold, not sure what this number should be
 
+    private final int WATER_STATE = 5;
+    private final int FISH_STATE = 2;
+    private final int SHARK_STATE = 0;
+
     @SuppressWarnings("FieldCanBeLocal")
     private final int FISH_ENERGY = 10;
     @SuppressWarnings("FieldCanBeLocal")
@@ -50,11 +54,11 @@ public class PredatorPreyCell extends Cell{
         water = state 5, fish = state 2, shark = state 0
         */
         // if cell is a fish
-        if (this.currentState == 2){
+        if (this.currentState == FISH_STATE){
             this.fishConditions();
         }
         // if the cell is a shark
-        else if (this.currentState == 0){
+        else if (this.currentState == SHARK_STATE){
             this.sharkConditions();
         }
         int saveState = currentState;
@@ -77,7 +81,6 @@ public class PredatorPreyCell extends Cell{
 
         if(openWater.size()!= 0){
             Collections.shuffle(openWater);
-
             return openWater.get(0);
         }
         return null;
@@ -113,24 +116,23 @@ public class PredatorPreyCell extends Cell{
     public void fishConditions(){
         if(chronons_passed == REPRODUCTION_THRESHOLD_FISH){
             this.canReproduce = true;
-
         }
         // if the fish can reproduce AND at least one empty square exists, randomly find one and move the fish there
         if (neighborWater() != null){
             PredatorPreyCell the_neighbor = neighborWater();
-            the_neighbor.nextState = 2;
+            the_neighbor.nextState = FISH_STATE;
 
             if (canReproduce){
                 the_neighbor.chronons_passed = 0;
                 the_neighbor.canReproduce = false;
 
-                this.nextState = 2;
+                this.nextState = FISH_STATE;
                 this.chronons_passed = 0;
                 this.canReproduce = false;
             }else{
                 the_neighbor.chronons_passed = this.chronons_passed+1;
 
-                this.nextState = 5;
+                this.nextState = WATER_STATE;
                 this.chronons_passed = 0;
             }
         }else{
@@ -152,7 +154,7 @@ public class PredatorPreyCell extends Cell{
         }
         // if a shark reaches zero energy, it dies
         if (this.energy == 0){
-            this.nextState = 5;
+            this.nextState = WATER_STATE;
             this.chronons_passed = 0;
             this.canReproduce = false;
         }
@@ -160,30 +162,29 @@ public class PredatorPreyCell extends Cell{
         // if there is an adjacent square occupied by a fish, the shark will move there randomly
         else if (neighborFish()!= null){
             PredatorPreyCell the_fish_neighbor = neighborFish();
-            the_fish_neighbor.nextState = 0;
+            the_fish_neighbor.nextState = SHARK_STATE;
             the_fish_neighbor.chronons_passed = this.chronons_passed + 1;
             the_fish_neighbor.energy = this.energy - 1 + FISH_ENERGY;
             this.chronons_passed = 0;
-            this.nextState = 5;
+            this.nextState = WATER_STATE;
 
         }
         // if the shark can reproduce AND if no fish are neighbors, randomly move to an unoccupied square
         else if (neighborFish() == null && neighborWater() != null){
             PredatorPreyCell the_neighbor = neighborWater();
-            the_neighbor.nextState = 0;
+            the_neighbor.nextState = SHARK_STATE;
 
             if (this.canReproduce){
                 the_neighbor.chronons_passed = 0;
                 the_neighbor.energy = this.energy - 1;
                 the_neighbor.canReproduce = false;
-                System.out.println("Shark reproduced");
-                this.nextState = 0;
+                this.nextState = SHARK_STATE;
                 this.canReproduce = false;
             }else{
                 the_neighbor.chronons_passed = this.chronons_passed+1;
                 the_neighbor.energy = this.energy-1;
 
-                this.nextState = 5;
+                this.nextState = WATER_STATE;
             }
             this.chronons_passed = 0;
 
@@ -200,7 +201,7 @@ public class PredatorPreyCell extends Cell{
      * @return true or false depending on whether the cell is water or not
      */
     public boolean cellIsWater(PredatorPreyCell cell){
-        return cell.getCurrentState() == 5;
+        return cell.getCurrentState() == WATER_STATE;
     }
 
     /**
@@ -209,7 +210,7 @@ public class PredatorPreyCell extends Cell{
      * @return true or false depending on whether the cell is fish or not
      */
     public boolean cellIsFish(PredatorPreyCell cell){
-        return cell.getCurrentState() == 2;
+        return cell.getCurrentState() == FISH_STATE;
     }
 
     /**
