@@ -36,6 +36,7 @@ public class GameEngine {
     public static final double FRAMES_PER_SECOND = 1;
     public static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+    public static final String[] allSimTypes = {"fire", "percolation", "gameoflife", "segregation", "predatorprey"};
 
     private Timeline animation;
     private String simType;
@@ -95,6 +96,10 @@ public class GameEngine {
         neighbors = new ArrayList<>();
 
         this.parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
+
+        if(doc.getElementsByTagName("sim_type").getLength() == 0 || !isValidSimType(doc.getElementsByTagName("sim_type").item(0).getTextContent())){
+            System.out.println("Throw an Exception Here: Invalid/No Simulation Type Exception");
+        }
 
         if (parseMethod.equals("percentage")){
             parseByPercentage();
@@ -245,5 +250,16 @@ public class GameEngine {
                     myViewer.setFileName("NONE");
             }
         }
+    }
+
+    private boolean isValidSimType(String s){
+
+        for(int i =0; i<allSimTypes.length; i++){
+            if(allSimTypes[i].equals(s)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

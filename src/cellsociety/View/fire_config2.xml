@@ -4,6 +4,7 @@
         <param>0.5</param>
         <param>0.4</param>
     </globalparam>
+    <parse>longlist</parse>
 
     <neighbor>true</neighbor>
     <neighbor>true</neighbor>

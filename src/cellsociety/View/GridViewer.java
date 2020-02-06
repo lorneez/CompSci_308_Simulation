@@ -371,7 +371,7 @@ public class GridViewer {
         fireButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                file_name = "./src/cellsociety/View/fire_config.xml";
+                file_name = "./src/cellsociety/View/fire_config2.xml";
                 lastSimulationRan = file_name;
             }
         });
