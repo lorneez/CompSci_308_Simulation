@@ -23,6 +23,9 @@ public abstract class Cell {
         this.currentState = state;
         this.nextState = state;
         neighbors = new ArrayList<>();
+        for(int i=0; i<numNeighbors; i++){
+            neighbors.add(null);
+        }
     }
 
     /**
