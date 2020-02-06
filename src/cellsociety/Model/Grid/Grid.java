@@ -19,6 +19,7 @@ public abstract class Grid {
     protected boolean done = false;
     protected boolean firstStep = true;
     protected String gridType;
+    protected static final int[] possibleStates = {};
 
     /**
      * Construct a grid object

@@ -111,6 +111,9 @@ public class GameEngine {
         }catch(Exception ex){
             System.out.println("Exception: Invalid Simulation Type");
             // restart simulation code
+            //myViewer.restartSimulation();
+            myViewer.displayPopUp();
+            animation.stop();
         }
 
 
