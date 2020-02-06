@@ -62,3 +62,13 @@ clear neighbors function. and then reset neighbors after relocate
 
 
 add user input based on text file.
+
+
+
+Add neighbors in simulation
+
+Frontend: add predator prey thing. make its parameters read from xml
+
+Make grid parameters scrollable
+
+Maybe make grid viewer abstract
