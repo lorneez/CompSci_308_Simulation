@@ -124,7 +124,7 @@ public class GridViewer {
         cellCount = new HashMap<Integer,Integer>();
         for(int x : cellStates){
             cellCount.putIfAbsent(x,0);
-            cellCount.put(x,cellCount.get(x));
+            cellCount.put(x,cellCount.get(x) + 1);
         }
         for(int x: cellCount.values()){
             System.out.println(x);
