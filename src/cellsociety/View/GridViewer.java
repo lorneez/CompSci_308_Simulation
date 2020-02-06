@@ -143,8 +143,7 @@ public class GridViewer {
         //TextField  message = makeTextField("Edit Configuration File to Input Correct Simulation Type", MENU_SIZE/3,  SIZE/2 + 75, errorRoot);
         Label message = makeLabel("Error: Edit Configuration File",GRAPH_SIZE/4,  (GRAPH_SIZE/3)+OFFSETS[3], errorRoot);
         Button exitButton = makeButton("Exit", (GRAPH_SIZE/4) + 25 , (GRAPH_SIZE/3)+OFFSETS[5], errorRoot);
-
-        exitButton.setOnAction(new EventHandler<>() {
+        exitButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 errorStage.close();
@@ -257,8 +256,7 @@ public class GridViewer {
         makeLabel("Percent Shark:", MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
         TextField percentShark = makeTextField("%", MENU_SIZE/3,  SIZE/2-OFFSETS[1], myRoot);
         Button predatorPreyReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + OFFSETS[0], myRoot);
-
-        predatorPreyReset.setOnAction(new EventHandler<>() {
+        predatorPreyReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 blockPercentagesUpdated.add(Double.valueOf(percentWater.getText()));
@@ -280,8 +278,7 @@ public class GridViewer {
         makeLabel("Percent Satisfy:", MENU_SIZE/3, SIZE/2, myRoot);
         TextField satisfyPercent = makeTextField("%", MENU_SIZE/3,  SIZE/2 + OFFSETS[1], myRoot);
         Button segregationReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + OFFSETS[4], myRoot);
-
-        segregationReset.setOnAction(new EventHandler<>() {
+        segregationReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 gridParametersUpdated.add(Double.valueOf(satisfyPercent.getText()));
@@ -295,15 +292,14 @@ public class GridViewer {
     }
 
     private void addPercolationButtons() {
-        makeLabel("Percent Blocked:", MENU_SIZE/3, SIZE/2 - 150, myRoot);
+        makeLabel("Percent Blocked:", MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentBlocked = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
         makeLabel("Percent Open:", MENU_SIZE/3, SIZE/2 - OFFSETS[6], myRoot);
         TextField percentOpen = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[5], myRoot);
         makeLabel("Percent Percolated:", MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
         TextField percentPercolated = makeTextField("%", MENU_SIZE/3,  SIZE/2-OFFSETS[1], myRoot);
         Button percolationReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + OFFSETS[0], myRoot);
-
-        percolationReset.setOnAction(new EventHandler<>() {
+        percolationReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
                 blockPercentagesUpdated.add(Double.valueOf(percentBlocked.getText()));
@@ -321,8 +317,8 @@ public class GridViewer {
         makeLabel("Percent Dead:", MENU_SIZE/3, SIZE/2 -OFFSETS[6], myRoot);
         TextField percentDead = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[5], myRoot);
         Button gameOfLifeReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 - OFFSETS[2], myRoot);
+        gameOfLifeReset.setOnAction(new EventHandler<ActionEvent>(){
 
-        gameOfLifeReset.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
                 blockPercentagesUpdated.add(Double.valueOf(percentAlive.getText()));
@@ -345,7 +341,9 @@ public class GridViewer {
         makeLabel("Probability Die:", MENU_SIZE/3, SIZE/2 + OFFSETS[3], myRoot);
         TextField probDie = makeTextField("%", MENU_SIZE/3,  SIZE/2 + OFFSETS[5], myRoot);
         Button fireReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + OFFSETS[7], myRoot);
-        fireReset.setOnAction(new EventHandler<>() {
+
+        fireReset.setOnAction(new EventHandler<ActionEvent>(){
+
             @Override
             public void handle(ActionEvent event) {
                 gridParametersUpdated.add(Double.valueOf(probCatch.getText()));
@@ -359,32 +357,14 @@ public class GridViewer {
         });
     }
 
-    public ArrayList<Double> getGridParametersUpdated(){
-        return gridParametersUpdated;
-    }
-    public ArrayList<Double> getBlockPercentagesUpdated(){
-        return blockPercentagesUpdated;
-    }
+    public ArrayList<Double> getGridParametersUpdated(){   return gridParametersUpdated;    }
+    public ArrayList<Double> getBlockPercentagesUpdated(){ return blockPercentagesUpdated;  }
 
-    public boolean getNewParameters(){
-        return newParameters;
-    }
-
-    public boolean getSplashScreenFinished(){
-        return splashScreenFinished;
-    }
-
-    public void setSplashScreenFinished(boolean target){
-        splashScreenFinished = target;
-    }
-
-    public String getFileName(){
-        return file_name;
-    }
-
-    public void setFileName(String newFileName){
-        file_name = newFileName;
-    }
+    public boolean getNewParameters(){ return newParameters; }
+    public boolean getSplashScreenFinished(){ return splashScreenFinished;  }
+    public void setSplashScreenFinished(boolean target){  splashScreenFinished = target; }
+    public String getFileName(){  return file_name; }
+    public void setFileName(String newFileName){ file_name = newFileName; }
 
     private ScrollBar makeScrollBar(double min, double max, double val, double y, double x) {
         ScrollBar myScrollBar = new ScrollBar();
@@ -404,9 +384,8 @@ public class GridViewer {
         Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - OFFSETS[3], myRoot);
         Button predatorPreyButton = makeButton("PredatorPrey", SIZE/2, SIZE/2 - OFFSETS[6], myRoot);
         Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + OFFSETS[6], myRoot);
-
         Button[] buttons = new Button[]{fireButton, gameOfLifeButton, segregationButton, predatorPreyButton, percolationButton};
-        String[] simulationNames = new String[]{"fire", "gameoflife", "percolation", "segregation", "predprey"};
+        String[] simulationNames = new String[]{"fire", "gameoflife", "segregation", "predprey", "percolation"};
         for(int i=0; i<buttons.length; i++){
             int finalI = i;
             buttons[i].setOnAction(new EventHandler<>() {

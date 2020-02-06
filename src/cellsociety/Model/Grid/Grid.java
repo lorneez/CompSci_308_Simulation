@@ -16,8 +16,9 @@ import java.util.Map;
 public abstract class Grid {
     protected Map<Integer, Cell> cells;
     public static final String[] gridTypes = new String[]{"basic", "torus"};
-    protected final int rowSize;
-    protected final int colSize;
+    private final int HASH_MULTIPLIER = 10000;
+    protected int rowSize;
+    protected int colSize;
     protected boolean done = false;
     protected boolean firstStep = true;
 
@@ -138,7 +139,7 @@ public abstract class Grid {
      * construct a single unique integer from a pair of coordinates. Assume size<10000
      */
     protected int coordinatePair(int x, int y){
-        return x*10000 + y;
+        return x*HASH_MULTIPLIER + y;
     }
 
     protected void initializeGrid(ArrayList<Integer> initial_states, ArrayList<Boolean> ignoredNeighbors){
