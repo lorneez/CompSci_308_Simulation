@@ -92,25 +92,18 @@ public class GameEngine {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         doc = dBuilder.parse(fXmlFile);
-
         cellStates = new ArrayList<>();
         gridParameters = new ArrayList<>();
         neighbors = new ArrayList<>();
-
         this.parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
-
         NodeList sizeList = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
         setRowCol(sizeList);
-
         NodeList paramList = doc.getElementsByTagName("param");
         setParameters(paramList);
-
         NodeList neighborList = doc.getElementsByTagName("neighbor");
         allocateNeighbors(neighborList);
-
         NodeList edgeTypesList = doc.getElementsByTagName("edge");
         determineEdgeBehavior(edgeTypesList);
-
         try{
             this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
         }catch(NullPointerException ne){
@@ -118,7 +111,6 @@ public class GameEngine {
             myViewer.displayPopUp();
             animation.stop();
         }
-
         try{
             isValidSimType(simType);
         }catch(Exception ex){
@@ -126,13 +118,11 @@ public class GameEngine {
             myViewer.displayPopUp();
             animation.stop();
         }
-
         if (parseMethod.equals("percentage")){
             parseByPercentage();
         }else if (parseMethod.equals("longlist")){
             parseLongList();
         }
-
         this.initializeGrid(gridParameters, row, col, neighbors);
     }
 
