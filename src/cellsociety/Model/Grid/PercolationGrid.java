@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class PercolationGrid extends Grid {
 
+    public static final int[] possibleStates = {0, 5, 7};
+
     /**
      * Construct a percolationgrid object and initialize the grid configuration
      * @param rowSize number of columns

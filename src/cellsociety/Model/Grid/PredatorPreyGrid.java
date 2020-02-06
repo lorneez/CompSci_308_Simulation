@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class PredatorPreyGrid extends Grid {
 
+    public static final int[] possibleStates = {0, 2, 5};
+
     /**
      * Construct a predatorpreygrid object and initialize the grid configuration
      * @param rowSize number of columns

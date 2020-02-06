@@ -73,6 +73,8 @@ public class GridViewer {
         myStage.show();
     }
 
+
+
     /**
      * get whether or not we are paused
      * @return boolean paused
@@ -445,6 +447,13 @@ public class GridViewer {
                 myStage.show();
             }
         });
+    }
+
+    public void restartSimulation(){
+        myRoot.getChildren().remove(endButton);
+        myScene = setUpSplash();
+        myStage.setScene(myScene);
+        myStage.show();
     }
     private void addEndButton(){
         endButton = makeButton("End Simulation", MENU_SIZE/3, SIZE/2 - 250);

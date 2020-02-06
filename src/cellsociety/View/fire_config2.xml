@@ -1,20 +1,21 @@
 <root>
     <sim_type>fire</sim_type>
+    <parse>longlist</parse>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>false</neighbor>
+    <neighbor>false</neighbor>
+    <neighbor>false</neighbor>
+    <neighbor>false</neighbor>
     <globalparam>
         <param>0.5</param>
         <param>0.4</param>
+        <size>36</size>
+        <size>36</size>
     </globalparam>
 
-    <neighbor>true</neighbor>
-    <neighbor>true</neighbor>
-    <neighbor>true</neighbor>
-    <neighbor>true</neighbor>
-    <neighbor>false</neighbor>
-    <neighbor>false</neighbor>
-    <neighbor>false</neighbor>
-    <neighbor>false</neighbor>
-    <size>36</size>
-    <size>36</size>
     <initialstates>
         <state>4</state>
         <state>4</state>

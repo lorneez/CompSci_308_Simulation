@@ -13,6 +13,8 @@ import java.util.ArrayList;
  */
 public class GameOfLifeGrid extends Grid {
 
+    public static final int[] possibleStates = {0, 4};
+
     /**
      * Construct a GameOfLife grid and initialize it
      * @param rowSize number of columns

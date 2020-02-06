@@ -13,6 +13,8 @@ import java.util.ArrayList;
  */
 public class FireGrid extends Grid {
 
+    public static final int[] possibleStates = {3, 4, 6};
+
     /**
      * Construct a firegrid object and initialize the grid configuration
      * @param rowSize number of columns

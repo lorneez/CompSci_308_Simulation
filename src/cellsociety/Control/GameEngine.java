@@ -36,6 +36,7 @@ public class GameEngine {
     public static final double FRAMES_PER_SECOND = 1;
     public static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+    public static final String[] allSimTypes = {"fire", "percolation", "gameoflife", "segregation", "predatorprey"};
 
     private Timeline animation;
     private String simType;
@@ -51,6 +52,7 @@ public class GameEngine {
     private String lastSimulationRun;
     private ArrayList<Double> gridParameters;
     private Document doc;
+    private int[] possibleStates;
 
 
     private boolean done;
@@ -84,7 +86,7 @@ public class GameEngine {
         animation.play();
     }
 
-    private void parseFile(String sim_xml_path) throws ParserConfigurationException, IOException, SAXException {
+    private void parseFile(String sim_xml_path) throws IOException, SAXException, ParserConfigurationException {
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -96,6 +98,22 @@ public class GameEngine {
 
         this.parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
 
+
+        try{
+            this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
+        }catch(NullPointerException ne){
+            System.out.println("Exception: No Simulation Type Given");
+            // restart simulation code
+        }
+
+        try{
+            isValidSimType(simType);
+        }catch(Exception ex){
+            System.out.println("Exception: Invalid Simulation Type");
+            // restart simulation code
+        }
+
+
         if (parseMethod.equals("percentage")){
             parseByPercentage();
         }else if (parseMethod.equals("longlist")){
@@ -106,8 +124,7 @@ public class GameEngine {
     }
 
     private void parseLongList(){
-        this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
-        System.out.println(simType);
+
         NodeList size_list = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
         row = Integer.valueOf(size_list.item(0).getTextContent());
         col = Integer.valueOf(size_list.item(1).getTextContent());
@@ -116,8 +133,14 @@ public class GameEngine {
         for(int i=0; i<param_list.getLength(); i++){
             gridParameters.add(Double.valueOf(param_list.item(i).getTextContent()));
         }
-        System.out.println("H");
         NodeList states_list = doc.getElementsByTagName("state");
+
+        try{
+            checkValidCellStates(states_list);
+        }catch(Exception ex){
+            System.out.println("Exception: One or more Cell States is Invalid");
+        }
+
         for(int i=0; i<states_list.getLength(); i++){
             cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
         }
@@ -141,13 +164,19 @@ public class GameEngine {
         blockPercentages = new ArrayList<>();
         ArrayList<Integer> blockTypes = new ArrayList<>();
 
-        this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
         NodeList size_list = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
         row = Integer.valueOf(size_list.item(0).getTextContent());
         col = Integer.valueOf(size_list.item(1).getTextContent());
         NodeList blocksInput = doc.getElementsByTagName("totalblocks");
         totalBlocks = Integer.valueOf(blocksInput.item(0).getTextContent());
         NodeList blockTypesRead = doc.getElementsByTagName("blocktype");
+
+        try{
+            checkValidCellStates(blockTypesRead);
+        }catch(Exception ex){
+            System.out.println("Exception: One or more Cell States is Invalid");
+        }
+
         for(int i=0; i<blockTypesRead.getLength(); i++){
             blockTypes.add(Integer.valueOf(blockTypesRead.item(i).getTextContent()));
         }
@@ -196,19 +225,24 @@ public class GameEngine {
             case "fire":
                 myGrid = new FireGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
                 FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
+                possibleStates = FireGrid.possibleStates;
                 break;
             case "gameoflife":
                 myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
+                possibleStates = GameOfLifeGrid.possibleStates;
                 break;
             case "segregation":
                 myGrid = new SegregationGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
                 SegregationCell.setProb(gridParameters.get(0));
+                possibleStates = SegregationGrid.possibleStates;
                 break;
             case "predatorprey":
                 myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
+                possibleStates = PredatorPreyGrid.possibleStates;
                 break;
             case "percolation":
                 myGrid = new PercolationGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
+                possibleStates = PercolationGrid.possibleStates;
                 break;
         }
     }
@@ -246,5 +280,37 @@ public class GameEngine {
                     myViewer.setFileName("NONE");
             }
         }
+    }
+
+    private boolean isValidSimType(String s) throws Exception {
+
+        for(int i =0; i<allSimTypes.length; i++){
+            if(allSimTypes[i].equals(s)){
+                return true;
+            }
+        }
+
+        throw new Exception("Simulation Type Invalid Exception");
+    }
+
+    private boolean checkValidCellStates(NodeList states) throws Exception{
+        int state = -1;
+        for(int i = 0; i<states.getLength(); i++){
+            state = Integer.valueOf(states.item(i).getTextContent());
+            if(!checkIfStateInSim(state)){
+                throw new Exception("One Or More Cells Have Incorrect States");
+            }
+        }
+        return true;
+    }
+
+    private boolean checkIfStateInSim(int state){
+
+        for(int i: possibleStates){
+            if (state == i){
+                return true;
+            }
+        }
+        return false;
     }
 }
