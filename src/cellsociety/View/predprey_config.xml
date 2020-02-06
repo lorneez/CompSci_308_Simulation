@@ -1,6 +1,14 @@
 <root>
     <sim_type>predatorprey</sim_type>
     <parse>percentage</parse>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>false</neighbor>
+    <neighbor>false</neighbor>
+    <neighbor>false</neighbor>
+    <neighbor>false</neighbor>
     <size>200</size>
     <size>200</size>
     <totalblocks>40000</totalblocks>

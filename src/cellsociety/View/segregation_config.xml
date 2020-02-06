@@ -1,6 +1,14 @@
 <root>
     <sim_type>segregation</sim_type>
     <parse>percentage</parse>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
     <globalparam>
         <param>0.45</param>
     </globalparam>
