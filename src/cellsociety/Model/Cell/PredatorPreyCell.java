@@ -35,6 +35,10 @@ public class PredatorPreyCell extends Cell{
             energy = SHARK_ENERGY;
         }
         this.chronons_passed = 0;
+        neighbors = new ArrayList<>();
+        for(int i=0; i<numNeighbors; i++){
+            neighbors.add(null);
+        }
     }
 
     /**
