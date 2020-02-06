@@ -35,14 +35,14 @@ public class SegregationGrid extends Grid {
         ArrayList<Integer> viewState = new ArrayList<Integer>();
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                if(isEmpty(cells[i][j])){
-                    cells[i][j].calculateNextState();
+                if(isEmpty(cells.get(coordinatePair(i,j)))){
+                    cells.get(coordinatePair(i,j)).calculateNextState();
                 }
-                if(isNotSatisfied(cells[i][j])){
-                    notSatisfiedCells.add(cells[i][j]);
+                if(isNotSatisfied(cells.get(coordinatePair(i,j)))){
+                    notSatisfiedCells.add(cells.get(coordinatePair(i,j)));
                 }
-                else if(cells[i][j].getCurrentState() == 7){
-                    emptyCells.add(cells[i][j]);
+                else if(cells.get(coordinatePair(i,j)).getCurrentState() == 7){
+                    emptyCells.add(cells.get(coordinatePair(i,j)));
                 }
             }
         }
@@ -52,7 +52,7 @@ public class SegregationGrid extends Grid {
         swapCells();
         for(int q=0; q<colSize; q++) {
             for (int w = 0; w < rowSize; w++) {
-                viewState.add(cells[q][w].getCurrentState());
+                viewState.add(cells.get(coordinatePair(q,w)).getCurrentState());
             }
         }
         return viewState;

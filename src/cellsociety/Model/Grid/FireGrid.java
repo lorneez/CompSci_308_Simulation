@@ -43,7 +43,7 @@ public class FireGrid extends Grid {
     public boolean checkIfDone(){
         for(int i=0; i<colSize; i++) {
             for (int j = 0; j < rowSize; j++) {
-                if (cells[i][j].getCurrentState() == FireCell.FIRE_STATE){
+                if (cells.get(coordinatePair(i,j)).getCurrentState() == FireCell.FIRE_STATE){
                     return false;
                 }
             }
