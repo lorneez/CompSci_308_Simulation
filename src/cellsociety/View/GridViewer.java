@@ -402,47 +402,21 @@ public class GridViewer {
         Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - 50, myRoot);
         Button predatorPreyButton = makeButton("PredatorPrey", SIZE/2, SIZE/2 - 100, myRoot);
         Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + 100, myRoot);
-        fireButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                file_name = "./src/cellsociety/View/fire_config.xml";
-                lastSimulationRan = file_name;
-            }
-        });
-        gameOfLifeButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                file_name = "./src/cellsociety/View/gameoflife_config.xml";
-                lastSimulationRan = file_name;
-
-            }
-        });
-        percolationButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                file_name = "./src/cellsociety/View/percolation_config.xml";
-                lastSimulationRan = file_name;
-
-            }
-        });
-        segregationButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                file_name = "./src/cellsociety/View/segregation_config.xml";
-                lastSimulationRan = file_name;
-
-            }
-        });
-        predatorPreyButton.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                file_name = "./src/cellsociety/View/predprey_config.xml";
-                lastSimulationRan = file_name;
-
-            }
-        });
+        Button[] buttons = new Button[]{fireButton, gameOfLifeButton, segregationButton, predatorPreyButton, percolationButton};
+        String[] simulationNames = new String[]{"fire", "gameoflife", "percolation", "segregation", "predprey"};
+        for(int i=0; i<buttons.length; i++){
+            int finalI = i;
+            buttons[i].setOnAction(new EventHandler<ActionEvent>(){
+                @Override
+                public void handle(ActionEvent event) {
+                    file_name = "./src/cellsociety/View/" + simulationNames[finalI] + "_config.xml";
+                    lastSimulationRan = file_name;
+                }
+            });
+        }
         return new Scene(myRoot, SIZE + MENU_SIZE + GRAPH_SIZE, SIZE,  SPLASHBACKGROUND);
     }
+
     private Button makeButton(String text, int x, int y, Group the_group){
         Button myButton = new Button();
         myButton.setText(text);

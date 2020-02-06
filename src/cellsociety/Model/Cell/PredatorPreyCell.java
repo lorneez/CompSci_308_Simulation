@@ -156,7 +156,6 @@ public class PredatorPreyCell extends Cell{
             this.chronons_passed = 0;
             this.canReproduce = false;
         }
-
         // if there is an adjacent square occupied by a fish, the shark will move there randomly
         else if (neighborFish()!= null){
             PredatorPreyCell the_fish_neighbor = neighborFish();
@@ -165,13 +164,11 @@ public class PredatorPreyCell extends Cell{
             the_fish_neighbor.energy = this.energy - 1 + FISH_ENERGY;
             this.chronons_passed = 0;
             this.nextState = 5;
-
         }
         // if the shark can reproduce AND if no fish are neighbors, randomly move to an unoccupied square
         else if (neighborFish() == null && neighborWater() != null){
             PredatorPreyCell the_neighbor = neighborWater();
             the_neighbor.nextState = 0;
-
             if (this.canReproduce){
                 the_neighbor.chronons_passed = 0;
                 the_neighbor.energy = this.energy - 1;
@@ -182,11 +179,9 @@ public class PredatorPreyCell extends Cell{
             }else{
                 the_neighbor.chronons_passed = this.chronons_passed+1;
                 the_neighbor.energy = this.energy-1;
-
                 this.nextState = 5;
             }
             this.chronons_passed = 0;
-
         }
         // if the shark can't move anywhere, update the number of chronons
         else if(neighborFish() == null && neighborWater() == null){
