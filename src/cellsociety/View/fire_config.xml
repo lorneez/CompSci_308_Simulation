@@ -1,5 +1,5 @@
 <root>
-    <sim_type>fire</sim_type>
+    <sim_type>firdde</sim_type>
     <parse>percentage</parse>
     <neighbor>true</neighbor>
     <neighbor>true</neighbor>
@@ -17,9 +17,9 @@
     <globalparam>
         <param>0.6</param>
         <param>0.4</param>
-        <size>200</size>
-        <size>200</size>
-        <totalblocks>40000</totalblocks>
+        <size>50</size>
+        <size>50</size>
+        <totalblocks>2500</totalblocks>
         <blocktype>4</blocktype>
         <blocktype>6</blocktype>
         <blocktype>3</blocktype>

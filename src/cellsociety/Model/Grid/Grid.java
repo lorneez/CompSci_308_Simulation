@@ -4,6 +4,7 @@ import cellsociety.Model.Cell.Cell;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class representing an abstract grid object for any simulation
@@ -13,18 +14,18 @@ import java.util.HashMap;
  * Assumptions: grid is rectangular
  */
 public abstract class Grid {
-    protected HashMap<Integer, Cell> cells;
+    protected Map<Integer, Cell> cells;
     public static final String[] gridTypes = new String[]{"basic", "torus"};
-    //protected Cell[][] cells;
+    private final int HASH_MULTIPLIER = 10000;
     protected int rowSize;
     protected int colSize;
     protected boolean done = false;
     protected boolean firstStep = true;
 
-    protected String gridType;
+    protected final String gridType;
     protected static final int[] possibleStates = {};
-    private int xShift;
-    private int yShift;
+    private final int xShift;
+    private final int yShift;
 
 
     /**
@@ -71,10 +72,6 @@ public abstract class Grid {
         return viewState;
     }
 
-    /*public int getCell(int row, int col){
-        return cells[row][col].getCurrentState();
-    }*/
-
     /**
      * check if coordinates are in bounds. If not, return null (-1) or what edge it maps to (e.g. torus will wrap around)
      * @param x x coordinate
@@ -95,10 +92,8 @@ public abstract class Grid {
             if(y<0) y += colSize;
             else if(y>=colSize) y -= colSize;
         }
-        else if(gridType.equals("basic")){
-            if(x < 0 || x >= colSize || y < 0 || y >= rowSize){
-                return new int[]{-1, -1};
-            }
+        else if(gridType.equals("basic") && (x < 0 || x >= colSize || y < 0 || y >= rowSize)){
+            return new int[]{-1, -1};
         }
         return new int[]{x,y};
     }
@@ -144,7 +139,7 @@ public abstract class Grid {
      * construct a single unique integer from a pair of coordinates. Assume size<10000
      */
     protected int coordinatePair(int x, int y){
-        return x*10000 + y;
+        return x*HASH_MULTIPLIER + y;
     }
 
     protected void initializeGrid(ArrayList<Integer> initial_states, ArrayList<Boolean> ignoredNeighbors){

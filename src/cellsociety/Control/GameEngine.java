@@ -40,7 +40,6 @@ public class GameEngine {
 
     private Timeline animation;
     private String simType;
-    private String parseMethod;
     private ArrayList<Integer> cellStates;
     private ArrayList<Boolean> neighbors;
     private Grid myGrid;
@@ -53,7 +52,7 @@ public class GameEngine {
     private ArrayList<Double> gridParameters;
     private Document doc;
     private int[] possibleStates;
-    private ArrayList<Integer> edgeBehavior;
+    private int[] edgeBehavior;
 
 
     private boolean done;
@@ -87,30 +86,30 @@ public class GameEngine {
         animation.play();
     }
 
+
+    /**
+     * Accept a String XML file path and extract all information from file
+     * @param sim_xml_path string representation of file path
+     * Assigns values from file to instance variables
+     */
     private void parseFile(String sim_xml_path) throws IOException, SAXException, ParserConfigurationException {
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         doc = dBuilder.parse(fXmlFile);
-
         cellStates = new ArrayList<>();
         gridParameters = new ArrayList<>();
         neighbors = new ArrayList<>();
-
-        this.parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
-
+        String parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
+        edgeBehavior = new int[3];
         NodeList sizeList = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
         setRowCol(sizeList);
-
         NodeList paramList = doc.getElementsByTagName("param");
         setParameters(paramList);
-
         NodeList neighborList = doc.getElementsByTagName("neighbor");
         allocateNeighbors(neighborList);
-
         NodeList edgeTypesList = doc.getElementsByTagName("edge");
         determineEdgeBehavior(edgeTypesList);
-
         try{
             this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
         }catch(NullPointerException ne){
@@ -118,7 +117,6 @@ public class GameEngine {
             myViewer.displayPopUp();
             animation.stop();
         }
-
         try{
             isValidSimType(simType);
         }catch(Exception ex){
@@ -126,16 +124,19 @@ public class GameEngine {
             myViewer.displayPopUp();
             animation.stop();
         }
-
         if (parseMethod.equals("percentage")){
             parseByPercentage();
         }else if (parseMethod.equals("longlist")){
             parseLongList();
         }
-
         this.initializeGrid(gridParameters, row, col, neighbors);
     }
 
+    /**
+     * 1 of 2 ways to parse the configuration file that looks at all the states specified in
+     * the file and loads them into the grid.
+     * Useful for small grid sizes or when users want to specify how the grid looks
+     * */
     private void parseLongList(){
 
         NodeList states_list = doc.getElementsByTagName("state");
@@ -161,12 +162,17 @@ public class GameEngine {
         }
     }
 
+    /**
+     * 2nd way to parse the configuration file. Allows for much more cells to appear on grid and allows user to
+     * specify which percentage of each cell will appear.
+     */
+
     private void parseByPercentage(){
         blockPercentages = new ArrayList<>();
         ArrayList<Integer> blockTypes = new ArrayList<>();
 
         NodeList blocksInput = doc.getElementsByTagName("totalblocks");
-        totalBlocks = Integer.valueOf(blocksInput.item(0).getTextContent());
+        totalBlocks = Integer.parseInt(blocksInput.item(0).getTextContent());
 
         NodeList blockTypesRead = doc.getElementsByTagName("blocktype");
 
@@ -193,8 +199,12 @@ public class GameEngine {
 
     }
 
+    /**
+     * Depending on the simulation type, initialize the grid from its corresponding class
+     * Also sets the possibleStates instance variable
+     * */
     private void initializeGrid(ArrayList<Double> gridParameters, int rowSize, int colSize, ArrayList<Boolean> ignoredNeighbors){
-        int[] edgeParams = new int[]{0, 0, 0}; // change this later to be dynamic... it is grid type, xShift, yShift
+        int[] edgeParams = edgeBehavior;
         switch (simType) {
             case "fire":
                 myGrid = new FireGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
@@ -258,26 +268,25 @@ public class GameEngine {
         }
     }
 
-    private boolean isValidSimType(String s) throws Exception {
+    private void isValidSimType(String s) throws Exception {
 
-        for(int i =0; i<allSimTypes.length; i++){
-            if(allSimTypes[i].equals(s)){
-                return true;
+        for (String allSimType : allSimTypes) {
+            if (allSimType.equals(s)) {
+                return;
             }
         }
 
         throw new Exception("Simulation Type Invalid Exception");
     }
 
-    private boolean checkValidCellStates(NodeList states) throws Exception{
-        int state = -1;
+    private void checkValidCellStates(NodeList states) throws Exception{
+        int state;
         for(int i = 0; i<states.getLength(); i++){
-            state = Integer.valueOf(states.item(i).getTextContent());
+            state = Integer.parseInt(states.item(i).getTextContent());
             if(!checkIfStateInSim(state)){
                 throw new Exception("One Or More Cells Have Incorrect States");
             }
         }
-        return true;
     }
 
     private boolean checkIfStateInSim(int state){
@@ -291,8 +300,8 @@ public class GameEngine {
     }
 
     private void setRowCol(NodeList sizeList){
-        row = Integer.valueOf(sizeList.item(0).getTextContent());
-        col = Integer.valueOf(sizeList.item(1).getTextContent());
+        row = Integer.parseInt(sizeList.item(0).getTextContent());
+        col = Integer.parseInt(sizeList.item(1).getTextContent());
     }
 
     private void setParameters(NodeList paramList){
@@ -303,7 +312,7 @@ public class GameEngine {
 
     private void determineEdgeBehavior(NodeList edges){
         for(int i=0; i<edges.getLength(); i++){
-            edgeBehavior.add(Integer.valueOf(edges.item(i).getTextContent()));
+            edgeBehavior[i] = Integer.valueOf(edges.item(i).getTextContent());
         }
     }
 
