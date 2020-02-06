@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Assumptions: max of 8 neighbors
  */
 public abstract class Cell {
+    public static final int numNeighbors = 8;
     protected int currentState;
     protected int nextState;
     protected ArrayList<Cell> neighbors;

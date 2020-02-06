@@ -39,7 +39,7 @@ public class FireCell extends Cell{
      */
     public int calculateNextState(){
         if(currentState == TREE_STATE){
-            if((rightNeighbor!=null && rightNeighbor.getCurrentState()==FIRE_STATE) || (leftNeighbor!=null && leftNeighbor.getCurrentState()==FIRE_STATE) || (upperNeighbor!=null && upperNeighbor.getCurrentState()==FIRE_STATE) || (lowerNeighbor!=null && lowerNeighbor.getCurrentState()==FIRE_STATE)){
+            if((neighbors.get(2)!=null && neighbors.get(2).getCurrentState()==FIRE_STATE) || (neighbors.get(3)!=null && neighbors.get(3).getCurrentState()==FIRE_STATE) || (neighbors.get(0)!=null && neighbors.get(0).getCurrentState()==FIRE_STATE) || (neighbors.get(1)!=null && neighbors.get(1).getCurrentState()==FIRE_STATE)){
                 Random rand = new Random();
                 double rand_int1 = rand.nextDouble();
                 if(rand_int1 < probCatch){

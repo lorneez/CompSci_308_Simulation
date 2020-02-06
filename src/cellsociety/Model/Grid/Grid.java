@@ -91,7 +91,7 @@ public abstract class Grid {
         int[] y = {1,-1,0,0,1,-1,1,-1};
         for(int j=0; j<colSize; j++){
             for(int w=0; w<rowSize; w++){
-                for(int i=0; i<8;i++){
+                for(int i=0; i<Cell.numNeighbors;i++){
                     int neighborx = j+x[i];
                     int neighbory = w+y[i];
                     if(checkInBounds(neighborx,neighbory)){

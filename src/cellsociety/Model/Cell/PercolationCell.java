@@ -1,5 +1,8 @@
 package cellsociety.Model.Cell;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Class representing a cell object for the percolation simulation
  * @author caryshindell, lornezhang, ameersyedibrahim
@@ -27,8 +30,7 @@ public class PercolationCell extends Cell{
         if(currentState == BLOCKED_STATE || currentState == PERCOLATED_STATE){
             return currentState;
         }
-        Cell[] neighbors = getAllNeighbors();
-        for(Cell c : neighbors){
+        for(Cell c : getAllNeighbors()){
             if(c != null && c.getCurrentState() == PERCOLATED_STATE){
                 setNextState(PERCOLATED_STATE);
             }

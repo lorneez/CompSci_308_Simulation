@@ -34,10 +34,9 @@ public class SegregationCell extends Cell{
      */
     @Override
     public int calculateNextState(){
-        Cell[] neighbors = getAllNeighbors();
         int numSameState = 0;
         int numNeighbors = 0;
-        for(Cell check : neighbors){
+        for(Cell check : getAllNeighbors()){
             if(check != null){
                 if(check.getCurrentState() == this.currentState || check.getCurrentState() == this.currentState - 1){
                     numSameState++;
