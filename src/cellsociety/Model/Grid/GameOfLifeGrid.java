@@ -4,6 +4,7 @@ import cellsociety.Model.Cell.Cell;
 import cellsociety.Model.Cell.GameOfLifeCell;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class representing a grid for the GameOfLife simulation
@@ -14,7 +15,10 @@ import java.util.ArrayList;
 public class GameOfLifeGrid extends Grid {
 
     public static final int[] possibleStates = {0, 4};
-
+    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+        put(0, "Dead");
+        put(4, "Alive");
+    }};
     /**
      * Construct a GameOfLife grid and initialize it
      * @param rowSize number of columns
@@ -25,7 +29,9 @@ public class GameOfLifeGrid extends Grid {
     public GameOfLifeGrid(int rowSize, int colSize, ArrayList<Integer> initial_states, ArrayList<Boolean> ignoredNeighbors, String gridType){
         super(rowSize, colSize, initial_states, ignoredNeighbors, gridType);
     }
-
+    public HashMap<Integer,String> getStateNames(){
+        return stateNames;
+    }
     /**
      * Check if the simulation has reached equilibrium (no one is dying and no one is becoming alive)
      * @return done

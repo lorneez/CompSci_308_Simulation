@@ -3,6 +3,7 @@ package cellsociety.Model.Grid;
 import cellsociety.Model.Cell.Cell;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class representing an abstract grid object for any simulation
@@ -84,6 +85,8 @@ public abstract class Grid {
         }
         return new int[]{x,y};
     }
+    public abstract HashMap<Integer,String> getStateNames();
+
 
     /**
      * make the cell object specific to the simulation we are running

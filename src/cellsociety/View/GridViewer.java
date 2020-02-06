@@ -59,6 +59,7 @@ public class GridViewer {
     private ArrayList<Double> blockPercentagesUpdated;
     private HashMap<Integer, Integer> cellCount;
     private XYChart.Series test;
+    private HashMap<Integer, String> stateNames;
 
 
 
@@ -113,10 +114,16 @@ public class GridViewer {
         myStage.setScene(myScene);
     }
 
+    public void setStateNames(HashMap<Integer, String> x){
+        stateNames = x;
+    }
+
+
     private void initiateChart() {
         for(int x : cellCount.keySet()){
             XYChart.Series dataSeries1 = new XYChart.Series();
             dataSeries1.getData().add(new XYChart.Data( 0, cellCount.get(x)));
+            dataSeries1.setName(stateNames.get(x));
             linechart.getData().add(dataSeries1);
         }
 

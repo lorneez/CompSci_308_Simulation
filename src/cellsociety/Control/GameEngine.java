@@ -244,7 +244,9 @@ public class GameEngine {
                 myGrid = new PercolationGrid(rowSize, colSize, cellStates, ignoredNeighbors, gridType);
                 possibleStates = PercolationGrid.possibleStates;
                 break;
+
         }
+        myViewer.setStateNames(myGrid.getStateNames());
     }
 
     private void step() throws IOException, SAXException, ParserConfigurationException {
