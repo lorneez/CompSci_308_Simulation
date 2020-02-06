@@ -4,6 +4,8 @@ import cellsociety.Model.Cell.Cell;
 import cellsociety.Model.Cell.FireCell;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class that represents a grid for the fire simulation
@@ -14,6 +16,11 @@ import java.util.ArrayList;
 public class FireGrid extends Grid {
 
     public static final int[] possibleStates = {3, 4, 6};
+    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+        put(3, "Dead");
+        put(4, "Tree");
+        put(6, "Fire");
+    }};
 
     /**
      * Construct a firegrid object and initialize the grid configuration
@@ -21,9 +28,13 @@ public class FireGrid extends Grid {
      * @param colSize number of rows
      * @param initial_positions initial grid configuration in 1D list form
      * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
+     * @param edgeParams grid edge type, xShift, yShift
      */
-    public FireGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, String gridType){
-        super(rowSize, colSize, initial_positions, ignoredNeighbors, gridType);
+    public FireGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, int[] edgeParams){
+        super(rowSize, colSize, initial_positions, ignoredNeighbors, edgeParams);
+    }
+    public HashMap<Integer,String> getStateNames(){
+        return stateNames;
     }
 
     /**
@@ -42,7 +53,7 @@ public class FireGrid extends Grid {
     public boolean checkIfDone(){
         for(int i=0; i<colSize; i++) {
             for (int j = 0; j < rowSize; j++) {
-                if (cells[i][j].getCurrentState() == FireCell.FIRE_STATE){
+                if (cells.get(coordinatePair(i,j)).getCurrentState() == FireCell.FIRE_STATE){
                     return false;
                 }
             }

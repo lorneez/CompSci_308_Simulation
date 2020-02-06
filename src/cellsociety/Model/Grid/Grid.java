@@ -3,6 +3,7 @@ package cellsociety.Model.Grid;
 import cellsociety.Model.Cell.Cell;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class representing an abstract grid object for any simulation
@@ -12,14 +13,19 @@ import java.util.ArrayList;
  * Assumptions: grid is rectangular
  */
 public abstract class Grid {
-    //protected HashMap<Cell, ArrayList<Cell>> cells;
-    protected Cell[][] cells;
+    protected HashMap<Integer, Cell> cells;
+    public static final String[] gridTypes = new String[]{"basic", "torus"};
+    //protected Cell[][] cells;
     protected int rowSize;
     protected int colSize;
     protected boolean done = false;
     protected boolean firstStep = true;
+
     protected String gridType;
     protected static final int[] possibleStates = {};
+    private int xShift;
+    private int yShift;
+
 
     /**
      * Construct a grid object
@@ -27,12 +33,15 @@ public abstract class Grid {
      * @param colSize number of rows
      * @param initial_positions initial grid configuration in 1D list form
      * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
+     * @param edgeParams grid edge type, xShift, yShift
      */
-    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, String gridType){
+    public Grid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, int[] edgeParams){
         this.rowSize = rowSize;
         this.colSize = colSize;
-        this.cells = new Cell[rowSize][colSize];
-        this.gridType = gridType;
+        this.cells = new HashMap<>();
+        this.gridType = gridTypes[edgeParams[0]];
+        xShift = edgeParams[1];
+        yShift = edgeParams[2];
         initializeGrid(initial_positions, ignoredNeighbors);
     }
 
@@ -45,17 +54,17 @@ public abstract class Grid {
         boolean equilibrium = true;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                if(cells[i][j].getNextState() != cells[i][j].getCurrentState()){
+                if(cells.get(coordinatePair(i,j)).getNextState() != cells.get(coordinatePair(i,j)).getCurrentState()){
                     equilibrium = false;
                 }
-                cells[i][j].update();
+                cells.get(coordinatePair(i,j)).update();
             }
         }
         if(!firstStep) done = equilibrium;
         firstStep = false;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                viewState.add(cells[i][j].calculateNextState());
+                viewState.add(cells.get(coordinatePair(i,j)).calculateNextState());
             }
         }
         return viewState;
@@ -71,8 +80,15 @@ public abstract class Grid {
      * @param y y coordinate
      * @return coordinates of the neighbor (or -1's if null)
      */
-    public int[] checkInBounds(int x,int y){
+    private int[] checkInBounds(int x,int y){
         if(gridType.equals("torus")){
+            // first do the shifts, if there are any
+            // can only be one type of shift, x or y
+            if(x<0) y -= yShift;
+            else if(x>=rowSize) y += yShift;
+            if(y<0) x -= xShift;
+            else if(y>=colSize) x += xShift;
+            // now do the wrap-arounds
             if(x<0) x += rowSize;
             else if(x>=rowSize) x -= rowSize;
             if(y<0) y += colSize;
@@ -83,8 +99,13 @@ public abstract class Grid {
                 return new int[]{-1, -1};
             }
         }
+        else if(gridType.equals("sphere")){
+
+        }
         return new int[]{x,y};
     }
+    public abstract HashMap<Integer,String> getStateNames();
+
 
     /**
      * make the cell object specific to the simulation we are running
@@ -102,7 +123,6 @@ public abstract class Grid {
     protected void setNeighbors(ArrayList<Boolean> ignoredNeighbors){
         int[] x = {0,0,1,-1,1,1,-1,-1};
         int[] y = {1,-1,0,0,1,-1,1,-1};
-        // torus:
         for(int j=0; j<colSize; j++){
             for(int w=0; w<rowSize; w++){
                 for(int i=0; i<Cell.numNeighbors;i++){
@@ -110,10 +130,11 @@ public abstract class Grid {
                     if(neighborCoords[0] != -1){
                         // 0, 1, 2, 3, 4, 5, 6, 7 are upper, lower, right, left, upper right, lower right, upper left, lower left respectively
                         if(!ignoredNeighbors.get(i)){
-                            cells[j][w].setNeighbor(i, null);
+                            cells.get(coordinatePair(j,w)).setNeighbor(i, null);
                         }
                         else{
-                            cells[j][w].setNeighbor(i, cells[neighborCoords[0]][neighborCoords[1]]);
+                            System.out.println(cells.get(coordinatePair(j,w)));
+                            cells.get(coordinatePair(j,w)).setNeighbor(i, cells.get(coordinatePair(neighborCoords[0], neighborCoords[1])));
                         }
                     }
                 }
@@ -122,11 +143,18 @@ public abstract class Grid {
         }
     }
 
+    /**
+     * construct a single unique integer from a pair of coordinates. Assume size<10000
+     */
+    protected int coordinatePair(int x, int y){
+        return x*10000 + y;
+    }
+
     protected void initializeGrid(ArrayList<Integer> initial_states, ArrayList<Boolean> ignoredNeighbors){
         int index = 0;
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                cells[i][j] = makeCell(initial_states.get(index));
+                cells.put(coordinatePair(i,j), makeCell(initial_states.get(index)));
                 index++;
             }
         }

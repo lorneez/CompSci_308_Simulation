@@ -5,12 +5,18 @@ import cellsociety.Model.Cell.Cell;
 import cellsociety.Model.Cell.SegregationCell;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SegregationGrid extends Grid {
     private ArrayList<Cell> emptyCells;
     private ArrayList<Cell> notSatisfiedCells;
     private boolean done = false;
     public static final int[] possibleStates = {1, 5, 7};
+    public static final HashMap<Integer, String> stateNames = new HashMap<Integer, String>() {{
+        put(1, "Red");
+        put(5, "Blue");
+        put(7, "Empty");
+    }};
 
     /**
      * Construct a segregationgrid object and initialize the grid configuration
@@ -18,11 +24,14 @@ public class SegregationGrid extends Grid {
      * @param colSize number of rows
      * @param initial_positions initial grid configuration in 1D list form
      * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
+     * @param edgeParams grid edge type, xShift, yShift
      */
-    public SegregationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, String gridType){
-        super(rowSize, colSize, initial_positions, ignoredNeighbors, gridType);
+    public SegregationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, int[] edgeParams){
+        super(rowSize, colSize, initial_positions, ignoredNeighbors, edgeParams);
     }
-
+    public HashMap<Integer,String> getStateNames(){
+        return stateNames;
+    }
     /**
      * updates the grid. Checks for cells that are not satisfied and cells that are empty. Then, it swaps the cells that are not satisfied one by one with the empty cells.
      * @return a new set of current state for the GridViewer to display
@@ -34,14 +43,14 @@ public class SegregationGrid extends Grid {
         ArrayList<Integer> viewState = new ArrayList<Integer>();
         for(int i=0; i<colSize; i++){
             for(int j=0; j<rowSize; j++){
-                if(isEmpty(cells[i][j])){
-                    cells[i][j].calculateNextState();
+                if(isEmpty(cells.get(coordinatePair(i,j)))){
+                    cells.get(coordinatePair(i,j)).calculateNextState();
                 }
-                if(isNotSatisfied(cells[i][j])){
-                    notSatisfiedCells.add(cells[i][j]);
+                if(isNotSatisfied(cells.get(coordinatePair(i,j)))){
+                    notSatisfiedCells.add(cells.get(coordinatePair(i,j)));
                 }
-                else if(cells[i][j].getCurrentState() == 7){
-                    emptyCells.add(cells[i][j]);
+                else if(cells.get(coordinatePair(i,j)).getCurrentState() == 7){
+                    emptyCells.add(cells.get(coordinatePair(i,j)));
                 }
             }
         }
@@ -51,7 +60,7 @@ public class SegregationGrid extends Grid {
         swapCells();
         for(int q=0; q<colSize; q++) {
             for (int w = 0; w < rowSize; w++) {
-                viewState.add(cells[q][w].getCurrentState());
+                viewState.add(cells.get(coordinatePair(q,w)).getCurrentState());
             }
         }
         return viewState;

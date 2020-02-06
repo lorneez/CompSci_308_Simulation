@@ -23,8 +23,8 @@
         <blocktype>4</blocktype>
         <blocktype>6</blocktype>
         <blocktype>3</blocktype>
-        <percentage>.99</percentage>
+        <percentage>.98</percentage>
         <percentage>.01</percentage>
-        <percentage>0</percentage>
+        <percentage>.01</percentage>
     </globalparam>
 </root>
