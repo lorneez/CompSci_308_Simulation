@@ -2,11 +2,11 @@
     <sim_type>segregation</sim_type>
     <parse>percentage</parse>
     <globalparam>
-        <param>0.4</param>
+        <param>0.45</param>
     </globalparam>
-    <size>200</size>
-    <size>200</size>
-    <totalblocks>40000</totalblocks>
+    <size>150</size>
+    <size>150</size>
+    <totalblocks>22500</totalblocks>
     <blocktype>7</blocktype>
     <blocktype>1</blocktype>
     <blocktype>5</blocktype>

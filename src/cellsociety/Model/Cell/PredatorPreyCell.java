@@ -1,6 +1,7 @@
 package cellsociety.Model.Cell;
 import cellsociety.Model.Cell.Cell;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -15,11 +16,13 @@ public class PredatorPreyCell extends Cell{
 
     private double energy;
     private double chronons_passed;
-    private final int REPRODUCTION_THRESHOLD = 10; // chronon threshold, not sure what this number should be
+    private final int REPRODUCTION_THRESHOLD_FISH = 10; // chronon threshold, not sure what this number should be
+    private final int REPRODUCTION_THRESHOLD_SHARK = 4; // chronon threshold, not sure what this number should be
+
     @SuppressWarnings("FieldCanBeLocal")
-    private final int FISH_ENERGY = 4;
+    private final int FISH_ENERGY = 10;
     @SuppressWarnings("FieldCanBeLocal")
-    private final int SHARK_ENERGY = 100;
+    private final int SHARK_ENERGY = 20;
     private boolean canReproduce = false;
 
     /**
@@ -69,8 +72,9 @@ public class PredatorPreyCell extends Cell{
         }
 
         if(openWater.size()!= 0){
-            Random rand = new Random();
-            return openWater.get(rand.nextInt(openWater.size()));
+            Collections.shuffle(openWater);
+
+            return openWater.get(0);
         }
         return null;
     }
@@ -88,8 +92,9 @@ public class PredatorPreyCell extends Cell{
         }
 
         if(nearbyFishes.size()!= 0){
-            Random rand = new Random();
-            return nearbyFishes.get(rand.nextInt(nearbyFishes.size()));
+            Collections.shuffle(nearbyFishes);
+
+            return nearbyFishes.get(0);
         }
         return null;
     }
@@ -102,7 +107,7 @@ public class PredatorPreyCell extends Cell{
      * This particular method executes if the current cell is a fish
      */
     public void fishConditions(){
-        if(chronons_passed == REPRODUCTION_THRESHOLD){
+        if(chronons_passed == REPRODUCTION_THRESHOLD_FISH){
             this.canReproduce = true;
 
         }
@@ -138,7 +143,7 @@ public class PredatorPreyCell extends Cell{
      */
     public void sharkConditions(){
         // enable reproduction if the number of chronons is reached
-        if (this.chronons_passed == REPRODUCTION_THRESHOLD){
+        if (this.chronons_passed == REPRODUCTION_THRESHOLD_SHARK){
             this.canReproduce = true;
         }
         // if a shark reaches zero energy, it dies
@@ -152,7 +157,7 @@ public class PredatorPreyCell extends Cell{
         else if (neighborFish()!= null){
             PredatorPreyCell the_fish_neighbor = neighborFish();
             the_fish_neighbor.nextState = 0;
-            the_fish_neighbor.chronons_passed = this.chronons_passed+1;
+            the_fish_neighbor.chronons_passed = this.chronons_passed + 1;
             the_fish_neighbor.energy = this.energy - 1 + FISH_ENERGY;
             this.chronons_passed = 0;
             this.nextState = 5;
@@ -165,9 +170,9 @@ public class PredatorPreyCell extends Cell{
 
             if (this.canReproduce){
                 the_neighbor.chronons_passed = 0;
-                the_neighbor.energy = this.energy-1;
+                the_neighbor.energy = this.energy - 1;
                 the_neighbor.canReproduce = false;
-
+                System.out.println("Shark reproduced");
                 this.nextState = 0;
                 this.canReproduce = false;
             }else{
@@ -181,7 +186,7 @@ public class PredatorPreyCell extends Cell{
         }
         // if the shark can't move anywhere, update the number of chronons
         else if(neighborFish() == null && neighborWater() == null){
-            this.chronons_passed++;
+            this.chronons_passed += 1;
         }
     }
 
