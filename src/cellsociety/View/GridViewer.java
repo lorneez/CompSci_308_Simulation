@@ -67,6 +67,7 @@ public class GridViewer {
         myStage.setScene(myScene);
         myStage.show();
     }
+
     /**
      * get whether or not we are paused
      * @return boolean paused
@@ -105,8 +106,12 @@ public class GridViewer {
         myStage.setScene(myScene);
     }
 
-    public void setStateNames(HashMap<Integer, String> x){
-        stateNames = x;
+    /**
+     * Set the map of state number to name
+     * @param stateNames map of state number to name
+     */
+    public void setStateNames(HashMap<Integer, String> stateNames){
+        this.stateNames = stateNames;
     }
 
     /**
@@ -123,9 +128,11 @@ public class GridViewer {
             dataSeries1.setName(stateNames.get(x));
             linechart.getData().add(dataSeries1);
         }
-
     }
 
+    /**
+     * Displays a pop up when an error occurs, telling the user to exit
+     */
     public void displayPopUp(){
         Group errorRoot = new Group();
         Stage errorStage = new Stage();
@@ -134,8 +141,6 @@ public class GridViewer {
         errorStage.show();
         setSplashScreenFinished(true);
         myStage.close();
-
-
     }
 
     private Scene setUpPopUp(Stage errorStage, Group errorRoot){
