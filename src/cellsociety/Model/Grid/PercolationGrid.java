@@ -21,8 +21,8 @@ public class PercolationGrid extends Grid {
      * @param initial_positions initial grid configuration in 1D list form
      * @param ignoredNeighbors list of booleans representing whether a neighbor is considered or ignored. False means it is ignored
      */
-    public PercolationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors){
-        super(rowSize, colSize, initial_positions, ignoredNeighbors);
+    public PercolationGrid(int rowSize, int colSize, ArrayList<Integer> initial_positions, ArrayList<Boolean> ignoredNeighbors, String gridType){
+        super(rowSize, colSize, initial_positions, ignoredNeighbors, gridType);
     }
 
     /**
