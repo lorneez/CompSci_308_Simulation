@@ -22,6 +22,7 @@ public abstract class Cell {
     public Cell(int state){
         this.currentState = state;
         this.nextState = state;
+        neighbors = new ArrayList<>();
     }
 
     /**
