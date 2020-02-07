@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.OptionalDouble;
 
 /**
  * Class that drives the simulation and communicates with the grid and viewer classes
@@ -37,6 +38,12 @@ public class GameEngine {
     public static final double MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final String[] allSimTypes = {"fire", "percolation", "gameoflife", "segregation", "predatorprey"};
+
+    private final String MESSAGE_1 = "Error: Edit Configuration File";
+    private final String MESSAGE_2 = "Error: Invalid Cell States Provided in Configuration File";
+    private final String MESSAGE_3 = "Error: Block Percentages DO NOT Sum to 1";
+    private final String MESSAGE_4 = "Error: Row, Columns do not multiply to Total Number of Blocks";
+    private final String MESSAGE_5 = "Error: Invalid Neighbors Provided in Configuration File";
 
     private Timeline animation;
     private String simType;
@@ -110,20 +117,41 @@ public class GameEngine {
         allocateNeighbors(neighborList);
         NodeList edgeTypesList = doc.getElementsByTagName("edge");
         determineEdgeBehavior(edgeTypesList);
+        NodeList blocksInput = doc.getElementsByTagName("totalblocks");
+        totalBlocks = Integer.parseInt(blocksInput.item(0).getTextContent());
         try{
             this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
         }catch(NullPointerException ne){
             System.out.println("Exception: No Simulation Type Given");
-            myViewer.displayPopUp();
+            myViewer.displayPopUp(MESSAGE_1);
             animation.stop();
         }
         try{
             isValidSimType(simType);
         }catch(Exception ex){
             System.out.println("Exception: Invalid Simulation Type");
-            myViewer.displayPopUp();
+            myViewer.displayPopUp(MESSAGE_1 );
             animation.stop();
         }
+
+        try{
+            checkBlockNumber();
+        }catch(Exception ex){
+            System.out.println("Exception: Row*Col does not Match BlockNumbers");
+            myViewer.displayPopUp(MESSAGE_4);
+            animation.stop();
+        }
+
+        try{
+            checkNeighbors();
+        }catch(Exception ex){
+            System.out.println("Exception: Neighbors");
+            myViewer.displayPopUp(MESSAGE_5);
+            animation.stop();
+        }
+
+
+        this.assignPossibleStates();
         if (parseMethod.equals("percentage")){
             parseByPercentage();
         }else if (parseMethod.equals("longlist")){
@@ -143,7 +171,9 @@ public class GameEngine {
         try{
             checkValidCellStates(states_list);
         }catch(Exception ex){
-            System.out.println("Exception: One or more Cell States is Invalid");
+            System.out.println("Exception: One or more Cell States is Invaliddd");
+            myViewer.displayPopUp(MESSAGE_2);
+            animation.stop();
         }
 
         for(int i=0; i<states_list.getLength(); i++){
@@ -171,15 +201,14 @@ public class GameEngine {
         blockPercentages = new ArrayList<>();
         ArrayList<Integer> blockTypes = new ArrayList<>();
 
-        NodeList blocksInput = doc.getElementsByTagName("totalblocks");
-        totalBlocks = Integer.parseInt(blocksInput.item(0).getTextContent());
-
         NodeList blockTypesRead = doc.getElementsByTagName("blocktype");
 
         try{
             checkValidCellStates(blockTypesRead);
         }catch(Exception ex){
             System.out.println("Exception: One or more Cell States is Invalid");
+            myViewer.displayPopUp(MESSAGE_2);
+            animation.stop();
         }
 
         for(int i=0; i<blockTypesRead.getLength(); i++){
@@ -191,12 +220,41 @@ public class GameEngine {
         for(int i=0; i<blockPercentagesRead.getLength(); i++){
             blockPercentages.add(Double.valueOf(blockPercentagesRead.item(i).getTextContent()));
         }
+
+        try{
+            checkProbSum();
+        }catch(Exception ex){
+            System.out.println("Exception: Percentages Don't Sum to 1");
+            myViewer.displayPopUp(MESSAGE_3);
+            animation.stop();
+        }
+
         if(myViewer.getNewParameters()){
             gridParameters = myViewer.getGridParametersUpdated();
             blockPercentages = myViewer.getBlockPercentagesUpdated();
         }
         assignCellStates(blockTypes);
 
+    }
+
+    private void assignPossibleStates(){
+        switch (simType) {
+            case "fire":
+                possibleStates = FireGrid.possibleStates;
+                break;
+            case "gameoflife":
+                break;
+            case "segregation":
+                possibleStates = SegregationGrid.possibleStates;
+                break;
+            case "predatorprey":
+                possibleStates = PredatorPreyGrid.possibleStates;
+                break;
+            case "percolation":
+                possibleStates = PercolationGrid.possibleStates;
+                break;
+
+        }
     }
 
     /**
@@ -209,24 +267,19 @@ public class GameEngine {
             case "fire":
                 myGrid = new FireGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
                 FireCell.setProb(gridParameters.get(0), gridParameters.get(1));
-                possibleStates = FireGrid.possibleStates;
                 break;
             case "gameoflife":
                 myGrid = new GameOfLifeGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
-                possibleStates = GameOfLifeGrid.possibleStates;
                 break;
             case "segregation":
                 myGrid = new SegregationGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
                 SegregationCell.setProb(gridParameters.get(0));
-                possibleStates = SegregationGrid.possibleStates;
                 break;
             case "predatorprey":
                 myGrid = new PredatorPreyGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
-                possibleStates = PredatorPreyGrid.possibleStates;
                 break;
             case "percolation":
                 myGrid = new PercolationGrid(rowSize, colSize, cellStates, ignoredNeighbors, edgeParams);
-                possibleStates = PercolationGrid.possibleStates;
                 break;
 
         }
@@ -281,8 +334,12 @@ public class GameEngine {
 
     private void checkValidCellStates(NodeList states) throws Exception{
         int state;
+        System.out.println("HI");
+        System.out.println("Possible States: " + possibleStates[0]);
         for(int i = 0; i<states.getLength(); i++){
             state = Integer.parseInt(states.item(i).getTextContent());
+            System.out.println("State: " + state);
+
             if(!checkIfStateInSim(state)){
                 throw new Exception("One Or More Cells Have Incorrect States");
             }
@@ -323,8 +380,10 @@ public class GameEngine {
             if(isNeighborConsidered.equals("true")){
                 neighbors.add(true);
             }
-            else {
+            else if(isNeighborConsidered.equals("false")){
                 neighbors.add(false);
+            }else{
+                neighbors.add(null);
             }
 
         }
@@ -344,5 +403,35 @@ public class GameEngine {
             cellStates.add(defaultBlock);
         }
         Collections.shuffle(cellStates);
+    }
+
+    private void checkProbSum() throws Exception{
+        Double sum = blockPercentages.stream().mapToDouble(i-> i).sum();
+
+        if(sum != 1.0){
+            throw new Exception("Block Percentages DO NOT Sum to 1");
+        }
+
+        return;
+    }
+
+    private void checkBlockNumber() throws Exception{
+
+        if (row*col != totalBlocks){
+            throw new Exception("Row, Col do not multiple to total blocks");
+        }
+
+        return;
+    }
+
+    private void checkNeighbors() throws Exception{
+
+        for(int i=0; i< neighbors.size(); i++){
+            if(neighbors.get(i) == null){
+                throw new Exception("Incorrect Neighbor Parameters");
+            }
+        }
+
+        return;
     }
 }

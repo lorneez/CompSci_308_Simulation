@@ -15,6 +15,7 @@
         <size>36</size>
         <size>36</size>
     </globalparam>
+    <totalblocks>1296</totalblocks>
     <edgetype>
         <edge>1</edge>
         <edge>0</edge>
