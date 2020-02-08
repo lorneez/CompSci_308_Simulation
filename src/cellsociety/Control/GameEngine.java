@@ -1,8 +1,8 @@
 package cellsociety.Control;
-import cellsociety.Model.Exception.InvalidNeighborException;
-import cellsociety.Model.Exception.MissingParametersException;
-import cellsociety.Model.Exception.RowColMismatchException;
-import cellsociety.Model.Exception.SimulationTypeException;
+import cellsociety.Control.Exception.InvalidNeighborException;
+import cellsociety.Control.Exception.MissingParametersException;
+import cellsociety.Control.Exception.RowColMismatchException;
+import cellsociety.Control.Exception.SimulationTypeException;
 import cellsociety.Model.Grid.Grid;
 import cellsociety.Model.Grid.FireGrid;
 import cellsociety.Model.Cell.FireCell;

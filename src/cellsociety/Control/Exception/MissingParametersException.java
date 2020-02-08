@@ -1,4 +1,4 @@
-package cellsociety.Model.Exception;
+package cellsociety.Control.Exception;
 
 public class MissingParametersException extends Exception {
 
