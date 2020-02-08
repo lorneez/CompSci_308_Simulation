@@ -1,6 +1,5 @@
 package cellsociety.Control;
 import cellsociety.Control.Exception.InvalidNeighborException;
-import cellsociety.Control.Exception.MissingParametersException;
 import cellsociety.Control.Exception.RowColMismatchException;
 import cellsociety.Control.Exception.SimulationTypeException;
 import cellsociety.Model.Grid.Grid;
@@ -47,6 +46,7 @@ public class GameEngine {
     private final String MESSAGE_4 = "Error: Row, Columns do not multiply to Total Number of Blocks";
     private final String MESSAGE_5 = "Error: Invalid Neighbors Provided in Configuration File";
     private final String MESSAGE_6 = "Error: One or More Parameters Missing in Configuration File";
+    public static final String defaultFilePath = "./src/cellsociety/View/default_config.xml";
 
     private Timeline animation;
     private String simType;
@@ -58,6 +58,7 @@ public class GameEngine {
     private int row;
     private int col;
     private int totalBlocks;
+    private boolean enableDefault;
     private ArrayList<Double> blockPercentages;
     private String lastSimulationRun;
     private ArrayList<Double> gridParameters;
@@ -81,6 +82,7 @@ public class GameEngine {
      */
     public void start(){
         myViewer = new GridViewer();
+        enableDefault = false;
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
             try {
                 step();
@@ -89,7 +91,9 @@ public class GameEngine {
             } catch (SAXException ex) {
                 System.out.println("Caught SAXException");
             } catch (Exception ex) {
-                System.out.println("Caught ParserConfigException");
+
+                    System.out.println("Caught Exception");
+
             }
         });
         animation = new Timeline();
@@ -113,16 +117,23 @@ public class GameEngine {
         gridParameters = new ArrayList<>();
         neighbors = new ArrayList<>();
         edgeBehavior = new int[3];
-
+        validNumNeighbors = 0;
+        System.out.println("CP 1");
+        //extractSimulationParameters();
+        System.out.println("CP 2");
         if (errorChecking()){
             return;
         }
+        System.out.println("CP 3");
+        System.out.println("Type: " + simType);
         this.assignPossibleStates();
+        System.out.println("CP 4");
         if (parseMethod.equals("percentage")){
             parseByPercentage();
         }else{
             parseLongList();
         }
+        System.out.println("CP 5");
         this.initializeGrid(gridParameters, row, col, neighbors);
     }
 
@@ -200,6 +211,7 @@ public class GameEngine {
                 possibleStates = FireGrid.possibleStates;
                 break;
             case "gameoflife":
+                possibleStates = GameOfLifeGrid.possibleStates;
                 break;
             case "segregation":
                 possibleStates = SegregationGrid.possibleStates;
@@ -269,6 +281,7 @@ public class GameEngine {
             // if so, parse the file name and we are done with the splash screen
             if(!sim_xml_path.equals("NONE")){
                     lastSimulationRun = sim_xml_path;
+                    System.out.println(sim_xml_path);
                     parseFile(sim_xml_path);
                     myViewer.setUpSimulation(row,col,cellStates);
                     myViewer.setSplashScreenFinished(false);
@@ -292,7 +305,7 @@ public class GameEngine {
     private void checkValidCellStates(NodeList states) throws Exception{
         int state;
         System.out.println("HI");
-        System.out.println("Possible States: " + possibleStates[0]);
+        System.out.println("Possible States: " + possibleStates);
         for(int i = 0; i<states.getLength(); i++){
             state = Integer.parseInt(states.item(i).getTextContent());
             System.out.println("State: " + state);
@@ -338,12 +351,12 @@ public class GameEngine {
     }
 
     private void allocateNeighbors(NodeList neighborList){
+
         if (neighborList.getLength() == 0){
             throw new NullPointerException();
         }
         for(int i=0; i<neighborList.getLength(); i++){
             String isNeighborConsidered = neighborList.item(i).getTextContent();
-
             if(isNeighborConsidered.equals("true")){
                 neighbors.add(true);
                 validNumNeighbors++;
@@ -355,7 +368,6 @@ public class GameEngine {
                 neighbors.add(false);
 
             }
-
         }
     }
 
@@ -419,33 +431,26 @@ public class GameEngine {
         }
     }
 
-    private void extractSimulationParameters() throws MissingParametersException {
-        try{
+    private void extractSimulationParameters() throws NullPointerException{
+            try{
             parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
             NodeList sizeList = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
             setRowCol(sizeList);
-            NodeList paramList = doc.getElementsByTagName("param");
-            setParameters(paramList);
+            extractParams();
             NodeList neighborList = doc.getElementsByTagName("neighbor");
             allocateNeighbors(neighborList);
             NodeList edgeTypesList = doc.getElementsByTagName("edge");
             determineEdgeBehavior(edgeTypesList);
             NodeList blocksInput = doc.getElementsByTagName("totalblocks");
-            totalBlocks = Integer.parseInt(blocksInput.item(0).getTextContent());
-        }catch (NullPointerException ne){
-            throw new MissingParametersException(MESSAGE_6, ne);
-        }
+            totalBlocks = Integer.parseInt(blocksInput.item(0).getTextContent());}
+            catch (NullPointerException ne){
+                System.out.println("Param missing");
+            }
+
 
     }
 
     private boolean errorChecking(){
-        try{
-            extractSimulationParameters();
-        }catch (MissingParametersException ex){
-            myViewer.displayPopUp(MESSAGE_6);
-            animation.stop();
-            return true;
-        }
 
         try{
             extractSimulationType();
@@ -456,6 +461,8 @@ public class GameEngine {
             animation.stop();
             return true;
         }
+
+        extractSimulationParameters();
 
         try{
             checkBlockNumber();
@@ -474,5 +481,13 @@ public class GameEngine {
             return true;
         }
         return false;
+    }
+
+    private void extractParams(){
+        if(simType.equals("fire") || simType.equals("segregation")){
+            NodeList paramList = doc.getElementsByTagName("param");
+            System.out.println("KL");
+            setParameters(paramList);
+        }
     }
 }

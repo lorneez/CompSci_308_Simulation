@@ -9,6 +9,11 @@
     <neighbor>true</neighbor>
     <neighbor>true</neighbor>
     <neighbor>true</neighbor>
+    <edgetype>
+        <edge>1</edge>
+        <edge>0</edge>
+        <edge>0</edge>
+    </edgetype>
     <globalparam>
         <param>0.45</param>
     </globalparam>
