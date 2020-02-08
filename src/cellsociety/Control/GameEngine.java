@@ -1,5 +1,6 @@
 package cellsociety.Control;
 import cellsociety.Control.Exception.InvalidNeighborException;
+import cellsociety.Control.Exception.MissingParametersException;
 import cellsociety.Control.Exception.RowColMismatchException;
 import cellsociety.Control.Exception.SimulationTypeException;
 import cellsociety.Model.Grid.Grid;
@@ -205,6 +206,11 @@ public class GameEngine {
 
     }
 
+
+    /**
+     * Depending on the simulation type, determine all the possible states that should be looked at in the simulation.
+     * Used for error catching in case user enters an invalid state in the configuration file
+     */
     private void assignPossibleStates(){
         switch (simType) {
             case "fire":
@@ -255,6 +261,10 @@ public class GameEngine {
         myViewer.setStateNames(myGrid.getStateNames());
     }
 
+
+    /**
+     * Step function that repeatedly runs to render the simulation
+     */
     private void step() throws Exception {
         if(!myViewer.getSplashScreenFinished()){
             System.out.println("stepping");
@@ -291,6 +301,11 @@ public class GameEngine {
         }
     }
 
+
+    /**
+     * If an invalid simulation type is entered, an exception is thrown
+     * @param s the string parsed which is the simulation type parameter entered in the config file
+     */
     private void isValidSimType(String s) throws Exception {
 
         for (String allSimType : allSimTypes) {
@@ -302,6 +317,11 @@ public class GameEngine {
         throw new Exception("Simulation Type Invalid Exception");
     }
 
+
+    /**
+     * Iterate through all the states specified in either format of the config file and determines if any are invalid
+     * @param states list of all the state integers specified in the config file
+     */
     private void checkValidCellStates(NodeList states) throws Exception{
         int state;
         System.out.println("HI");
@@ -316,6 +336,11 @@ public class GameEngine {
         }
     }
 
+
+    /**
+     * Iterate through all the possible states and determine if the state in question is valid or invalid
+     * @param state a single state parameter from config file
+     */
     private boolean checkIfStateInSim(int state){
 
         for(int i: possibleStates){
@@ -326,11 +351,21 @@ public class GameEngine {
         return false;
     }
 
+    /**
+     * Assign the row and column instance variables from the config file
+     * @param sizeList two element list containing rowand col parameters
+     */
+
     private void setRowCol(NodeList sizeList){
         row = Integer.parseInt(sizeList.item(0).getTextContent());
         col = Integer.parseInt(sizeList.item(1).getTextContent());
     }
 
+
+    /**
+     * Assign the gridParameter isntance varaible from the config file
+     * @param paramList list containing all the grid parameters specific to that simulation
+     */
     private void setParameters(NodeList paramList){
         if (paramList.getLength() == 0){
             throw new NullPointerException();
@@ -340,6 +375,10 @@ public class GameEngine {
         }
     }
 
+    /**
+     * Assign the edgebehavior list from the config file
+     * @param edges three element list that governs the relationship between cell edges
+     */
     private void determineEdgeBehavior(NodeList edges){
 
         if (edges.getLength() == 0){
@@ -350,6 +389,11 @@ public class GameEngine {
         }
     }
 
+    /**
+     * Assign the neighbors instance variable to determine which of a cells neighbors interact with one another
+     * @param neighborList list of neighbors that either say true or false to indicate if the cells interact with
+     *  the neighbors or not
+     */
     private void allocateNeighbors(NodeList neighborList){
 
         if (neighborList.getLength() == 0){
@@ -371,6 +415,11 @@ public class GameEngine {
         }
     }
 
+    /**
+     * For the percentage-based config file, look at the different block types and generate
+     * a list of cellstate based on the frequency of each block type
+     * @param blockTypes list contianing the different cell types present
+     */
     private void assignCellStates(ArrayList<Integer> blockTypes){
         int count = 0;
         int defaultBlock = blockTypes.get(0);
@@ -387,6 +436,9 @@ public class GameEngine {
         Collections.shuffle(cellStates);
     }
 
+    /**
+     * Check if the block percentages sum to 1, otherwise throw an exception
+     */
     private void checkProbSum() throws Exception{
         Double sum = blockPercentages.stream().mapToDouble(i-> i).sum();
 
@@ -396,7 +448,9 @@ public class GameEngine {
 
         return;
     }
-
+    /**
+     * If the row and column parameters do not multiply to the total number of blocks, throw a custom exception
+     */
     private void checkBlockNumber() throws RowColMismatchException{
 
         if (row*col != totalBlocks){
@@ -406,6 +460,9 @@ public class GameEngine {
         return;
     }
 
+    /**
+     * If one or more of the neighbor parameters are invalid (i.e. not true or false), throw a custom exception
+     */
     private void checkNeighbors() throws InvalidNeighborException{
 
         if(this.validNumNeighbors != neighbors.size()){
@@ -415,6 +472,9 @@ public class GameEngine {
         return;
     }
 
+    /**
+     * If the user enters no simulation type (includes no tag) in the config file, throw a custom exception
+     */
     private void extractSimulationType() throws SimulationTypeException {
         try{
             this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
@@ -423,6 +483,9 @@ public class GameEngine {
         }
     }
 
+    /**
+     * If the user enters an invalid simulation type in the config file, throw a custom exception
+     */
     private void determineValidSimulationType() throws SimulationTypeException {
         try{
             isValidSimType(simType);
@@ -431,7 +494,12 @@ public class GameEngine {
         }
     }
 
-    private void extractSimulationParameters() throws NullPointerException{
+    /**
+     * Method that assigns many of the instance variables in this class by reading in values from the config file.
+     * It is important to check if one or more of these values are not specified by the user in the config file. Thus,
+     * we catch any exceptions
+     */
+    private void extractSimulationParameters() throws NullPointerException, MissingParametersException {
             try{
             parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
             NodeList sizeList = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
@@ -444,12 +512,16 @@ public class GameEngine {
             NodeList blocksInput = doc.getElementsByTagName("totalblocks");
             totalBlocks = Integer.parseInt(blocksInput.item(0).getTextContent());}
             catch (NullPointerException ne){
-                System.out.println("Param missing");
+                throw new MissingParametersException("One or more parameters missing", ne);
             }
 
 
     }
 
+    /**
+     * Catches most the custom errors which throw specific exceptions and handles them
+     * by stopping the simulation and displaying a popup window describing the error
+     */
     private boolean errorChecking(){
 
         try{
@@ -461,8 +533,14 @@ public class GameEngine {
             animation.stop();
             return true;
         }
+        try{
+            extractSimulationParameters();
+        }catch(MissingParametersException ex){
+            myViewer.displayPopUp(MESSAGE_6);
+            animation.stop();
+            return true;
+        }
 
-        extractSimulationParameters();
 
         try{
             checkBlockNumber();
@@ -483,10 +561,12 @@ public class GameEngine {
         return false;
     }
 
+    /**
+     * For the two classes with parameters, extract them
+     */
     private void extractParams(){
         if(simType.equals("fire") || simType.equals("segregation")){
             NodeList paramList = doc.getElementsByTagName("param");
-            System.out.println("KL");
             setParameters(paramList);
         }
     }
