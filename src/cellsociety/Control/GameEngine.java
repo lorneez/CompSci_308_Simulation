@@ -1,4 +1,8 @@
 package cellsociety.Control;
+import cellsociety.Model.Exception.InvalidNeighborException;
+import cellsociety.Model.Exception.MissingParametersException;
+import cellsociety.Model.Exception.RowColMismatchException;
+import cellsociety.Model.Exception.SimulationTypeException;
 import cellsociety.Model.Grid.Grid;
 import cellsociety.Model.Grid.FireGrid;
 import cellsociety.Model.Cell.FireCell;
@@ -11,7 +15,6 @@ import cellsociety.Model.Grid.PercolationGrid;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -24,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.OptionalDouble;
 
 /**
  * Class that drives the simulation and communicates with the grid and viewer classes
@@ -39,14 +41,16 @@ public class GameEngine {
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final String[] allSimTypes = {"fire", "percolation", "gameoflife", "segregation", "predatorprey"};
 
-    private final String MESSAGE_1 = "Error: Edit Configuration File";
+    private final String MESSAGE_1 = "Error: Edit Simulation Type in Configuration File";
     private final String MESSAGE_2 = "Error: Invalid Cell States Provided in Configuration File";
     private final String MESSAGE_3 = "Error: Block Percentages DO NOT Sum to 1";
     private final String MESSAGE_4 = "Error: Row, Columns do not multiply to Total Number of Blocks";
     private final String MESSAGE_5 = "Error: Invalid Neighbors Provided in Configuration File";
+    private final String MESSAGE_6 = "Error: One or More Parameters Missing in Configuration File";
 
     private Timeline animation;
     private String simType;
+    private String parseMethod;
     private ArrayList<Integer> cellStates;
     private ArrayList<Boolean> neighbors;
     private Grid myGrid;
@@ -63,6 +67,7 @@ public class GameEngine {
 
 
     private boolean done;
+    private int validNumNeighbors;
 
     /**
      * Constructor method. initializes some things and cells start
@@ -83,7 +88,7 @@ public class GameEngine {
                 System.out.println("Caught IO Exception");
             } catch (SAXException ex) {
                 System.out.println("Caught SAXException");
-            } catch (ParserConfigurationException ex) {
+            } catch (Exception ex) {
                 System.out.println("Caught ParserConfigException");
             }
         });
@@ -99,7 +104,7 @@ public class GameEngine {
      * @param sim_xml_path string representation of file path
      * Assigns values from file to instance variables
      */
-    private void parseFile(String sim_xml_path) throws IOException, SAXException, ParserConfigurationException {
+    private void parseFile(String sim_xml_path) throws Exception{
         File fXmlFile = new File(sim_xml_path);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -107,58 +112,20 @@ public class GameEngine {
         cellStates = new ArrayList<>();
         gridParameters = new ArrayList<>();
         neighbors = new ArrayList<>();
-        String parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
         edgeBehavior = new int[3];
-        NodeList sizeList = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
-        setRowCol(sizeList);
-        NodeList paramList = doc.getElementsByTagName("param");
-        setParameters(paramList);
-        NodeList neighborList = doc.getElementsByTagName("neighbor");
-        allocateNeighbors(neighborList);
-        NodeList edgeTypesList = doc.getElementsByTagName("edge");
-        determineEdgeBehavior(edgeTypesList);
-        NodeList blocksInput = doc.getElementsByTagName("totalblocks");
-        totalBlocks = Integer.parseInt(blocksInput.item(0).getTextContent());
-        try{
-            this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
-        }catch(NullPointerException ne){
-            System.out.println("Exception: No Simulation Type Given");
-            myViewer.displayPopUp(MESSAGE_1);
-            animation.stop();
-        }
-        try{
-            isValidSimType(simType);
-        }catch(Exception ex){
-            System.out.println("Exception: Invalid Simulation Type");
-            myViewer.displayPopUp(MESSAGE_1 );
-            animation.stop();
-        }
 
-        try{
-            checkBlockNumber();
-        }catch(Exception ex){
-            System.out.println("Exception: Row*Col does not Match BlockNumbers");
-            myViewer.displayPopUp(MESSAGE_4);
-            animation.stop();
+        if (errorChecking()){
+            return;
         }
-
-        try{
-            checkNeighbors();
-        }catch(Exception ex){
-            System.out.println("Exception: Neighbors");
-            myViewer.displayPopUp(MESSAGE_5);
-            animation.stop();
-        }
-
-
         this.assignPossibleStates();
         if (parseMethod.equals("percentage")){
             parseByPercentage();
-        }else if (parseMethod.equals("longlist")){
+        }else{
             parseLongList();
         }
         this.initializeGrid(gridParameters, row, col, neighbors);
     }
+
 
     /**
      * 1 of 2 ways to parse the configuration file that looks at all the states specified in
@@ -168,27 +135,17 @@ public class GameEngine {
     private void parseLongList(){
 
         NodeList states_list = doc.getElementsByTagName("state");
+
         try{
             checkValidCellStates(states_list);
         }catch(Exception ex){
-            System.out.println("Exception: One or more Cell States is Invaliddd");
+            System.out.println("Exception: One or more Cell States is Invalid");
             myViewer.displayPopUp(MESSAGE_2);
             animation.stop();
         }
 
         for(int i=0; i<states_list.getLength(); i++){
             cellStates.add(Integer.valueOf(states_list.item(i).getTextContent()));
-        }
-        NodeList neighbor_list = doc.getElementsByTagName("neighbor");
-        for(int i=0; i<neighbor_list.getLength(); i++){
-            String isNeighborConsidered = neighbor_list.item(i).getTextContent();
-
-            if(isNeighborConsidered.equals("true")){
-                neighbors.add(true);
-            }
-            else {
-                neighbors.add(false);
-            }
         }
     }
 
@@ -286,7 +243,7 @@ public class GameEngine {
         myViewer.setStateNames(myGrid.getStateNames());
     }
 
-    private void step() throws IOException, SAXException, ParserConfigurationException {
+    private void step() throws Exception {
         if(!myViewer.getSplashScreenFinished()){
             System.out.println("stepping");
             if(myViewer.getRestart()){
@@ -362,28 +319,41 @@ public class GameEngine {
     }
 
     private void setParameters(NodeList paramList){
+        if (paramList.getLength() == 0){
+            throw new NullPointerException();
+        }
         for(int i=0; i<paramList.getLength(); i++){
             gridParameters.add(Double.valueOf(paramList.item(i).getTextContent()));
         }
     }
 
     private void determineEdgeBehavior(NodeList edges){
+
+        if (edges.getLength() == 0){
+            throw new NullPointerException();
+        }
         for(int i=0; i<edges.getLength(); i++){
             edgeBehavior[i] = Integer.valueOf(edges.item(i).getTextContent());
         }
     }
 
     private void allocateNeighbors(NodeList neighborList){
+        if (neighborList.getLength() == 0){
+            throw new NullPointerException();
+        }
         for(int i=0; i<neighborList.getLength(); i++){
             String isNeighborConsidered = neighborList.item(i).getTextContent();
 
             if(isNeighborConsidered.equals("true")){
                 neighbors.add(true);
+                validNumNeighbors++;
             }
             else if(isNeighborConsidered.equals("false")){
                 neighbors.add(false);
+                validNumNeighbors++;
             }else{
-                neighbors.add(null);
+                neighbors.add(false);
+
             }
 
         }
@@ -415,23 +385,94 @@ public class GameEngine {
         return;
     }
 
-    private void checkBlockNumber() throws Exception{
+    private void checkBlockNumber() throws RowColMismatchException{
 
         if (row*col != totalBlocks){
-            throw new Exception("Row, Col do not multiple to total blocks");
+            throw new RowColMismatchException("Row, Col do not multiply to total blocks");
         }
 
         return;
     }
 
-    private void checkNeighbors() throws Exception{
+    private void checkNeighbors() throws InvalidNeighborException{
 
-        for(int i=0; i< neighbors.size(); i++){
-            if(neighbors.get(i) == null){
-                throw new Exception("Incorrect Neighbor Parameters");
-            }
+        if(this.validNumNeighbors != neighbors.size()){
+            throw new InvalidNeighborException("Incorrect Neighbor Parameters");
         }
 
         return;
+    }
+
+    private void extractSimulationType() throws SimulationTypeException {
+        try{
+            this.simType = doc.getElementsByTagName("sim_type").item(0).getTextContent();
+        }catch(NullPointerException ne){
+            throw new SimulationTypeException(MESSAGE_1, ne);
+        }
+    }
+
+    private void determineValidSimulationType() throws SimulationTypeException {
+        try{
+            isValidSimType(simType);
+        }catch(Exception ex){
+            throw new SimulationTypeException(MESSAGE_1, ex);
+        }
+    }
+
+    private void extractSimulationParameters() throws MissingParametersException {
+        try{
+            parseMethod = doc.getElementsByTagName("parse").item(0).getTextContent();
+            NodeList sizeList = doc.getElementsByTagName("size"); //eventually add row and col parameters in config file
+            setRowCol(sizeList);
+            NodeList paramList = doc.getElementsByTagName("param");
+            setParameters(paramList);
+            NodeList neighborList = doc.getElementsByTagName("neighbor");
+            allocateNeighbors(neighborList);
+            NodeList edgeTypesList = doc.getElementsByTagName("edge");
+            determineEdgeBehavior(edgeTypesList);
+            NodeList blocksInput = doc.getElementsByTagName("totalblocks");
+            totalBlocks = Integer.parseInt(blocksInput.item(0).getTextContent());
+        }catch (NullPointerException ne){
+            throw new MissingParametersException(MESSAGE_6, ne);
+        }
+
+    }
+
+    private boolean errorChecking(){
+        try{
+            extractSimulationParameters();
+        }catch (MissingParametersException ex){
+            myViewer.displayPopUp(MESSAGE_6);
+            animation.stop();
+            return true;
+        }
+
+        try{
+            extractSimulationType();
+            determineValidSimulationType();
+
+        }catch(SimulationTypeException ex){
+            myViewer.displayPopUp(MESSAGE_1);
+            animation.stop();
+            return true;
+        }
+
+        try{
+            checkBlockNumber();
+        }catch(RowColMismatchException ex){
+            myViewer.displayPopUp(MESSAGE_4);
+            animation.stop();
+            return true;
+        }
+
+        try{
+            checkNeighbors();
+        }catch(InvalidNeighborException ex){
+            System.out.println("Exception: Neighbors");
+            myViewer.displayPopUp(MESSAGE_5);
+            animation.stop();
+            return true;
+        }
+        return false;
     }
 }

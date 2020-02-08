@@ -1,0 +1,29 @@
+<root>
+    <parse>percentage</parse>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>true</neighbor>
+    <neighbor>false</neighbor>
+    <neighbor>false</neighbor>
+    <neighbor>false</neighbor>
+    <neighbor>false</neighbor>
+    <edgetype>
+        <edge>1</edge>
+        <edge>0</edge>
+        <edge>0</edge>
+    </edgetype>
+    <globalparam>
+        <param>0.6</param>
+        <param>0.4</param>
+        <size>50</size>
+        <size>50</size>
+        <totalblocks>2500</totalblocks>
+        <blocktype>4</blocktype>
+        <blocktype>6</blocktype>
+        <blocktype>3</blocktype>
+        <percentage>.98</percentage>
+        <percentage>.01</percentage>
+        <percentage>.01</percentage>
+    </globalparam>
+</root>
