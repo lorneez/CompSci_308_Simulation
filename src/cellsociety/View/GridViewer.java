@@ -231,7 +231,7 @@ public class GridViewer {
      * Add button to end simulation
      */
     public void addResetButton(){
-        Button resetButton = makeButton("Reset Simulation", MENU_SIZE / 3, SIZE / 2 - OFFSETS[11], myRoot);
+        Button resetButton = makeButton("Reset Simulation", MENU_SIZE / 3, SIZE / 2 - OFFSETS[10], myRoot);
         setSplashScreenFinished(true);
         resetButton.setOnAction(new EventHandler<>() {
             @Override
