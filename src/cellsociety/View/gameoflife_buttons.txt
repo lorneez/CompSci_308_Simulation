@@ -1,0 +1,3 @@
+Percent Alive
+Percent Dead
+Reset With New Parameters

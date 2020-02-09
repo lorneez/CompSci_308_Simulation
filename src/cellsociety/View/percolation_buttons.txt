@@ -1,0 +1,4 @@
+Percent Blocked
+Percent Open
+Percent Percolated
+Reset With New Parameters

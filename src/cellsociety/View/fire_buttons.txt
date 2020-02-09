@@ -1,0 +1,6 @@
+Percent Tree
+Percent Fire
+Percent Dead
+Probability Catch
+Probability Die
+Reset With New Parameters

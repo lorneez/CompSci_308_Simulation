@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -91,7 +93,7 @@ public class GridViewer {
      * @param colSize number of rows
      * @param initial_states intial cell configurations
      */
-    public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states){
+    public void setUpSimulation(int rowSize, int colSize, ArrayList<Integer> initial_states) throws IOException {
         restart = false;
         newParameters = false;
         gridParametersUpdated = new ArrayList<>();
@@ -134,7 +136,7 @@ public class GridViewer {
      * @param colSize number of rows
      * @param initial_states integer list representing initial cell states. Order is "arbitrary", this method interprets it
      */
-    public void setUpGrid(int rowSize, int colSize, ArrayList<Integer> initial_states){
+    public void setUpGrid(int rowSize, int colSize, ArrayList<Integer> initial_states) throws IOException {
         myRoot = new Group();
         cellStates = new HashMap<>();
         cells = new HashMap<>();
@@ -297,7 +299,7 @@ public class GridViewer {
 
     }
 
-    private void addAdditionalButtons(String file_name) {
+    private void addAdditionalButtons(String file_name) throws IOException {
         String sim = file_name.split("/")[4].split("_")[0];
         switch (sim) {
             case "fire":
@@ -318,14 +320,16 @@ public class GridViewer {
         }
     }
 
-    private void addPredatorPreyButtons() {
-        makeLabel("Percent Water:", MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
+    private void addPredatorPreyButtons() throws IOException {
+        File file = new File("./src/cellsociety/View/predatorprey_buttons.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentWater = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
-        makeLabel("Percent Fish:", MENU_SIZE/3, SIZE/2 -OFFSETS[6], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 -OFFSETS[6], myRoot);
         TextField percentFish = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[5], myRoot);
-        makeLabel("Percent Shark:", MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
         TextField percentShark = makeTextField("%", MENU_SIZE/3,  SIZE/2-OFFSETS[1], myRoot);
-        Button predatorPreyReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + OFFSETS[0], myRoot);
+        Button predatorPreyReset = makeButton(br.readLine(), MENU_SIZE/3, SIZE/2 + OFFSETS[0], myRoot);
         predatorPreyReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -338,16 +342,18 @@ public class GridViewer {
         });
     }
 
-    private void addSegregationButtons() {
-        makeLabel("Percent Empty:", MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
+    private void addSegregationButtons() throws IOException {
+        File file = new File("./src/cellsociety/View/segregation_buttons.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentEmpty = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
-        makeLabel("Percent Red:", MENU_SIZE/3, SIZE/2 -OFFSETS[6], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 -OFFSETS[6], myRoot);
         TextField percentRed = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[5], myRoot);
-        makeLabel("Percent Blue:", MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
         TextField percentBlue = makeTextField("%", MENU_SIZE/3,  SIZE/2-OFFSETS[1], myRoot);
-        makeLabel("Percent Satisfy:", MENU_SIZE/3, SIZE/2, myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2, myRoot);
         TextField satisfyPercent = makeTextField("%", MENU_SIZE/3,  SIZE/2 + OFFSETS[1], myRoot);
-        Button segregationReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + OFFSETS[4], myRoot);
+        Button segregationReset = makeButton(br.readLine(), MENU_SIZE/3, SIZE/2 + OFFSETS[4], myRoot);
         segregationReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -361,14 +367,16 @@ public class GridViewer {
         });
     }
 
-    private void addPercolationButtons() {
-        makeLabel("Percent Blocked:", MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
+    private void addPercolationButtons() throws IOException {
+        File file = new File("./src/cellsociety/View/percolation_buttons.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentBlocked = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
-        makeLabel("Percent Open:", MENU_SIZE/3, SIZE/2 - OFFSETS[6], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[6], myRoot);
         TextField percentOpen = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[5], myRoot);
-        makeLabel("Percent Percolated:", MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
         TextField percentPercolated = makeTextField("%", MENU_SIZE/3,  SIZE/2-OFFSETS[1], myRoot);
-        Button percolationReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + OFFSETS[0], myRoot);
+        Button percolationReset = makeButton(br.readLine(), MENU_SIZE/3, SIZE/2 + OFFSETS[0], myRoot);
         percolationReset.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
@@ -381,12 +389,14 @@ public class GridViewer {
         });
     }
 
-    private void addGameOfLifeButtons() {
-        makeLabel("Percent Alive:", MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
+    private void addGameOfLifeButtons() throws IOException {
+        File file = new File("./src/cellsociety/View/gameoflife_buttons.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentAlive = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
-        makeLabel("Percent Dead:", MENU_SIZE/3, SIZE/2 -OFFSETS[6], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 -OFFSETS[6], myRoot);
         TextField percentDead = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[5], myRoot);
-        Button gameOfLifeReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 - OFFSETS[2], myRoot);
+        Button gameOfLifeReset = makeButton(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[2], myRoot);
         gameOfLifeReset.setOnAction(new EventHandler<ActionEvent>(){
 
             @Override
@@ -399,18 +409,20 @@ public class GridViewer {
         });
     }
 
-    private void addFireButtons() {
-        makeLabel("Percent Tree:", MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
+    private void addFireButtons() throws IOException {
+        File file = new File("./src/cellsociety/View/fire_buttons.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentTree = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
-        makeLabel("Percent Fire:", MENU_SIZE/3, SIZE/2 -OFFSETS[6], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 -OFFSETS[6], myRoot);
         TextField percentFire = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[5], myRoot);
-        makeLabel("Percent Dead:", MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 -OFFSETS[3], myRoot);
         TextField percentDead = makeTextField("%", MENU_SIZE/3,  SIZE/2-OFFSETS[1], myRoot);
-        makeLabel("Probability Catch:", MENU_SIZE/3, SIZE/2, myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2, myRoot);
         TextField probCatch = makeTextField("%", MENU_SIZE/3,  SIZE/2 + OFFSETS[1], myRoot);
-        makeLabel("Probability Die:", MENU_SIZE/3, SIZE/2 + OFFSETS[3], myRoot);
+        makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 + OFFSETS[3], myRoot);
         TextField probDie = makeTextField("%", MENU_SIZE/3,  SIZE/2 + OFFSETS[5], myRoot);
-        Button fireReset = makeButton("Reset With New Parameters", MENU_SIZE/3, SIZE/2 + OFFSETS[7], myRoot);
+        Button fireReset = makeButton(br.readLine(), MENU_SIZE/3, SIZE/2 + OFFSETS[7], myRoot);
 
         fireReset.setOnAction(new EventHandler<ActionEvent>(){
 
