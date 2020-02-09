@@ -1,5 +1,5 @@
 <root>
-    <sim_type>fire</sim_type>
+    <sim_type>fireqwerty</sim_type>
     <parse>percentage</parse>
     <neighbor>true</neighbor>
     <neighbor>true</neighbor>

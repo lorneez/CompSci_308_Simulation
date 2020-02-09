@@ -118,10 +118,10 @@ public class GridViewer {
     /**
      * Displays a pop up when an error occurs, telling the user to exit
      */
-    public void displayPopUp(){
+    public void displayPopUp(String errorMessage){
         Group errorRoot = new Group();
         Stage errorStage = new Stage();
-        Scene errorScene = setUpPopUp(errorStage, errorRoot);
+        Scene errorScene = setUpPopUp(errorStage, errorRoot, errorMessage);
         errorStage.setScene(errorScene);
         errorStage.show();
         setSplashScreenFinished(true);
@@ -241,9 +241,9 @@ public class GridViewer {
         });
     }
 
-    private Scene setUpPopUp(Stage errorStage, Group errorRoot){
-        //TextField  message = makeTextField("Edit Configuration File to Input Correct Simulation Type", MENU_SIZE/3,  SIZE/2 + 75, errorRoot);
-        Label message = makeLabel("Error: Edit Configuration File",GRAPH_SIZE/4,  (GRAPH_SIZE/3)+OFFSETS[3], errorRoot);
+    private Scene setUpPopUp(Stage errorStage, Group errorRoot, String errorMessage){
+        //TextField  message = makeTextField("Edit Configuration File to Input Correct Simulation Type", MENU_SIZE/3,  SIZE/2 + 75, errorRoot)
+        Label message = makeLabel(errorMessage,GRAPH_SIZE/4,  (GRAPH_SIZE/3)+OFFSETS[3], errorRoot);
         Button exitButton = makeButton("Exit", (GRAPH_SIZE/4) + 25 , (GRAPH_SIZE/3)+OFFSETS[5], errorRoot);
         exitButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override

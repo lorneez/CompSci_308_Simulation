@@ -20,8 +20,8 @@
         <size>50</size>
         <size>50</size>
         <totalblocks>2500</totalblocks>
-        <blocktype>4</blocktype>
-        <blocktype>6</blocktype>
+        <blocktype>1</blocktype>
+        <blocktype>7</blocktype>
         <blocktype>3</blocktype>
         <percentage>.98</percentage>
         <percentage>.01</percentage>

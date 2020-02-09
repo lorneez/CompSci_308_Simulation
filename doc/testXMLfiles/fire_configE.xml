@@ -17,8 +17,8 @@
     <globalparam>
         <param>0.6</param>
         <param>0.4</param>
-        <size>50</size>
-        <size>50</size>
+        <size>53</size>
+        <size>51</size>
         <totalblocks>2500</totalblocks>
         <blocktype>4</blocktype>
         <blocktype>6</blocktype>

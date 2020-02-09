@@ -9,11 +9,6 @@
     <neighbor>false</neighbor>
     <neighbor>false</neighbor>
     <neighbor>false</neighbor>
-    <edgetype>
-        <edge>1</edge>
-        <edge>0</edge>
-        <edge>0</edge>
-    </edgetype>
     <globalparam>
         <param>0.6</param>
         <param>0.4</param>

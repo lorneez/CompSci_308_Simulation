@@ -9,6 +9,11 @@
     <neighbor>false</neighbor>
     <neighbor>false</neighbor>
     <neighbor>false</neighbor>
+    <edgetype>
+        <edge>1</edge>
+        <edge>0</edge>
+        <edge>0</edge>
+    </edgetype>
     <size>50</size>
     <size>50</size>
     <totalblocks>2500</totalblocks>

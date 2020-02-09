@@ -1,5 +1,4 @@
 <root>
-    <sim_type>fire</sim_type>
     <parse>percentage</parse>
     <neighbor>true</neighbor>
     <neighbor>true</neighbor>
