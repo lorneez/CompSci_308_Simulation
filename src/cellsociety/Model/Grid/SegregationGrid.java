@@ -66,7 +66,22 @@ public class SegregationGrid extends Grid {
         }
         return viewState;
     }
+    /**
+     * checks if the simulation is over
+     * @return whether the simulation is over
+     */
+    public boolean checkIfDone(){
+        return done;
+    }
 
+    /**
+     * makes a new segregation cell
+     * @param state state to initiate the cell to
+     * @return segregation cell
+     */
+    public Cell makeCell(int state) {
+        return new SegregationCell(state);
+    }
     /**
      * checks if cells are satisfied
      * @param cell is the cell to check if it is satisfied
@@ -116,21 +131,4 @@ public class SegregationGrid extends Grid {
         cell.update();
     }
 
-
-    /**
-     * checks if the simulation is over
-     * @return whether the simulation is over
-     */
-    public boolean checkIfDone(){
-        return done;
-    }
-
-    /**
-     * makes a new segregation cell
-     * @param state state to initiate the cell to
-     * @return segregation cell
-     */
-    public Cell makeCell(int state) {
-        return new SegregationCell(state);
-    }
 }

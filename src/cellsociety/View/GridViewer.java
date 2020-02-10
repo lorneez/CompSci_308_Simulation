@@ -76,16 +76,6 @@ public class GridViewer {
         myStage.show();
     }
 
-    private void initateButtonText() throws IOException {
-        File file = new File("./src/cellsociety/View/Text_Files/generic_buttons.txt");
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        PAUSE_TEXT = br.readLine();
-        END_TEXT = br.readLine();
-        RUN_SIM_TEXT = br.readLine();
-        RESET_TEXT = br.readLine();
-    }
-
-
     /**
      * get whether or not we are paused
      * @return boolean paused
@@ -196,29 +186,58 @@ public class GridViewer {
         updateGraph();
     }
 
+    /**
+     * getter for gridParametersUpdated
+     * @return gridParametersUpdated
+     */
     public ArrayList<Double> getGridParametersUpdated(){
         return gridParametersUpdated;
     }
+
+    /**
+     * getter for getBlockPercentagesUpdated
+     * @return getBlockPercentagesUpdated
+     */
     public ArrayList<Double> getBlockPercentagesUpdated(){
         return blockPercentagesUpdated;
     }
 
+    /**
+     * getter for getNewParameters
+     * @return getNewParameters
+     */
     public boolean getNewParameters(){
         return newParameters;
     }
 
+    /**
+     * getter for getSplashScreenFinished
+     * @return getSplashScreenFinished
+     */
     public boolean getSplashScreenFinished(){
         return splashScreenFinished;
     }
 
+    /**
+     * setter for setSplashScreenFinished
+     * @param target is the setSplashScreenFinished value
+     */
     public void setSplashScreenFinished(boolean target){
         splashScreenFinished = target;
     }
 
+    /**
+     * getter for file_name
+     * @return file_name
+     */
     public String getFileName(){
         return file_name;
     }
 
+    /**
+     * setter for file_name
+     * @param newFileName is file_name value
+     */
     public void setFileName(String newFileName){
         file_name = newFileName;
     }
@@ -244,6 +263,10 @@ public class GridViewer {
         });
     }
 
+    /**
+     * getter for restart that determines whether to restart simulation or not
+     * @return restart value
+     */
     public boolean getRestart(){
         return restart;
     }
@@ -262,6 +285,13 @@ public class GridViewer {
         });
     }
 
+    /**
+     * sets the pop up error screen
+     * @param errorStage stage to set
+     * @param errorRoot group to set
+     * @param errorMessage message to show
+     * @return
+     */
     private Scene setUpPopUp(Stage errorStage, Group errorRoot, String errorMessage){
         //TextField  message = makeTextField("Edit Configuration File to Input Correct Simulation Type", MENU_SIZE/3,  SIZE/2 + 75, errorRoot)
         Label message = makeLabel(errorMessage,GRAPH_SIZE/4,  (GRAPH_SIZE/3)+OFFSETS[3], errorRoot);
@@ -274,7 +304,18 @@ public class GridViewer {
         });
         return new Scene(errorRoot, GRAPH_SIZE, GRAPH_SIZE,  SPLASHBACKGROUND);
     }
-
+    /**
+     * initates the main button texts
+     * @throws IOException
+     */
+    private void initateButtonText() throws IOException {
+        File file = new File("./src/cellsociety/View/Text_Files/generic_buttons.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        PAUSE_TEXT = br.readLine();
+        END_TEXT = br.readLine();
+        RUN_SIM_TEXT = br.readLine();
+        RESET_TEXT = br.readLine();
+    }
     /**
      * construct a single unique integer from a pair of coordinates. Assume size<10000
      */
