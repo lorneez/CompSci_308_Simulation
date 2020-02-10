@@ -1,0 +1,4 @@
+Pause
+End Simulation
+Run Another Simulation
+Reset Simulation

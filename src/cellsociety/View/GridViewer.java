@@ -36,6 +36,10 @@ public class GridViewer {
     private static final int GRAPH_SIZE = 500;
     private static final Paint SPLASHBACKGROUND = Color.GRAY;
     private static final Paint[] SIMBACKGROUND = {Color.ORANGE, Color.YELLOW};
+    private String PAUSE_TEXT;
+    private String RESET_TEXT;
+    private String END_TEXT;
+    private String RUN_SIM_TEXT;
     private Map<Integer, Rectangle> cells;
     private Map<Integer, Integer> cellStates;
     private ScrollBar speedBar;
@@ -63,13 +67,24 @@ public class GridViewer {
     /**
      * Constructor method, sets up the stage and splash screen
      */
-    public GridViewer(){
+    public GridViewer() throws IOException {
+        initateButtonText();
         splashScreenFinished = true;
         myStage = new Stage();
         myScene = setUpSplash();
         myStage.setScene(myScene);
         myStage.show();
     }
+
+    private void initateButtonText() throws IOException {
+        File file = new File("./src/cellsociety/View/Text_Files/generic_buttons.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        PAUSE_TEXT = br.readLine();
+        END_TEXT = br.readLine();
+        RUN_SIM_TEXT = br.readLine();
+        RESET_TEXT = br.readLine();
+    }
+
 
     /**
      * get whether or not we are paused
@@ -155,7 +170,7 @@ public class GridViewer {
                 row++;
             }
         }
-        Button pauseButton = makeButton("Pause", SIZE/2, (25), myRoot);
+        Button pauseButton = makeButton(PAUSE_TEXT, SIZE/2, (25), myRoot);
         pauseButton.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
@@ -212,13 +227,17 @@ public class GridViewer {
      * Add a button to take you back to splash screen
      */
     public void addDoneButton(){
-        doneButton = makeButton("Run Another Simulation", MENU_SIZE/3, SIZE/2 - OFFSETS[11], myRoot);
+        doneButton = makeButton(RUN_SIM_TEXT, MENU_SIZE/3, SIZE/2 - OFFSETS[11], myRoot);
         setSplashScreenFinished(true);
         doneButton.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
                 myRoot.getChildren().remove(endButton);
-                myScene = setUpSplash();
+                try {
+                    myScene = setUpSplash();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 myStage.setScene(myScene);
                 myStage.show();
             }
@@ -233,7 +252,7 @@ public class GridViewer {
      * Add button to end simulation
      */
     public void addResetButton(){
-        Button resetButton = makeButton("Reset Simulation", MENU_SIZE / 3, SIZE / 2 - OFFSETS[10], myRoot);
+        Button resetButton = makeButton(RESET_TEXT, MENU_SIZE / 3, SIZE / 2 - OFFSETS[10], myRoot);
         setSplashScreenFinished(true);
         resetButton.setOnAction(new EventHandler<>() {
             @Override
@@ -321,7 +340,7 @@ public class GridViewer {
     }
 
     private void addPredatorPreyButtons() throws IOException {
-        File file = new File("./src/cellsociety/View/predatorprey_buttons.txt");
+        File file = new File("./src/cellsociety/View/Text_Files/predatorprey_buttons.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentWater = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
@@ -343,7 +362,7 @@ public class GridViewer {
     }
 
     private void addSegregationButtons() throws IOException {
-        File file = new File("./src/cellsociety/View/segregation_buttons.txt");
+        File file = new File("./src/cellsociety/View/Text_Files/segregation_buttons.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentEmpty = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
@@ -368,7 +387,7 @@ public class GridViewer {
     }
 
     private void addPercolationButtons() throws IOException {
-        File file = new File("./src/cellsociety/View/percolation_buttons.txt");
+        File file = new File("./src/cellsociety/View/Text_Files/percolation_buttons.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentBlocked = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
@@ -390,7 +409,7 @@ public class GridViewer {
     }
 
     private void addGameOfLifeButtons() throws IOException {
-        File file = new File("./src/cellsociety/View/gameoflife_buttons.txt");
+        File file = new File("./src/cellsociety/View/Text_Files/gameoflife_buttons.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentAlive = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
@@ -410,7 +429,7 @@ public class GridViewer {
     }
 
     private void addFireButtons() throws IOException {
-        File file = new File("./src/cellsociety/View/fire_buttons.txt");
+        File file = new File("./src/cellsociety/View/Text_Files/fire_buttons.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         makeLabel(br.readLine(), MENU_SIZE/3, SIZE/2 - OFFSETS[9], myRoot);
         TextField percentTree = makeTextField("%", MENU_SIZE/3,  SIZE/2 - OFFSETS[8], myRoot);
@@ -450,13 +469,15 @@ public class GridViewer {
         return myScrollBar;
     }
 
-    private Scene setUpSplash(){
+    private Scene setUpSplash() throws IOException {
+        File file = new File("./src/cellsociety/View/Text_Files/splash_buttons.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
         myRoot = new Group();
-        Button fireButton = makeButton("Fire", SIZE/2, (SIZE/2)+ OFFSETS[3], myRoot);
-        Button gameOfLifeButton = makeButton("GameOfLife", SIZE/2, SIZE/2, myRoot);
-        Button segregationButton = makeButton("Segregation", SIZE/2, SIZE/2 - OFFSETS[3], myRoot);
-        Button predatorPreyButton = makeButton("PredatorPrey", SIZE/2, SIZE/2 - OFFSETS[6], myRoot);
-        Button percolationButton = makeButton("Percolation", SIZE/2, SIZE/2 + OFFSETS[6], myRoot);
+        Button fireButton = makeButton(br.readLine(), SIZE/2, (SIZE/2)+ OFFSETS[3], myRoot);
+        Button gameOfLifeButton = makeButton(br.readLine(), SIZE/2, SIZE/2, myRoot);
+        Button segregationButton = makeButton(br.readLine(), SIZE/2, SIZE/2 - OFFSETS[3], myRoot);
+        Button predatorPreyButton = makeButton(br.readLine(), SIZE/2, SIZE/2 - OFFSETS[6], myRoot);
+        Button percolationButton = makeButton(br.readLine(), SIZE/2, SIZE/2 + OFFSETS[6], myRoot);
         Button[] buttons = new Button[]{fireButton, gameOfLifeButton, segregationButton, predatorPreyButton, percolationButton};
         String[] simulationNames = new String[]{"fire", "gameoflife", "segregation", "predprey", "percolation"};
         for(int i=0; i<buttons.length; i++){
@@ -498,7 +519,7 @@ public class GridViewer {
     }
 
     private void addEndButton(){
-        endButton = makeButton("End Simulation", MENU_SIZE/3, SIZE/2 - OFFSETS[11], myRoot);
+        endButton = makeButton(END_TEXT, MENU_SIZE/3, SIZE/2 - OFFSETS[11], myRoot);
         setSplashScreenFinished(true);
         endButton.setOnAction(new EventHandler<>() {
             @Override

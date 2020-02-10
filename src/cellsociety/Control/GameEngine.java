@@ -74,14 +74,14 @@ public class GameEngine {
     /**
      * Constructor method. initializes some things and cells start
      */
-    public GameEngine(){
+    public GameEngine() throws IOException {
         start();
     }
 
     /**
      * Creates the viewer, starts the splash screen. Viewer will determine configuration file
      */
-    public void start(){
+    public void start() throws IOException {
         myViewer = new GridViewer();
         enableDefault = false;
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {

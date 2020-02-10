@@ -4,6 +4,8 @@ import cellsociety.Control.GameEngine;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 import static javafx.application.Application.launch;
 
 /**
@@ -18,7 +20,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void start(Stage stage){
+    public void start(Stage stage) throws IOException {
         System.out.println("Hello world");
         new GameEngine();
         System.out.println("End");
